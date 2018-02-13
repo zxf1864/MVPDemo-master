@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@mipmap/ic_search"
+        android:title="搜索"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+    <item
+        android:id="@+id/action_user"
+        android:icon="@mipmap/ic_user"
+        android:title="用户"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_vip"
+        android:icon="@mipmap/ic_vip"
+        android:title="开会员"
+        app:showAsAction="always|withText"/>
+
+
+    <item
+        android:id="@+id/action_msg"
+        android:title="消息"
+        app:actionLayout="@layout/layout_toolbar_msg"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_weather"
+        android:title="天气"
+        app:actionLayout="@layout/layout_toolbar_msg"
+        app:showAsAction="always"/>
+
+
+    <item
+        android:id="@+id/action_cloud"
+        android:icon="@mipmap/ic_cloud"
+        android:title="云视听"
+        app:showAsAction="always|withText"/>
+
+</menu>
