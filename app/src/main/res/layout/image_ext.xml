@@ -8,8 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:paddingBottom="5dip"
-        android:paddingTop="5dip"
+
         android:scaleType="centerCrop"
         android:src="@drawable/testpic1" />
 
@@ -18,12 +17,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:paddingBottom="5dip"
         android:paddingTop="5dip"
+        android:paddingRight="5dip"
 
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/img"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="5dp"
         android:gravity="right"
         android:textColor="#ffffff"
         android:text="内容标签" />
@@ -34,11 +33,11 @@
         android:layout_height="wrap_content"
 
         android:paddingBottom="5dip"
-        android:paddingTop="5dip"
+        android:paddingRight="5dip"
 
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/img"
-        android:layout_marginBottom="26dp"
+        android:layout_marginBottom="5dp"
         android:gravity="right"
         android:textColor="#ffffff"
         android:text="更新日期" />

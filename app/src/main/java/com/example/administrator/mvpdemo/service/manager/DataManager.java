@@ -7,6 +7,7 @@ import com.example.administrator.mvpdemo.service.RetrofitService;
 import com.example.administrator.mvpdemo.service.RetrofitHelper;
 import com.example.administrator.mvpdemo.service.entity.Book;
 import com.example.administrator.mvpdemo.service.entity.Pgc;
+import com.example.administrator.mvpdemo.service.entity.PgcInfo;
 
 import io.reactivex.Observable;
 
@@ -27,5 +28,9 @@ public class DataManager {
 
     public  Observable<Pgc> getPgc(int catid, String apikey){
         return mRetrofitService.getPgc(catid,apikey);
+    }
+
+    public  Observable<PgcInfo> getPgcInfo(int catid, String apikey ,int page,int page_size,int cat,int is_pgc){
+        return mRetrofitService.getPgcInfo(catid,apikey,page,page_size,cat,is_pgc);
     }
 }

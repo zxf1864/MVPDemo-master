@@ -97,6 +97,7 @@ public class AdapterMetroView extends RelativeLayout {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MetroView);
             mDrawable = a.getDrawable(R.styleable.MetroView_android_src);
+            //shadowWidth = a.getDimensionPixelSize(R.styleable.MetroView_shadowingWidth, 0);
             shadowWidth = a.getDimensionPixelSize(R.styleable.MetroView_shadowingWidth, 0);
             hasAnim = a.getBoolean(R.styleable.MetroView_hasAnim, true);
             if (shadowWidth == 0) {
@@ -113,7 +114,8 @@ public class AdapterMetroView extends RelativeLayout {
             a.recycle();
         }
         if (mDrawable == null) {
-            mDrawable = getResources().getDrawable(R.drawable.shadow);
+            //mDrawable = getResources().getDrawable(R.drawable.shadow);
+            mDrawable = getResources().getDrawable(R.drawable.shadow_black);
         }
         setChildrenDrawingOrderEnabled(true);
     }
@@ -155,14 +157,14 @@ public class AdapterMetroView extends RelativeLayout {
 //        }
 //    }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-
-        setMeasuredDimension(myWidth, myHeight);
-    }
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//
+//
+//        setMeasuredDimension(myWidth, myHeight);
+//    }
 
 
     @Override
@@ -175,6 +177,7 @@ public class AdapterMetroView extends RelativeLayout {
         if (hasFocus() && mDrawable != null) {
             super.getDrawingRect(mRect);
             mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
+            //mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
             mDrawable.setBounds(mBound);
             canvas.save();
             mDrawable.draw(canvas);
@@ -199,6 +202,7 @@ public class AdapterMetroView extends RelativeLayout {
             getRootView().requestLayout();
             getRootView().invalidate();
             if (hasAnim) {
+
                 scaleAnimation = AnimationUtil.startScaleToBigAnimation(this, Constants.SCALE_RATE, new Animator.AnimatorListener() {
 
                     @Override
@@ -254,4 +258,13 @@ public class AdapterMetroView extends RelativeLayout {
             }
         });
     }
+
+
+    public boolean isTopEdge =false;
+    public boolean isBottomEdge = false;
+    public boolean isLeftEdge = false;
+    public boolean isRightEdge = false;
+
+
+
 }

@@ -35,7 +35,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="联播"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/recommend_text"
@@ -43,7 +45,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="推荐"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/TV_text"
@@ -51,7 +55,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="电视剧"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/VIP_text"
@@ -59,7 +65,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="会员"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/Children_text"
@@ -67,7 +75,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="少儿"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/TVShow_text"
@@ -75,7 +85,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="综艺"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/Film_text"
@@ -83,7 +95,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="电影"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/Video_text"
@@ -91,7 +105,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="短视频"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/More_text"
@@ -99,7 +115,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="更多"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <TextView
                     android:id="@+id/Setting_text"
@@ -107,7 +125,9 @@
                     android:layout_height="fill_parent"
                     android:gravity="center"
                     android:text="我的"
-                    android:textColor="#ffffff" />
+                    android:textColor="#ffffff"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
 
             </LinearLayout>

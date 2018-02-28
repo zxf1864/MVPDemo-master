@@ -2,12 +2,15 @@ package com.example.administrator.mvpdemo.MyReCyclerView;
 
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
+import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
@@ -35,10 +38,17 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
         //this.setAutoMeasureEnabled(true);
     }
 
+    public HomeLayoutManager(ChannelInfo channelInfo) {
+        mItemRectFList = channelInfo.getmItemRectFList();
+        init();
+        //this.setAutoMeasureEnabled(true);
+    }
+
     private void init() {
         mLayoutState = new LayoutState();
 
         mBooleanMap.reset();
+
     }
 
 
@@ -96,9 +106,6 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 //            recycler.recycleView(view);
 //        }
 //    }
-
-
-
 
 
     @Override
@@ -180,21 +187,44 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                 int h = getDecoratedMeasurementVertical(view);
 
 
-
-                ViewGroup.LayoutParams params= view.getLayoutParams();
+                ViewGroup.LayoutParams params = view.getLayoutParams();
                 //获取当前控件的布局对象
-                params.height=(int)bounds.height();//设置当前控件布局的高度
-                params.width = (int)bounds.width();
+                params.height = (int) bounds.height();//设置当前控件布局的高度
+                params.width = (int) bounds.width();
 
                 view.setLayoutParams(params);//将设置好的布局参数应用到控件中
 
                 w = getDecoratedMeasurementHorizontal(view);
                 h = getDecoratedMeasurementVertical(view);
 
-                ((AdapterMetroView)view).SetMyWH((int)bounds.width(),(int)bounds.height());
+                try {
+                    ((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
+
+                    if(bounds.bottom == 800)
+                        ((AdapterMetroView) view).isBottomEdge = true;
+
+                    if(bounds.top == 0)
+                        ((AdapterMetroView) view).isTopEdge = true;
+
+//                    if(bounds.left == 0)
+//                        ((AdapterMetroView) view).isLeftEdge = true;
+//
+//                    if(bounds.right == getWidth())
+//                        ((AdapterMetroView) view).isRightEdge = true;
+
+                } catch (Exception ex) {
+                }
+
 
                 w = getDecoratedMeasurementHorizontal(view);
                 h = getDecoratedMeasurementVertical(view);
+
+                final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
+                lp.height -= 39;
+                lp.width -= 39;
+                view.setLayoutParams(lp);//将设置好的布局参数应用到控件中
+
+
 
                 // 然后layout带Margin的View，将View放置到对应的位置
                 layoutDecoratedWithMargins(view, (int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
@@ -237,8 +267,19 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
         //如果滑动到最左边
         if (-mLayoutState.offsetX + dx < 0) {
             travel = mLayoutState.offsetX;
+
+
+            isSlidingToFirst = true;
+            isSlidingToLast = false;
         } else if (-mLayoutState.offsetX + dx + getWidth() > mTotalW) {//如果滑动到最右部
             travel = mTotalW + mLayoutState.offsetX - getWidth();
+
+
+            isSlidingToFirst = false;
+            isSlidingToLast = true;
+        } else {
+            isSlidingToFirst = false;
+            isSlidingToLast = false;
         }
 
 
@@ -278,4 +319,78 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 
         final RectF containerRect = new RectF();
     }
+
+    //用来标记是否正在向最后一个滑动
+    boolean isSlidingToLast = false;
+    boolean isSlidingToFirst = false;
+
+    public boolean isSlidingToLast() {
+        return isSlidingToLast;
+    }
+
+    public boolean isSlidingToFirst() {
+        return isSlidingToFirst;
+    }
+
+
+//    @Override
+//    public void onScrollStateChanged(int newState) {
+//        super.onScrollStateChanged( newState);
+//        LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//        // 当不滚动时
+//        if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+//            //获取最后一个完全显示的ItemPosition
+//            int lastVisibleItem = manager.findLastCompletelyVisibleItemPosition();
+//            int totalItemCount = manager.getItemCount();
+//
+//            // 判断是否滚动到底部，并且是向右滚动
+//            if (lastVisibleItem == (totalItemCount - 1) && isSlidingToLast) {
+//                //加载更多功能的代码
+//            }
+//        }
+//    }
+
+    @Override
+    public View onFocusSearchFailed(View focused, int direction, RecyclerView.Recycler recycler,
+                                    RecyclerView.State state) {
+
+        return null;
+    }
+
+    @Override
+    public View onInterceptFocusSearch(View focused, int direction) {
+
+//        int span = getSpanCount();
+//        int count = getItemCount();
+//        int fromPos = getPosition(focused);
+//        switch (direction) {
+//            case View.FOCUS_UP:
+//                fromPos = (fromPos - span);
+//                break;
+//            case View.FOCUS_DOWN:
+//                fromPos = (fromPos + span);
+//                break;
+//            case View.FOCUS_RIGHT:
+//                fromPos++;
+//                break;
+//            case View.FOCUS_LEFT:
+//                fromPos--;
+//                break;
+//        }
+//
+//        if (fromPos < 0) {
+//            return focused;
+//        } else if (fromPos >= count) {
+//            return focused;
+//        } else {
+//            return findViewByPosition(fromPos);
+////            return getChildAt(fromPos);
+//        }
+
+
+        return super.onInterceptFocusSearch(focused,direction);
+    }
+
+
+
 }

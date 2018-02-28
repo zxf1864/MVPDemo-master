@@ -1,11 +1,17 @@
 package com.example.administrator.mvpdemo.ui.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 
 import android.graphics.Rect;
+import android.os.IBinder;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
@@ -25,10 +31,18 @@ import android.widget.Toast;
 import com.example.administrator.mvpdemo.Adapter.MyItemClickListener;
 
 import com.example.administrator.mvpdemo.Adapter.TVReCycleViewPagerAdapter;
+import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.Model.ChannelInfoList;
+import com.example.administrator.mvpdemo.Model.PgcList;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.StatusBarUtils;
 import com.example.administrator.mvpdemo.base.BaseActivity;
 
+import com.example.administrator.mvpdemo.event.Events;
+import com.example.administrator.mvpdemo.event.RxBus;
+import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
+import com.example.administrator.mvpdemo.event.RxCodeConstants;
+import com.example.administrator.mvpdemo.service.ChannelDataService;
 import com.example.administrator.mvpdemo.service.entity.Pgc;
 
 import com.example.administrator.mvpdemo.service.presenter.PgcPresenter;
@@ -37,6 +51,7 @@ import com.example.administrator.mvpdemo.service.view.ITestView;
 
 import com.example.administrator.mvpdemo.ui.CustomWidgets.BadgeView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView;
+import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 
 
 import java.lang.reflect.Method;
@@ -46,6 +61,7 @@ import java.lang.reflect.Method;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity implements ITestView,MyItemClickListener {
 
@@ -61,315 +77,36 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     @BindView(R.id.id_viewpager)
     ViewPager mViewPager;
 
-    private Toolbar mToolBar;
+    @BindView(R.id.item_scroll_title)
+    CHScrollView mCHScrollView;
 
+    @BindView(R.id.common_broadcast_text)
     TextView common_broadcast_text;
+    @BindView(R.id.recommend_text)
     TextView recommend_text;
+    @BindView(R.id.TV_text)
     TextView TV_text;
+    @BindView(R.id.VIP_text)
     TextView VIP_text;
+    @BindView(R.id.Children_text)
     TextView Children_text;
+    @BindView(R.id.TVShow_text)
     TextView TVShow_text;
+    @BindView(R.id.Film_text)
     TextView Film_text;
+    @BindView(R.id.Video_text)
     TextView Video_text;
+    @BindView(R.id.More_text)
     TextView More_text;
+    @BindView(R.id.Setting_text)
     TextView Setting_text;
 
-
-
-
-//    private String mRectFMsg0 = "[{\"bottom\":353.0,\"left\":50.0,\"right\":245.0,\"top\":201.0}," +
-//            "{\"bottom\":201.0,\"left\":830.0,\"right\":1220.0,\"top\":49.0}," +
-//            "{\"bottom\":353.0,\"left\":245.0,\"right\":830.0,\"top\":49.0}," +
-//            "{\"bottom\":805.0,\"left\":830.0,\"right\":1025.0,\"top\":353.0}," +
-//            "{\"bottom\":201.0,\"left\":50.0,\"right\":245.0,\"top\":49.0}," +
-//            "{\"bottom\":805.0,\"left\":245.0,\"right\":830.0,\"top\":353.0}," +
-//            "{\"bottom\":805.0,\"left\":1025.0,\"right\":1220.0,\"top\":353.0}," +
-//            "{\"bottom\":805.0,\"left\":50.0,\"right\":245.0,\"top\":353.0}," +
-//            "{\"bottom\":353.0,\"left\":830.0,\"right\":1220.0,\"top\":201.0}," +
-//
-//            "{\"bottom\":353.0,\"left\":1220.0,\"right\":1415.0,\"top\":201.0}," +
-//            "{\"bottom\":201.0,\"left\":2000.0,\"right\":2390.0,\"top\":49.0}," +
-//            "{\"bottom\":353.0,\"left\":1415.0,\"right\":2000.0,\"top\":49.0}," +
-//            "{\"bottom\":805.0,\"left\":2000.0,\"right\":2195.0,\"top\":353.0}," +
-//            "{\"bottom\":201.0,\"left\":1220.0,\"right\":1415.0,\"top\":49.0}," +
-//            "{\"bottom\":805.0,\"left\":1415.0,\"right\":2000.0,\"top\":353.0}," +
-//            "{\"bottom\":805.0,\"left\":2195.0,\"right\":2390.0,\"top\":353.0}," +
-//            "{\"bottom\":805.0,\"left\":1220.0,\"right\":1415.0,\"top\":353.0}," +
-//            "{\"bottom\":353.0,\"left\":2000.0,\"right\":2390.0,\"top\":201.0},]";
-
-    private String mRectFMsg0 = "[{\"bottom\":600.0,\"left\":0.0,\"right\":900.0,\"top\":0.0}," +
-                                "{\"bottom\":800.0,\"left\":0.0,\"right\":450.0,\"top\":600.0}," +
-                                "{\"bottom\":800.0,\"left\":450.0,\"right\":900.0,\"top\":600.0}," +
-                                "{\"bottom\":450.0,\"left\":900.0,\"right\":1500.0,\"top\":0.0}," +
-                                "{\"bottom\":800.0,\"left\":900.0,\"right\":1500.0,\"top\":450.0}," +
-                                "{\"bottom\":450.0,\"left\":1500.0,\"right\":2100.0,\"top\":0.0}," +
-                                "{\"bottom\":800.0,\"left\":1500.0,\"right\":2100.0,\"top\":450.0},]";
-
-
-    private String mRectFMsg1 = "[{\"bottom\":450.0,\"left\":0.0,\"right\":700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":375.0,\"top\":450.0}," +
-            "{\"bottom\":650.0,\"left\":375.0,\"right\":700.0,\"top\":450.0}," +
-            "{\"bottom\":800.0,\"left\":375.0,\"right\":700.0,\"top\":650.0}," +
-
-            "{\"bottom\":450.0,\"left\":700.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":700.0,\"right\":1200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1200.0,\"right\":1700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":1700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1700.0,\"right\":2200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1700.0,\"right\":2200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2200.0,\"right\":2700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2200.0,\"right\":2700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2700.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2700.0,\"right\":3200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3200.0,\"right\":3700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
-
-    private String mRectFMsg2 = "[{\"bottom\":450.0,\"left\":0.0,\"right\":700.0,\"top\":0.0}," +
-            "{\"bottom\":650.0,\"left\":0.0,\"right\":375.0,\"top\":450.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":375.0,\"top\":650.0}," +
-            "{\"bottom\":650.0,\"left\":375.0,\"right\":700.0,\"top\":450.0}," +
-            "{\"bottom\":800.0,\"left\":375.0,\"right\":700.0,\"top\":650.0}," +
-
-            "{\"bottom\":450.0,\"left\":700.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":700.0,\"right\":1200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1200.0,\"right\":1700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":1700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1700.0,\"right\":2200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1700.0,\"right\":2200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2200.0,\"right\":2700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2200.0,\"right\":2700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2700.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2700.0,\"right\":3200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3200.0,\"right\":3700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
-
-
-
-
-    private String mRectFMsg3 = "[{\"bottom\":450.0,\"left\":0.0,\"right\":700.0,\"top\":0.0}," +
-            "{\"bottom\":650.0,\"left\":0.0,\"right\":375.0,\"top\":450.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":375.0,\"top\":650.0}," +
-            "{\"bottom\":650.0,\"left\":375.0,\"right\":700.0,\"top\":450.0}," +
-            "{\"bottom\":800.0,\"left\":375.0,\"right\":700.0,\"top\":650.0}," +
-
-            "{\"bottom\":450.0,\"left\":700.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":700.0,\"right\":1200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1200.0,\"right\":1700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":1700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":1700.0,\"right\":2200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1700.0,\"right\":2200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2200.0,\"right\":2700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2200.0,\"right\":2700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":2700.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2700.0,\"right\":3200.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3200.0,\"right\":3700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
-
-            "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
-
-
-
-
-    private String mRectFMsg4 = "[{\"bottom\":200.0,\"left\":0.0,\"right\":400.0,\"top\":0.0}," +
-            "{\"bottom\":400.0,\"left\":0.0,\"right\":400.0,\"top\":200.0}," +
-            "{\"bottom\":600.0,\"left\":0.0,\"right\":400.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":400.0,\"top\":600.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":400.0,\"right\":800.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":400.0,\"right\":800.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":800.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":800.0,\"right\":1200.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":1200.0,\"right\":1600.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":1600.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":1600.0,\"right\":2000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1600.0,\"right\":2000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2000.0,\"right\":2400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2400.0,\"right\":2800.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2400.0,\"right\":2800.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2800.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2800.0,\"right\":3200.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":3200.0,\"right\":3600.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":3600.0,\"top\":400.0},]";
-
-
-
-
-
-    private String mRectFMsg5 = "[{\"bottom\":200.0,\"left\":0.0,\"right\":400.0,\"top\":0.0}," +
-            "{\"bottom\":400.0,\"left\":0.0,\"right\":400.0,\"top\":200.0}," +
-            "{\"bottom\":600.0,\"left\":0.0,\"right\":400.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":400.0,\"top\":600.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":400.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":400.0,\"right\":1200.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":1200.0,\"right\":2000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":2000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2000.0,\"right\":2400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2400.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2400.0,\"right\":3200.0,\"top\":400.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":3200.0,\"right\":4000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":4000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4000.0,\"right\":4400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
-
-
-
-
-
-    private String mRectFMsg6 = "[{\"bottom\":200.0,\"left\":0.0,\"right\":400.0,\"top\":0.0}," +
-            "{\"bottom\":400.0,\"left\":0.0,\"right\":400.0,\"top\":200.0}," +
-            "{\"bottom\":600.0,\"left\":0.0,\"right\":400.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":400.0,\"top\":600.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":400.0,\"right\":1200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":400.0,\"right\":1200.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":1200.0,\"right\":2000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1200.0,\"right\":2000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2000.0,\"right\":2400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2400.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2400.0,\"right\":3200.0,\"top\":400.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":3200.0,\"right\":4000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":4000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4000.0,\"right\":4400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
-
-
-
-
-
-    private String mRectFMsg7 ="[{\"bottom\":200.0,\"left\":0.0,\"right\":400.0,\"top\":0.0}," +
-            "{\"bottom\":400.0,\"left\":0.0,\"right\":400.0,\"top\":200.0}," +
-            "{\"bottom\":600.0,\"left\":0.0,\"right\":400.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":0.0,\"right\":400.0,\"top\":600.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":400.0,\"right\":1400.0,\"top\":0.0}," +
-            "{\"bottom\":600.0,\"left\":400.0,\"right\":900.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":400.0,\"right\":900.0,\"top\":600.0}," +
-            "{\"bottom\":600.0,\"left\":900.0,\"right\":1400.0,\"top\":400.0}," +
-            "{\"bottom\":800.0,\"left\":900.0,\"right\":1400.0,\"top\":600.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":1400.0,\"right\":2000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1400.0,\"right\":2000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2000.0,\"right\":2400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":2400.0,\"right\":3200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2400.0,\"right\":3200.0,\"top\":400.0}," +
-
-
-            "{\"bottom\":400.0,\"left\":3200.0,\"right\":4000.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3200.0,\"right\":4000.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4000.0,\"right\":4400.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
-
-            "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
-
-
-
-
-
-
-    private String mRectFMsg8 = "[{\"bottom\":800.0,\"left\":0.0,\"right\":300.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":300.0,\"right\":500.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":500.0,\"right\":700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":700.0,\"right\":900.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":900.0,\"right\":1100.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1100.0,\"right\":1300.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1300.0,\"right\":1500.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1500.0,\"right\":1700.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1700.0,\"right\":1900.0,\"top\":0.0}," +
-
-            "{\"bottom\":800.0,\"left\":1900.0,\"right\":2100.0,\"top\":0.0},]";
-
-
-
-
-    private String mRectFMsg9 = "[{\"bottom\":453.0,\"left\":50.0,\"right\":245.0,\"top\":301.0}," +
-            "{\"bottom\":301.0,\"left\":830.0,\"right\":1220.0,\"top\":49.0}," +
-            "{\"bottom\":453.0,\"left\":245.0,\"right\":830.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":830.0,\"right\":1025.0,\"top\":453.0}," +
-            "{\"bottom\":301.0,\"left\":50.0,\"right\":245.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":245.0,\"right\":830.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":1025.0,\"right\":1220.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":50.0,\"right\":245.0,\"top\":453.0}," +
-            "{\"bottom\":453.0,\"left\":830.0,\"right\":1220.0,\"top\":301.0}," +
-
-            "{\"bottom\":453.0,\"left\":1220.0,\"right\":1415.0,\"top\":301.0}," +
-            "{\"bottom\":301.0,\"left\":2000.0,\"right\":2390.0,\"top\":49.0}," +
-            "{\"bottom\":453.0,\"left\":1415.0,\"right\":2000.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":2000.0,\"right\":2195.0,\"top\":453.0}," +
-            "{\"bottom\":301.0,\"left\":1220.0,\"right\":1415.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":1415.0,\"right\":2000.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":2195.0,\"right\":2390.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":1220.0,\"right\":1415.0,\"top\":453.0}," +
-            "{\"bottom\":453.0,\"left\":2000.0,\"right\":2390.0,\"top\":301.0},]";
-
+    private Toolbar mToolBar;
 
     //private BookPresenter mBookPresenter = new BookPresenter(this);
     private PgcPresenter mPgcPresenter = new PgcPresenter(this,this);
 
     //private ArrayList<HashMap<String, Object>> listItem;
-
-    private String[] inputStrs = {mRectFMsg0,mRectFMsg1,mRectFMsg2,mRectFMsg3,mRectFMsg4,mRectFMsg5,mRectFMsg6,mRectFMsg7,mRectFMsg8,mRectFMsg9};
-
 
     @Override
     protected int getContentViewId() {
@@ -391,6 +128,138 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         SetViewpager();
 
 
+//        Intent startIntent = new Intent(this, ChannelDataService.class);
+//        startService(startIntent);
+
+
+        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_BOTTOMBAR, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+                        SetBottomBarItemsFocused();
+                    }
+                });
+
+
+        RxBus.getInstance().tObservable(RxCodeConstants.Get_PGC, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
+
+                        rc.getAdapter().notifyDataSetChanged();
+
+
+                    }
+                });
+
+        RxBus.getInstance().tObservable(RxCodeConstants.ReCycleView_init, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+                        ChannelInfo ci = ChannelInfoList.getInstance().getmChannelInfos().get(rxBusBaseMessage.getCode());
+
+                        ci.requestCount = 0;
+
+                        if(!ci.isDataOver) {
+                            mPgcPresenter.getPgcInfo(Integer.parseInt(ci.getMkey()), "370f37af1847ee3308e77f86629f3955", 1, 20, Integer.parseInt(ci.getCat()), 1);
+                        }
+
+                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter) mViewPager.getAdapter()).getPrimaryItem();
+                        rc.getAdapter().notifyDataSetChanged();
+
+
+                    }
+                });
+
+        RxBus.getInstance().tObservable(RxCodeConstants.Re_Get_PGC, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+                        ChannelInfo ci = ChannelInfoList.getInstance().getmChannelInfos().get(rxBusBaseMessage.getCode());
+
+                        ci.requestCount++;
+
+                        if(ci.requestCount <10)
+                        {
+                            if(!ci.isDataOver)
+                            {
+                                mPgcPresenter.getPgcInfo(Integer.parseInt(ci.getMkey()),"370f37af1847ee3308e77f86629f3955",1,20,Integer.parseInt(ci.getCat()),1);
+                            }
+                        }
+
+
+                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
+
+                        rc.getAdapter().notifyDataSetChanged();
+
+
+                    }
+                });
+
+    }
+
+    private TextView ChangeChannel(int position)
+    {
+        TextView name;
+        switch (position)
+        {
+            case 0:
+                name = common_broadcast_text;
+                break;
+            case 1:
+                name = recommend_text;
+                break;
+            case 2:
+                name = TV_text;
+                break;
+            case 3:
+                name = VIP_text;
+                break;
+            case 4:
+                name = Children_text;
+                break;
+            case 5:
+                name = TVShow_text;
+                break;
+            case 6:
+                name = Film_text;
+                break;
+            case 7:
+                name = Video_text;
+                break;
+            case 8:
+                name = More_text;
+
+                break;
+            case 9:
+                name = Setting_text;
+
+                break;
+            default:
+                name =null;
+                break;
+        }
+
+        return name;
+    }
+
+    private void SetBottomBarItemsFocused()
+    {
+        TextView name = ChangeChannel(mViewPager.getCurrentItem());
+        if(name!=null)
+        {
+            initCH();
+            name.requestFocus();
+        }
+
     }
 
     private void SetViewpager()
@@ -410,7 +279,10 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 //
 //            }
 
-            mAdapter.setDatas(inputStrs);
+            //mAdapter.setDatas(LayoutData.GetLayoutData());
+
+            mAdapter.setDatas(ChannelInfoList.getInstance().getmChannelInfos());
+
             mViewPager.setAdapter(mAdapter);
             mViewPager.setBackgroundColor(Color.RED);
 
@@ -429,55 +301,19 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 public void onPageSelected(int position)
                 {
                     initCH();
-                    TextView name;
+                    TextView name = ChangeChannel(position);
                     int dx =300*(position - currentIndex);
-                    switch (position)
-                    {
-                        case 0:
-                            name = (TextView)findViewById(R.id.common_broadcast_text);
-                            break;
-                        case 1:
-                            name = (TextView)findViewById(R.id.recommend_text);
-                            break;
-                        case 2:
-                            name = (TextView)findViewById(R.id.TV_text);
-                            break;
-                        case 3:
-                            name = (TextView)findViewById(R.id.VIP_text);
-                            break;
-                        case 4:
-                            name = (TextView)findViewById(R.id.Children_text);
-                            break;
-                        case 5:
-                            name = (TextView)findViewById(R.id.TVShow_text);
-                            break;
-                        case 6:
-                            name = (TextView)findViewById(R.id.Film_text);
-                            break;
-                        case 7:
-                            name = (TextView)findViewById(R.id.Video_text);
-                            break;
-                        case 8:
-                            name = (TextView)findViewById(R.id.More_text);
-
-                            break;
-                        case 9:
-                            name = (TextView)findViewById(R.id.Setting_text);
-
-                            break;
-                        default:
-                            name =null;
-                            break;
-                    }
 
                     if(name!=null)
                     {
                         name.setTextColor(Color.RED);
+                        name.setBackgroundResource(R.mipmap.underline);
                         checkCHVisible( name, dx);
                     }
 
                     currentIndex = position;
 
+                    RxBus.getInstance().send(RxCodeConstants.ReCycleView_init,new RxBusBaseMessage(position,new Object()));
                 }
 
                 @Override
@@ -491,6 +327,9 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 {
 
                 }
+
+
+
             });
 
 
@@ -506,207 +345,114 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
     private void checkCHVisible(TextView name,int dx)
     {
-        CHScrollView ch = (CHScrollView)findViewById(R.id.item_scroll_title);
         Rect scrollRect = new Rect();
-        ch.getHitRect(scrollRect);
+        mCHScrollView.getHitRect(scrollRect);
         //子控件在可视范围内（至少有一个像素在可视范围内）
         if (name.getGlobalVisibleRect(scrollRect)) {
 
         } else {
             ////子控件完全不在可视范围内
-            ch.smoothScrollBy(dx,0);
+            mCHScrollView.smoothScrollBy(dx,0);
         }
+    }
+
+
+    private void attchCHItemsclick(TextView tv,int postion)
+    {
+        tv.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Log.i("匿名内部类", "点击事件");
+
+                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
+                tv.startAnimation(shake);
+
+                mViewPager.setCurrentItem(postion);
+
+            }
+        });
+
+        tv.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus){
+                if(hasFocus)
+                {
+                    tv.setTextColor(Color.YELLOW);
+                    tv.setBackgroundResource(R.mipmap.underline);
+                    mViewPager.setCurrentItem(postion);
+                }
+                else
+                {
+                    tv.setTextColor(Color.WHITE);
+                    tv.setBackgroundResource(0);
+                }
+            }
+         }
+
+
+        );
+
     }
 
     private void attchCHclick()
     {
-        common_broadcast_text =(TextView)findViewById(R.id.common_broadcast_text);
-        common_broadcast_text.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
+        attchCHItemsclick(common_broadcast_text,0);
 
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                common_broadcast_text.startAnimation(shake);
+        attchCHItemsclick(recommend_text,1);
 
-                mViewPager.setCurrentItem(0);
+        attchCHItemsclick(TV_text,2);
 
-            }
-        });
+        attchCHItemsclick(VIP_text,3);
 
+        attchCHItemsclick(Children_text,4);
 
-        recommend_text =(TextView)findViewById(R.id.recommend_text);
-        recommend_text.setOnClickListener(new View.OnClickListener() {
+        attchCHItemsclick(TVShow_text,5);
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
+        attchCHItemsclick(Film_text,6);
 
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                recommend_text.startAnimation(shake);
+        attchCHItemsclick(Video_text,7);
 
-                mViewPager.setCurrentItem(1);
+        attchCHItemsclick(More_text,8);
 
-            }
-        });
-
-        TV_text =(TextView)findViewById(R.id.TV_text);
-        TV_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                TV_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(2);
-
-            }
-        });
-
-        VIP_text =(TextView)findViewById(R.id.VIP_text);
-        VIP_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                VIP_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(3);
-
-            }
-        });
-
-        Children_text =(TextView)findViewById(R.id.Children_text);
-        Children_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                Children_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(4);
-
-            }
-        });
-
-        TVShow_text =(TextView)findViewById(R.id.TVShow_text);
-        TVShow_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                TVShow_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(5);
-
-            }
-        });
-
-        Film_text =(TextView)findViewById(R.id.Film_text);
-        Film_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                Film_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(6);
-
-            }
-        });
-
-        Video_text =(TextView)findViewById(R.id.Video_text);
-        Video_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                Video_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(7);
-
-            }
-        });
-
-        More_text =(TextView)findViewById(R.id.More_text);
-        More_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                More_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(8);
-
-            }
-        });
-
-        Setting_text =(TextView)findViewById(R.id.Setting_text);
-        Setting_text.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Log.i("匿名内部类", "点击事件");
-
-                Animation shake = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_right_shake);
-                Setting_text.startAnimation(shake);
-
-                mViewPager.setCurrentItem(9);
-
-            }
-        });
-
-
+        attchCHItemsclick(Setting_text,9);
 
     }
 
     private void initCH()
     {
-        TextView name = (TextView)findViewById(R.id.common_broadcast_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.recommend_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.TV_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.VIP_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.Children_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.TVShow_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.Film_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.Video_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.More_text);
-        name.setTextColor(Color.WHITE);
-        name = (TextView)findViewById(R.id.Setting_text);
-        name.setTextColor(Color.WHITE);
+        common_broadcast_text.setTextColor(Color.WHITE);
+        common_broadcast_text.setBackgroundResource(0);
+
+        recommend_text.setTextColor(Color.WHITE);
+        recommend_text.setBackgroundResource(0);
+
+        TV_text.setTextColor(Color.WHITE);
+        TV_text.setBackgroundResource(0);
+
+        VIP_text.setTextColor(Color.WHITE);
+        VIP_text.setBackgroundResource(0);
+
+        Children_text.setTextColor(Color.WHITE);
+        Children_text.setBackgroundResource(0);
+
+        TVShow_text.setTextColor(Color.WHITE);
+        TVShow_text.setBackgroundResource(0);
+
+        Film_text.setTextColor(Color.WHITE);
+        Film_text.setBackgroundResource(0);
+
+        Video_text.setTextColor(Color.WHITE);
+        Video_text.setBackgroundResource(0);
+
+        More_text.setTextColor(Color.WHITE);
+        More_text.setBackgroundResource(0);
+
+        Setting_text.setTextColor(Color.WHITE);
+        Setting_text.setBackgroundResource(0);
     }
 
     private void setAntiAlias()
@@ -944,9 +690,49 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     }
 
 
-//    @Override
-//    protected void onDestroy(){
-//        super.onDestroy();
-//        //mBookPresenter.onStop();
-//    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        //mBookPresenter.onStop();
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+
+    private ChannelDataService mService;
+
+    private boolean mBound = false;
+
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            ChannelDataService.MyBinder binder = (ChannelDataService.MyBinder) service;
+            mService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
+    public void bindService(View view) {
+        Intent intent = new Intent(this, ChannelDataService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void unBindService(View view) {
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
+
+
+
 }

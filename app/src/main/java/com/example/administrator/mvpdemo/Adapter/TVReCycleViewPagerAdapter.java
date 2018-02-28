@@ -5,16 +5,26 @@ import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.OrientationHelper;
+
+
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.FocusFinder;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 
-import com.example.administrator.mvpdemo.MyReCyclerView.CustomLayoutManager;
+import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.MyReCyclerView.HomeLayoutManager;
+import com.example.administrator.mvpdemo.event.RxBus;
+
+import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
+import com.example.administrator.mvpdemo.event.RxCodeConstants;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,6 +35,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 
@@ -55,34 +66,45 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
             Color.parseColor("#804040")
     };
 
-    private ArrayList<RectF> mItemRectFList;
-
-    private List<ArrayList<RectF>> mItemRectFLists;
+//    private ArrayList<RectF> mItemRectFList;
+//
+//    private List<ArrayList<RectF>> mItemRectFLists;
 
     private List<View> indicators = new ArrayList<>();//水平分页的指示器
-    private ArrayList<HashMap<String, Object>> datas = new ArrayList<>();//RecyclerView数据集合
+
+    //private ArrayList<HashMap<String, Object>> datas = new ArrayList<>();//RecyclerView数据集合
+
+    private List<ChannelInfo> datas = new ArrayList<>();//RecyclerView数据集合
+
     private Context context;
+
     private LinearLayout llIndicators;//水平分页的容器
 
     private SparseArray<RecyclerView> mViewSparseArray;
 
-    public void setDatas(ArrayList<HashMap<String, Object>> datas) {
-        this.datas = datas;
-    }
+//    public void setDatas(ArrayList<HashMap<String, Object>> datas) {
+//        this.datas = datas;
+//    }
 
     public void setDatas(String[] inputStrs) {
 
-        mItemRectFLists = new ArrayList<>();
+//        mItemRectFLists = new ArrayList<>();
+//
+//        for (int i=0;i<inputStrs.length;i++)
+//        {
+//            mItemRectFList = new Gson().fromJson(inputStrs[i], new TypeToken<ArrayList<RectF>>() {
+//            }.getType());
+//            mItemRectFLists.add(mItemRectFList);
+//        }
 
-        for (int i=0;i<inputStrs.length;i++)
-        {
-            mItemRectFList = new Gson().fromJson(inputStrs[i], new TypeToken<ArrayList<RectF>>() {
-            }.getType());
-            mItemRectFLists.add(mItemRectFList);
-        }
+        mViewSparseArray = new SparseArray<RecyclerView>(datas.size());
 
-        mViewSparseArray = new SparseArray<RecyclerView>(mItemRectFLists.size());
+    }
 
+    public void setDatas(List<ChannelInfo> datas)
+    {
+        this.datas = datas;
+        mViewSparseArray = new SparseArray<RecyclerView>(datas.size());
     }
 
     public List<View> getIndicators() {
@@ -105,12 +127,101 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
     private RecyclerView getView(int position)
     {
 
-        RecyclerView recyclerView = new RecyclerView(context) {};
+        RecyclerView recyclerView = new RecyclerView(context) {
+
+//            @Override
+//            public boolean dispatchTouchEvent(MotionEvent ev) {
+//                requestDisallowInterceptTouchEvent(true);
+//                return super.dispatchTouchEvent(ev);
+//            }
+//
+//            @Override
+//            public boolean onInterceptTouchEvent(MotionEvent ev) {
+//                requestDisallowInterceptTouchEvent(true);
+//                return super.onInterceptTouchEvent(ev);
+//            }
+//
+//            @Override
+//            public boolean onTouchEvent(MotionEvent event) {
+//                requestDisallowInterceptTouchEvent(true);
+//                return super.onTouchEvent(event);
+//            }
+
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent event) {
+                boolean result = super.dispatchKeyEvent(event);
+                int dx = this.getChildAt(0).getWidth();
+                View focusView = this.getFocusedChild();
+                if (focusView != null) {
+                    switch (event.getKeyCode()) {
+                        case KeyEvent.KEYCODE_DPAD_RIGHT:
+                            if (event.getAction() == KeyEvent.ACTION_UP) {
+                                return true;
+                            } else {
+                                View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
+
+                                if (rightView != null) {
+                                    rightView.requestFocusFromTouch();
+                                    return true;
+                                } else {
+                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+
+                                    if(layoutManager.isSlidingToLast())
+                                        return false;
+
+                                    this.smoothScrollBy(dx, 0);
+                                    return true;
+                                }
+                            }
+                        case KeyEvent.KEYCODE_DPAD_LEFT:
+                            View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
+
+                            if (event.getAction() == KeyEvent.ACTION_UP) {
+                                return true;
+                            } else {
+                                if (leftView != null) {
+                                    leftView.requestFocusFromTouch();
+                                    return true;
+                                } else {
+                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+                                    if(layoutManager.isSlidingToFirst())
+                                        return false;
+
+
+                                    this.smoothScrollBy(-dx, 0);
+                                    return true;
+                                }
+                            }
+                        case KeyEvent.KEYCODE_DPAD_DOWN:
+
+                            if (event.getAction() == KeyEvent.ACTION_UP) {
+                                return true;
+                            } else {
+                                if (((AdapterMetroView)focusView).isBottomEdge ) {
+                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_BOTTOMBAR,new RxBusBaseMessage());
+                                    return true;
+                                } else {
+
+                                    return false;
+                                }
+                            }
+
+                    }
+                }
+                return result;
+            }
+
+
+
+        };
+
 
         //http://blog.csdn.net/wx123ww/article/details/51567982
         recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
         //父控件和子控件之间的焦点获取的关系,意思是焦点优先级是 父亲在后代后面  不加这行会出现焦点有时丢失的问题
 
+        recyclerView.setNestedScrollingEnabled(false);
 
         recyclerView.setBackgroundColor(colors[position]);
 
@@ -119,9 +230,40 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
         //绑定VirtualLayoutManager
         //CustomLayoutManager layoutManager = new CustomLayoutManager(context);
 
-        HomeAdapter homeAdapter = new HomeAdapter(mItemRectFLists.get(position));
-        recyclerView.setLayoutManager(new HomeLayoutManager(mItemRectFLists.get(position)));
+        HomeAdapter homeAdapter = new HomeAdapter(datas.get(position));
+        recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position)));
         recyclerView.setAdapter(homeAdapter);
+
+
+        //添加滚动监听器
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                // 当不滚动时
+//                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+//                    // 判断是否滚动到底部
+//                    //得到可见视图项最底层id
+//                    int lostPos = layoutManager.findLastVisibleItemPosition();
+//                    if (lostPos == layoutManager.getItemCount() - 1) {
+//                        //Toast.makeText(ShowActivity.this, "最后：" + lostPos, Toast.LENGTH_SHORT).show();
+//                        isRecyclerViewBottom = true;
+//                    }
+//                    else
+//                        isRecyclerViewBottom = false;
+//
+//                    lostPos = layoutManager.findFirstVisibleItemPosition();
+//                    if (lostPos == 0) {
+//                        //Toast.makeText(ShowActivity.this, "最后：" + lostPos, Toast.LENGTH_SHORT).show();
+//                        isRecyclerViewTop = true;
+//                    }
+//                    else
+//                        isRecyclerViewTop = false;
+//
+//
+//                }
+//            }
+//        });
 
 
         return recyclerView;
@@ -138,8 +280,11 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 //        int count = datas.size() % 6;
 //        int divide = datas.size() / 6;
 //        return count == 0 ? divide : divide + 1;
-        if (mItemRectFLists == null) return 0;
-        return mItemRectFLists.size();
+//        if (mItemRectFLists == null) return 0;
+//        return mItemRectFLists.size();
+
+        if (datas == null) return 0;
+        return datas.size();
     }
 
     @Override
@@ -207,6 +352,9 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
         //Adapter_GridLayout.setDatas(datas);
         //Adapter_GridLayout.notifyDataSetChanged();
         container.addView(view);
+
+
+
         return view;
     }
 
@@ -215,4 +363,29 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
         container.removeView(mViewSparseArray.get(position));
     }
 
+
+
+    private View mCurrentView;
+
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        mCurrentView = (View)object;
+    }
+
+    public View getPrimaryItem() {
+        return mCurrentView;
+    }
+
+    private boolean isRecyclerViewBottom;
+    public boolean isRecyclerViewBottom()
+    {
+        return isRecyclerViewBottom;
+    }
+
+
+    private boolean isRecyclerViewTop;
+    public boolean isRecyclerViewTop()
+    {
+        return isRecyclerViewTop;
+    }
 }

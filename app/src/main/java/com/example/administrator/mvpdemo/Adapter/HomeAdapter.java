@@ -1,5 +1,6 @@
 package com.example.administrator.mvpdemo.Adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.support.v7.widget.RecyclerView;
@@ -11,12 +12,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.Model.PgcInfoList;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.ImageLoaderHelper;
+import com.example.administrator.mvpdemo.service.entity.PgcInfo;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xlg on 2017/5/17.
@@ -47,17 +54,22 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     };
 
 
+    private ChannelInfo mItem;
+
     public HomeAdapter(ArrayList<RectF> itemRectFList) {
         mItemRectFList = itemRectFList;
-
-
     }
+
+    public HomeAdapter(ChannelInfo channelInfo) {
+        mItem = channelInfo;
+    }
+
 
     @Override
     public int getItemViewType(int position) {
-        if(position == 1)
-            return 1;
-        else
+//        if(position == 1)
+//            return 1;
+//        else
             return 0;
     }
 
@@ -88,7 +100,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         });
 
 
-        return new MyViewHolder(item_view);
+        //return new MyViewHolder(item_view);
+        return new MyViewHolder(item_view,parent.getContext());
     }
 
     private void initImageCycleView(ImageCycleView imageCycleView)
@@ -108,11 +121,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         urlList.add("http://attach.bbs.miui.com/forum/201604/05/001754vp6j0vmcj49f0evc.jpg.thumb.jpg");
         urlList.add("http://d.3987.com/taiqiumein_141001/007.jpg");
         urlList.add("http://attach.bbs.miui.com/forum/201604/05/100838d2b99k6ihk32a36a.jpg.thumb.jpg");
-        imageDescList.add("小仓柚子");
-        imageDescList.add("抚媚妖娆性感美女");
-        imageDescList.add("热血沸腾 比基尼");
-        imageDescList.add(" 台球美女");
-        imageDescList.add("身材妙曼");
+        imageDescList.add("滚动图片1");
+        imageDescList.add("滚动图片2");
+        imageDescList.add("滚动图片3");
+        imageDescList.add("滚动图片4");
+        imageDescList.add("滚动图片5");
 
 
         initCarsuelView(imageCycleView,imageDescList, urlList);
@@ -135,6 +148,38 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         //CYCLE_VIEW_NORMAL  CYCLE_VIEW_THREE_SCALE   CYCLE_VIEW_ZOOM_IN   可以随意选择
 
         //initImageCycleView((ImageCycleView)item_view);
+
+        if (holder.image != null)
+        {
+            PgcInfo.DataBean.VideosBean vb;
+
+            if(mItem.Videos.get(position)!=null)
+            {
+                vb = mItem.Videos.get(position);
+            }
+            else
+            {
+                vb = new PgcInfo.DataBean.VideosBean();
+            }
+
+
+            if(vb.getVer_pic() != null)
+            {
+                if(holder.imageurl != vb.getVer_pic())
+                {
+                    holder.imageurl = vb.getVer_pic();
+                    Glide
+                        .with(holder.myContext)
+                        .load(vb.getVer_pic())
+                        .into(holder.image);
+                }
+            }
+            else
+            {
+                holder.image.setImageResource(R.drawable.testpic1);
+            }
+
+        }
     }
 
     /**初始化轮播图*/
@@ -163,19 +208,47 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mItemRectFList.size();
+        //return mItemRectFList.size();
+        return mItem.getmItemRectFList().size();
     }
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView Text;
         public ImageView image;
+
+        public String imageurl = "";
+
         public RelativeLayout itemRL;
         public ImageCycleView imageCycleView;
+
+        public Context myContext;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             // 绑定视图
+
+            //item可以获得焦点，需要设置这个属性。
+            //itemView.setFocusable(true);
+
+            image = (ImageView) itemView.findViewById(R.id.img);
+
+            imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
+            if (imageCycleView!=null)
+              initImageCycleView(imageCycleView);
+
+        }
+
+        public MyViewHolder(View itemView, Context context) {
+            super(itemView);
+            // 绑定视图
+
+            //item可以获得焦点，需要设置这个属性。
+            //itemView.setFocusable(true);
+
+            myContext = context;
+
+            image = (ImageView) itemView.findViewById(R.id.img);
 
             imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
             if (imageCycleView!=null)

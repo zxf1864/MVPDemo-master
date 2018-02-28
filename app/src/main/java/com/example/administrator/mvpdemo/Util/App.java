@@ -3,6 +3,9 @@ package com.example.administrator.mvpdemo.Util;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.Model.ChannelInfoList;
+import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
@@ -39,6 +42,11 @@ public class App extends Application {
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
 
         initImageLoader();
+
+
+
+
+        InitData();
     }
 
     // 获取ApplicationContext
@@ -58,6 +66,15 @@ public class App extends Application {
                 .build();
 
         ImageLoader.getInstance().init(config);
+    }
+
+    public void InitData()
+    {
+        for(int i=0;i< ChannelInfoList.keyList.length;i++)
+        {
+            ChannelInfo ci = new ChannelInfo(ChannelInfoList.keyList[i],ChannelInfoList.catList[i], LayoutData.GetLayoutData()[i]);
+            ChannelInfoList.getInstance().getmChannelInfos().add(ci);
+        }
     }
 
 }
