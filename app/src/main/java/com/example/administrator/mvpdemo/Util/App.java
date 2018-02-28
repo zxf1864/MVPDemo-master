@@ -72,7 +72,7 @@ public class App extends Application {
     {
         for(int i=0;i< ChannelInfoList.keyList.length;i++)
         {
-            ChannelInfo ci = new ChannelInfo(ChannelInfoList.keyList[i],ChannelInfoList.catList[i], LayoutData.GetLayoutData()[i]);
+            ChannelInfo ci = new ChannelInfo(ChannelInfoList.keyList[i],ChannelInfoList.catList[i], LayoutData.GetLayoutData()[i],LayoutData.GetLayoutType()[i]);
             ChannelInfoList.getInstance().getmChannelInfos().add(ci);
         }
     }

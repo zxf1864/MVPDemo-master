@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.Model.ItemAttribute;
 import com.example.administrator.mvpdemo.Model.PgcInfoList;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.ImageLoaderHelper;
@@ -67,9 +68,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-//        if(position == 1)
-//            return 1;
-//        else
+
+//        ItemAttribute.VideoItemType type =  mItem.ItemAttributeS.get(position).ItemType;
+//
+//        return type.ordinal();
+
+        if(position == 1)
+            return 1;
+        else
             return 0;
     }
 
@@ -92,6 +98,35 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             //item_view= new ImageCycleView(parent.getContext());
             item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
         }
+
+//        ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
+//
+//        switch (Type)
+//        {
+//            case FIRSTBLOCK:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
+//                break;
+//            case BANNER:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
+//                break;
+//            case BLOCK:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
+//                break;
+//            case NOTEXTBLOCK:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
+//                break;
+//            case TEXTBLOCK:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
+//                break;
+//            case TVBLOCK:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
+//                break;
+//            default:
+//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
+//                break;
+//
+//        }
+
 
         item_view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:layout_marginLeft="20dp"
+    android:layout_marginTop="20dp"
+
+    android:background="#ffff00"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/item_textblock_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="视频名称"/>
+
+    <TextView
+        android:id="@+id/item_textblock_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:text="排名"/>
+    <TextView
+        android:id="@+id/item_textblock_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_alignRight="@+id/item_textblock_rank"
+        android:text="得分"/>
+
+
+    <TextView
+        android:id="@+id/item_textblock_describe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="来源"/>
+
+
+</com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView>

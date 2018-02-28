@@ -17,13 +17,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:paddingTop="5dip"
-        android:paddingRight="5dip"
+        android:paddingTop="2dip"
+        android:paddingRight="2dip"
 
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/img"
-        android:layout_marginTop="5dp"
-        android:gravity="right"
+        android:layout_marginTop="3dp"
+
         android:textColor="#ffffff"
         android:text="内容标签" />
 
@@ -32,13 +32,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:paddingBottom="5dip"
-        android:paddingRight="5dip"
+        android:paddingBottom="2dip"
+        android:paddingRight="2dip"
 
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/img"
-        android:layout_marginBottom="5dp"
-        android:gravity="right"
+        android:layout_marginBottom="3dp"
+
         android:textColor="#ffffff"
         android:text="更新日期" />
 

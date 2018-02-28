@@ -59,7 +59,7 @@ public class ChannelInfo {
 
     private PgcInfo mPgcInfo;
 
-   public ChannelInfo(String key,String Catstr,String layoutstr)
+   public ChannelInfo(String key,String Catstr,String layoutstr,ItemAttribute.VideoItemType[] types)
    {
        mkey = key;
        cat = Catstr;
@@ -77,6 +77,11 @@ public class ChannelInfo {
            PgcInfo.DataBean.VideosBean vb = new PgcInfo.DataBean.VideosBean();
 
            Videos.add(vb);
+
+//           ItemAttribute ia = new ItemAttribute();
+//           ia.ItemType = types[i];
+//
+//           ItemAttributeS.add(ia);
        }
    }
 

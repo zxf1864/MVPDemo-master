@@ -210,7 +210,7 @@ public class LayoutData {
 
 
     private static ItemAttribute.VideoItemType[] mItemType4 = {
-            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.FIRSTBLOCK,
             ItemAttribute.VideoItemType.TEXTBLOCK,
             ItemAttribute.VideoItemType.TEXTBLOCK,
             ItemAttribute.VideoItemType.BLOCK,
@@ -373,7 +373,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
 
 
-    private static ItemAttribute.VideoItemType[] mItemType8 = {
+    private static ItemAttribute.VideoItemType[] mItemType7 = {
             ItemAttribute.VideoItemType.TEXTBLOCK,
             ItemAttribute.VideoItemType.TEXTBLOCK,
             ItemAttribute.VideoItemType.BLOCK,
@@ -411,7 +411,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":1900.0,\"right\":2100.0,\"top\":0.0},]";
 
 
-    private static ItemAttribute.VideoItemType[] mItemType7 = {
+    private static ItemAttribute.VideoItemType[] mItemType8 = {
             ItemAttribute.VideoItemType.BLOCK,
             ItemAttribute.VideoItemType.BLOCK,
             ItemAttribute.VideoItemType.BLOCK,
@@ -425,29 +425,63 @@ public class LayoutData {
             ItemAttribute.VideoItemType.BLOCK,
     };
 
-    private static String mRectFMsg9 = "[{\"bottom\":453.0,\"left\":50.0,\"right\":245.0,\"top\":301.0}," +
-            "{\"bottom\":301.0,\"left\":830.0,\"right\":1220.0,\"top\":49.0}," +
-            "{\"bottom\":453.0,\"left\":245.0,\"right\":830.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":830.0,\"right\":1025.0,\"top\":453.0}," +
-            "{\"bottom\":301.0,\"left\":50.0,\"right\":245.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":245.0,\"right\":830.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":1025.0,\"right\":1220.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":50.0,\"right\":245.0,\"top\":453.0}," +
-            "{\"bottom\":453.0,\"left\":830.0,\"right\":1220.0,\"top\":301.0}," +
+    private static String mRectFMsg9 = "[{\"bottom\":200.0,\"left\":0.0,\"right\":400.0,\"top\":0.0}," +
+            "{\"bottom\":400.0,\"left\":0.0,\"right\":400.0,\"top\":200.0}," +
+            "{\"bottom\":600.0,\"left\":0.0,\"right\":400.0,\"top\":400.0}," +
+            "{\"bottom\":800.0,\"left\":0.0,\"right\":400.0,\"top\":600.0}," +
 
-            "{\"bottom\":453.0,\"left\":1220.0,\"right\":1415.0,\"top\":301.0}," +
-            "{\"bottom\":301.0,\"left\":2000.0,\"right\":2390.0,\"top\":49.0}," +
-            "{\"bottom\":453.0,\"left\":1415.0,\"right\":2000.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":2000.0,\"right\":2195.0,\"top\":453.0}," +
-            "{\"bottom\":301.0,\"left\":1220.0,\"right\":1415.0,\"top\":49.0}," +
-            "{\"bottom\":805.0,\"left\":1415.0,\"right\":2000.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":2195.0,\"right\":2390.0,\"top\":453.0}," +
-            "{\"bottom\":805.0,\"left\":1220.0,\"right\":1415.0,\"top\":453.0}," +
-            "{\"bottom\":453.0,\"left\":2000.0,\"right\":2390.0,\"top\":301.0},]";
+
+            "{\"bottom\":400.0,\"left\":400.0,\"right\":1000.0,\"top\":0.0}," +
+            "{\"bottom\":600.0,\"left\":400.0,\"right\":700.0,\"top\":400.0}," +
+            "{\"bottom\":800.0,\"left\":400.0,\"right\":700.0,\"top\":600.0}," +
+            "{\"bottom\":600.0,\"left\":700.0,\"right\":1000.0,\"top\":400.0}," +
+            "{\"bottom\":800.0,\"left\":700.0,\"right\":1000.0,\"top\":600.0}," +
+
+            "{\"bottom\":400.0,\"left\":2000.0,\"right\":2400.0,\"top\":0.0}," +
+            "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
+
+            "{\"bottom\":400.0,\"left\":2400.0,\"right\":3200.0,\"top\":0.0}," +
+            "{\"bottom\":800.0,\"left\":2400.0,\"right\":3200.0,\"top\":400.0}," +
+
+
+            "{\"bottom\":400.0,\"left\":3200.0,\"right\":4000.0,\"top\":0.0}," +
+            "{\"bottom\":800.0,\"left\":3200.0,\"right\":4000.0,\"top\":400.0}," +
+
+            "{\"bottom\":400.0,\"left\":4000.0,\"right\":4400.0,\"top\":0.0}," +
+            "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
+
+            "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
+            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
+
+    private static ItemAttribute.VideoItemType[] mItemType9 = {
+            ItemAttribute.VideoItemType.BLOCK,
+            ItemAttribute.VideoItemType.BLOCK,
+            ItemAttribute.VideoItemType.BLOCK,
+            ItemAttribute.VideoItemType.BLOCK,
+
+            ItemAttribute.VideoItemType.BANNER,
+            ItemAttribute.VideoItemType.ROUNDBLOCK,
+            ItemAttribute.VideoItemType.ROUNDBLOCK,
+            ItemAttribute.VideoItemType.ROUNDBLOCK,
+            ItemAttribute.VideoItemType.ROUNDBLOCK,
+
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK,
+            ItemAttribute.VideoItemType.TVBLOCK
+    };
+
+
 
     private static String[] inputStrs = {mRectFMsg0,mRectFMsg1,mRectFMsg2,mRectFMsg3,mRectFMsg4,mRectFMsg5,mRectFMsg6,mRectFMsg7,mRectFMsg8,mRectFMsg9};
 
-    //private static  ItemAttribute.VideoItemType[][] inputTypes = {mItemType0,mItemType1,mItemType2,mItemType3,mItemType4,mItemType5,mItemType6,mItemType7};
+    private static  ItemAttribute.VideoItemType[][] inputTypes = {mItemType0,mItemType1,mItemType2,mItemType3,mItemType4,mItemType5,mItemType6,mItemType7,mItemType8,mItemType9};
 
 
     public static String[] GetLayoutData()
@@ -455,7 +489,10 @@ public class LayoutData {
         return inputStrs;
     }
 
-
+    public static ItemAttribute.VideoItemType[][] GetLayoutType()
+    {
+        return inputTypes;
+    }
 
 
 

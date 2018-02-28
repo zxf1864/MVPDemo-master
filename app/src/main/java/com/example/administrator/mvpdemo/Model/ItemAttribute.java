@@ -7,7 +7,7 @@ import retrofit2.http.PUT;
  */
 
 public class ItemAttribute {
-    public int ItemType;
+    public VideoItemType ItemType;
 
     public enum  VideoItemType
     {
