@@ -12,14 +12,32 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
 
-    <com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView
-        android:id="@+id/imagecycleview"
+    android:descendantFocusability="blocksDescendants">
+
+    <RelativeLayout
+        android:id="@+id/item_banner_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
 
-    </com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView>
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp">
+
+
+        <com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView
+            android:id="@+id/imagecycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView>
+
+
+    </RelativeLayout>
+
+
 
 
 </com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView>

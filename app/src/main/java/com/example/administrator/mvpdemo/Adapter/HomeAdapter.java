@@ -3,16 +3,20 @@ package com.example.administrator.mvpdemo.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.Model.ItemAttribute;
 import com.example.administrator.mvpdemo.Model.PgcInfoList;
@@ -69,14 +73,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     @Override
     public int getItemViewType(int position) {
 
-//        ItemAttribute.VideoItemType type =  mItem.ItemAttributeS.get(position).ItemType;
-//
-//        return type.ordinal();
+        ItemAttribute.VideoItemType type =  mItem.ItemAttributeS.get(position).ItemType;
 
-        if(position == 1)
-            return 1;
-        else
-            return 0;
+        return type.ordinal();
+
+//        if(position == 1)
+//            return 1;
+//        else
+//            return 0;
     }
 
 
@@ -89,54 +93,60 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         View item_view;
 
-        if(viewType == 0)
-        {
-            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
-        }
-        else
-        {
-            //item_view= new ImageCycleView(parent.getContext());
-            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
-        }
-
-//        ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
-//
-//        switch (Type)
+//        if(viewType == 0)
 //        {
-//            case FIRSTBLOCK:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
-//                break;
-//            case BANNER:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
-//                break;
-//            case BLOCK:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
-//                break;
-//            case NOTEXTBLOCK:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-//                break;
-//            case TEXTBLOCK:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
-//                break;
-//            case TVBLOCK:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
-//                break;
-//            default:
-//                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-//                break;
-//
+//            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
+//        }
+//        else
+//        {
+//            //item_view= new ImageCycleView(parent.getContext());
+//            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
 //        }
 
+        ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
 
-        item_view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ((AdapterMetroView)v).onClicked();
-            }
-        });
+        switch (Type)
+        {
+            case FIRSTBLOCK:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
+                break;
+            case BANNER:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
+                break;
+            case BLOCK:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
+                break;
+            case NOTEXTBLOCK:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
+                break;
+            case TEXTBLOCK:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
+                break;
+            case TVBLOCK:
+                //item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvblock, parent, false);
+                break;
+            default:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
+                break;
+
+        }
+
+
+//        item_view.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                ((AdapterMetroView)v).onClicked();
+//            }
+//        });
 
 
         //return new MyViewHolder(item_view);
-        return new MyViewHolder(item_view,parent.getContext());
+        //return new MyViewHolder(item_view,parent.getContext());
+
+        ItemAttribute ia = new ItemAttribute();
+        ia.ItemType = Type;
+
+        return new MyViewHolder(item_view,parent.getContext(),ia);
     }
 
     private void initImageCycleView(ImageCycleView imageCycleView)
@@ -184,37 +194,50 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         //initImageCycleView((ImageCycleView)item_view);
 
+        PgcInfo.DataBean.VideosBean vb;
+
+        if(mItem.Videos.get(position)!=null)
+        {
+            vb = mItem.Videos.get(position);
+        }
+        else
+        {
+            vb = new PgcInfo.DataBean.VideosBean();
+        }
+
         if (holder.image != null)
         {
-            PgcInfo.DataBean.VideosBean vb;
-
-            if(mItem.Videos.get(position)!=null)
-            {
-                vb = mItem.Videos.get(position);
-            }
-            else
-            {
-                vb = new PgcInfo.DataBean.VideosBean();
-            }
-
-
             if(vb.getVer_pic() != null)
             {
                 if(holder.imageurl != vb.getVer_pic())
                 {
                     holder.imageurl = vb.getVer_pic();
                     Glide
-                        .with(holder.myContext)
-                        .load(vb.getVer_pic())
-                        .into(holder.image);
+                            .with(holder.myContext)
+                            .load(vb.getVer_pic())
+                            .into(holder.image);
+                }
+                if (holder.refreshimage != null)
+                {
+                    holder.stopAnim();
                 }
             }
             else
             {
-                holder.image.setImageResource(R.drawable.testpic1);
+                if (holder.refreshimage != null)
+                {
+                    holder.startAnim();
+                }
+                holder.image.setImageResource(R.mipmap.default_pic);
             }
 
         }
+
+
+
+
+
+
     }
 
     /**初始化轮播图*/
@@ -252,12 +275,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public TextView Text;
         public ImageView image;
 
+        public ImageView refreshimage;
+
         public String imageurl = "";
 
         public RelativeLayout itemRL;
         public ImageCycleView imageCycleView;
 
         public Context myContext;
+
+        public ItemAttribute IA;
+
+        public Animation mRefreshAnim;
+
+        public void stopAnim() {
+            mRefreshAnim.reset();
+            refreshimage.clearAnimation();
+            refreshimage.setBackgroundResource(0);
+        }
+
+        public void startAnim() {
+            mRefreshAnim.reset();
+            refreshimage.clearAnimation();
+            refreshimage.setBackgroundResource(R.mipmap.refreshimg);
+            refreshimage.startAnimation(mRefreshAnim);
+        }
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -272,6 +314,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             if (imageCycleView!=null)
               initImageCycleView(imageCycleView);
 
+            mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
         }
 
         public MyViewHolder(View itemView, Context context) {
@@ -288,6 +331,57 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
             if (imageCycleView!=null)
                 initImageCycleView(imageCycleView);
+
+            mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
+        }
+
+        public MyViewHolder(View itemView, Context context,ItemAttribute ia) {
+            super(itemView);
+            // 绑定视图
+
+            //item可以获得焦点，需要设置这个属性。
+            //itemView.setFocusable(true);
+
+            IA = ia;
+
+            myContext = context;
+
+            mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
+
+            switch (ia.ItemType)
+            {
+                case BLOCK:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_block_rl);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_block);
+                    break;
+                case BANNER:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_banner_rl);
+                    imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
+                    if (imageCycleView!=null)
+                        initImageCycleView(imageCycleView);
+                    break;
+                case TVBLOCK:
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_tvblock);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_tvblock);
+                    break;
+                case TEXTBLOCK:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_textblock_rl);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_textblock);
+                    break;
+                case FIRSTBLOCK:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_firstblock_rl);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_firstblock);
+                    refreshimage = (ImageView) itemView.findViewById(R.id.refreshimg_item_firstblock);
+                    break;
+                case ROUNDBLOCK:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_roundblock_rl);
+                    break;
+                case NOTEXTBLOCK:
+                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_notextblock_rl);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_notextblock);
+                    break;
+            }
+
 
         }
     }

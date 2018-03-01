@@ -45,6 +45,10 @@ public class ChannelInfo {
 
     }
 
+    public List<ItemAttribute> getItemAttributeS() {
+        return ItemAttributeS;
+    }
+
     public List<ItemAttribute> ItemAttributeS;
 
     public boolean isDataOver = false;
@@ -78,10 +82,10 @@ public class ChannelInfo {
 
            Videos.add(vb);
 
-//           ItemAttribute ia = new ItemAttribute();
-//           ia.ItemType = types[i];
-//
-//           ItemAttributeS.add(ia);
+           ItemAttribute ia = new ItemAttribute();
+           ia.ItemType = types[i];
+
+           ItemAttributeS.add(ia);
        }
    }
 

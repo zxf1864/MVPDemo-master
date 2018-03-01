@@ -51,6 +51,60 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 
     }
 
+//    private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
+//        if (state.isPreLayout()) {
+//            return;
+//        }
+//        //更新recycleview的控件位置
+//        updateLayoutState();
+//        mTotalW = 0;
+//        int itemCount = state.getItemCount();
+//        for (int i = 0; i < itemCount; i++) {
+//            // 得到当前position下的视图显示区域
+//            RectF bounds = new RectF(mItemRectFList.get(i));
+//            //需要根据你的实际情况来设置边界值
+//            if (bounds.right > mTotalW) {
+//                mTotalW = (int) bounds.right;
+//            }
+//
+//            //注：这边事先获取item的位置来判断是否要显示在屏幕上后再来获取itemView的对象
+//            if (!mBooleanMap.get(i) && RectF.intersects(bounds, mLayoutState.containerRect)) {
+//                // 通过recycler得到该位置上的View，Recycler负责是否使用旧的还是生成新的View。
+//                View view = recycler.getViewForPosition(i);
+//
+//                bounds.offset(mLayoutState.offsetX, mLayoutState.offsetY);
+//                // 然后我们将得到的View添加到Recycler中
+//                addView(view);
+//                //标志当前item已在界面上
+//                mBooleanMap.set(i);
+//                // 然后测量View带Margin的的尺寸
+//                measureChildWithMargins(view, 0, 0);
+//
+//                try {
+//                    if(bounds.bottom == 800)
+//                        ((AdapterMetroView) view).isBottomEdge = true;
+//
+//                    if(bounds.top == 0)
+//                        ((AdapterMetroView) view).isTopEdge = true;
+//
+////                    if(bounds.left == 0)
+////                        ((AdapterMetroView) view).isLeftEdge = true;
+////
+////                    if(bounds.right == getWidth())
+////                        ((AdapterMetroView) view).isRightEdge = true;
+//
+//                } catch (Exception ex) {
+//                }
+//
+//
+//                // 然后layout带Margin的View，将View放置到对应的位置
+//                layoutDecoratedWithMargins(view, (int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
+//            }
+//        }
+//        //预留50的边界
+//        mTotalW += 50;
+//    }
+
 
 //    private int[] mMeasuredDimension = new int[2];
 //
@@ -183,9 +237,6 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                 // 然后测量View带Margin的的尺寸
                 measureChildWithMargins(view, 0, 0);
 
-                int w = getDecoratedMeasurementHorizontal(view);
-                int h = getDecoratedMeasurementVertical(view);
-
 
                 ViewGroup.LayoutParams params = view.getLayoutParams();
                 //获取当前控件的布局对象
@@ -194,8 +245,6 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 
                 view.setLayoutParams(params);//将设置好的布局参数应用到控件中
 
-                w = getDecoratedMeasurementHorizontal(view);
-                h = getDecoratedMeasurementVertical(view);
 
                 try {
                     ((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
@@ -215,9 +264,6 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                 } catch (Exception ex) {
                 }
 
-
-                w = getDecoratedMeasurementHorizontal(view);
-                h = getDecoratedMeasurementVertical(view);
 
                 final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
                 lp.height -= 39;

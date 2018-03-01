@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView
     xmlns:android="http://schemas.android.com/apk/res/android"
 
@@ -13,44 +12,38 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-
-    android:descendantFocusability="blocksDescendants">
+    android:focusableInTouchMode="true">
 
     <RelativeLayout
-        android:id="@+id/item_block_rl"
-
+        android:id="@+id/item_roundblock_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         android:layout_marginLeft="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginRight="2dp"
-        android:layout_marginBottom="2dp">
+        android:layout_marginBottom="2dp"
+
+        android:descendantFocusability="blocksDescendants">
 
         <ImageView
-            android:id="@+id/img_item_block"
-            android:layout_width="match_parent"
+            android:id="@+id/img_item_roundblock"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:layout_centerInParent="true"/>
-
-
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"/>
 
         <TextView
-            android:id="@+id/item_block_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="#FFFFFF"
-            android:text="栏目名称"/>
+            />
+
+
+
 
     </RelativeLayout>
 
 
 
 
-
 </com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView>
-
-

@@ -16,7 +16,7 @@ public class LayoutData {
             "{\"bottom\":400.0,\"left\":900.0,\"right\":1500.0,\"top\":0.0}," +
             "{\"bottom\":800.0,\"left\":900.0,\"right\":1500.0,\"top\":400.0}," +
             "{\"bottom\":400.0,\"left\":1500.0,\"right\":2100.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":1500.0,\"right\":2100.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":1500.0,\"right\":2100.0,\"top\":400.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType0 = {
                                                                     ItemAttribute.VideoItemType.FIRSTBLOCK,
@@ -54,7 +54,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
 
             "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
+            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType1 = {
             ItemAttribute.VideoItemType.BANNER,
@@ -105,7 +105,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
 
             "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
+            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType2 = {
             ItemAttribute.VideoItemType.TVBLOCK,
@@ -157,7 +157,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":3200.0,\"right\":3700.0,\"top\":450.0}," +
 
             "{\"bottom\":450.0,\"left\":3700.0,\"right\":4200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0},]";
+            "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType3 = {
             ItemAttribute.VideoItemType.TVBLOCK,
@@ -206,7 +206,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":2000.0,\"right\":2400.0,\"top\":400.0}," +
 
             "{\"bottom\":400.0,\"left\":2400.0,\"right\":2800.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":2400.0,\"right\":2800.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":2400.0,\"right\":2800.0,\"top\":400.0}]";
 
 
     private static ItemAttribute.VideoItemType[] mItemType4 = {
@@ -259,7 +259,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
 
             "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType5 = {
             ItemAttribute.VideoItemType.TEXTBLOCK,
@@ -312,7 +312,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
 
             "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType6 = {
             ItemAttribute.VideoItemType.TEXTBLOCK,
@@ -370,7 +370,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
 
             "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0}]";
 
 
     private static ItemAttribute.VideoItemType[] mItemType7 = {
@@ -408,7 +408,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":1500.0,\"right\":1700.0,\"top\":0.0}," +
             "{\"bottom\":800.0,\"left\":1700.0,\"right\":1900.0,\"top\":0.0}," +
 
-            "{\"bottom\":800.0,\"left\":1900.0,\"right\":2100.0,\"top\":0.0},]";
+            "{\"bottom\":800.0,\"left\":1900.0,\"right\":2100.0,\"top\":0.0}]";
 
 
     private static ItemAttribute.VideoItemType[] mItemType8 = {
@@ -451,7 +451,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":4000.0,\"right\":4400.0,\"top\":400.0}," +
 
             "{\"bottom\":400.0,\"left\":4400.0,\"right\":5200.0,\"top\":0.0}," +
-            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0},]";
+            "{\"bottom\":800.0,\"left\":4400.0,\"right\":5200.0,\"top\":400.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType9 = {
             ItemAttribute.VideoItemType.BLOCK,

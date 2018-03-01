@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolBar);
 
-        setAntiAlias();
+        //setAntiAlias();
 
         StatusBarUtils.setWindowStatusBarColor(this, Color.BLACK);
 

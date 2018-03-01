@@ -167,27 +167,27 @@ public class AdapterMetroView extends RelativeLayout {
 //    }
 
 
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (hasFocus() && mDrawable != null) {
-            super.getDrawingRect(mRect);
-            mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
-            //mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
-            mDrawable.setBounds(mBound);
-            canvas.save();
-            mDrawable.draw(canvas);
-            canvas.restore();
-            if (isRefresh) {
-                mStartHandler.sendEmptyMessageDelayed(refresh, 10);
-            }
-        }
-        super.onDraw(canvas);
-    }
+//    @Override
+//    public void draw(Canvas canvas) {
+//        super.draw(canvas);
+//    }
+//
+//    @Override
+//    protected void onDraw(Canvas canvas) {
+//        if (hasFocus() && mDrawable != null) {
+//            super.getDrawingRect(mRect);
+//            mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
+//            //mBound.set(-leftShadowWidth + mRect.left, -topShadowWidth + mRect.top, rightShadowWidth + mRect.right, bottomShadowWidth + mRect.bottom);
+//            mDrawable.setBounds(mBound);
+//            canvas.save();
+//            mDrawable.draw(canvas);
+//            canvas.restore();
+//            if (isRefresh) {
+//                mStartHandler.sendEmptyMessageDelayed(refresh, 10);
+//            }
+//        }
+//        super.onDraw(canvas);
+//    }
 
     @Override
     protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
@@ -226,11 +226,14 @@ public class AdapterMetroView extends RelativeLayout {
                 });
             }
 
+            this.setBackground(mDrawable);
 
         } else {
             if (hasAnim) {
                 scaleAnimation = AnimationUtil.startScaleToSmallAnimation(this, Constants.SCALE_RATE, null);
             }
+
+            this.setBackgroundResource(0);
         }
     }
 
@@ -257,6 +260,8 @@ public class AdapterMetroView extends RelativeLayout {
             public void onAnimationCancel(Animator arg0) {
             }
         });
+
+        this.setBackground(mDrawable);
     }
 
 
