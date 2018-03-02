@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/itemRL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +8,9 @@
     android:layout_marginLeft="20dp"
     android:layout_marginTop="20dp"
 
-    android:background="#ffff00"
+    android:background="@drawable/item_selector"
+    android:padding="@dimen/dp_5"
+
     android:clipChildren="false"
     android:clipToPadding="false"
     android:focusable="true"

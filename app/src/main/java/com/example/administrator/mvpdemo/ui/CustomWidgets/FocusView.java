@@ -3,6 +3,7 @@ package com.example.administrator.mvpdemo.ui.CustomWidgets;
 import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
@@ -30,6 +31,35 @@ public class FocusView extends RelativeLayout {
 
     }
 
+    public boolean isTopEdge =false;
+    public boolean isBottomEdge = false;
+    public boolean isLeftEdge = false;
+    public boolean isRightEdge = false;
 
+
+    public int itemIndex;
+
+    public RectF bounds = new RectF();
+
+
+    /**
+     * 检测是否被遮住显示不全
+     * @return
+     */
+    public boolean isCover() {
+        boolean cover = false;
+        Rect rect = new Rect();
+        cover = getGlobalVisibleRect(rect);
+
+        int w = getMeasuredWidth();
+        int h = getMeasuredHeight();
+
+        if (cover) {
+            if (rect.width() + 1 >= w&& rect.height() + 1 >= h) {
+                return !cover;
+            }
+        }
+        return true;
+    }
 
 }

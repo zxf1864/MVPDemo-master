@@ -30,6 +30,25 @@ public class ChannelInfo {
 
     private String mlayoutstr;
 
+
+    public float leftbound = 0.0f;
+    public float rightbound ;
+    public float topbound  = 0.0f;
+    public float bottombound = 800.0f;
+
+    private float findright()
+    {
+       float max =0;
+       for(int i = 0; i <mItemRectFList.size();i++)
+       {
+           if (mItemRectFList.get(i).right > max)
+               max = mItemRectFList.get(i).right;
+       }
+       return max;
+    }
+
+
+
     public ArrayList<RectF> getmItemRectFList() {
         return mItemRectFList;
     }
@@ -87,6 +106,8 @@ public class ChannelInfo {
 
            ItemAttributeS.add(ia);
        }
+
+       rightbound = findright();
    }
 
 }

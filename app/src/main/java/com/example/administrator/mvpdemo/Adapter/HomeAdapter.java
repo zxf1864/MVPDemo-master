@@ -1,5 +1,7 @@
 package com.example.administrator.mvpdemo.Adapter;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
@@ -17,13 +19,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.example.administrator.mvpdemo.Bean.BannerBean;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.Model.ChannelInfoList;
 import com.example.administrator.mvpdemo.Model.ItemAttribute;
 import com.example.administrator.mvpdemo.Model.PgcInfoList;
 import com.example.administrator.mvpdemo.R;
+import com.example.administrator.mvpdemo.Util.AnimationUtil;
+import com.example.administrator.mvpdemo.Util.Constants;
 import com.example.administrator.mvpdemo.Util.ImageLoaderHelper;
 import com.example.administrator.mvpdemo.service.entity.PgcInfo;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
 import java.util.ArrayList;
@@ -135,9 +143,107 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
 //        item_view.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
-//                ((AdapterMetroView)v).onClicked();
+//               if (v.hasFocus())
+//               {
+//                   AnimatorSet scaleAnimation = AnimationUtil.startScaleToBigAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+//
+//                       @Override
+//                       public void onAnimationStart(Animator arg0) {
+//
+//                       }
+//
+//                       @Override
+//                       public void onAnimationRepeat(Animator arg0) {
+//                       }
+//
+//                       @Override
+//                       public void onAnimationEnd(Animator arg0) {
+//                           item_view.getRootView().invalidate();
+//                       }
+//
+//                       @Override
+//                       public void onAnimationCancel(Animator arg0) {
+//                       }
+//                   });
+//               }
+//               else
+//               {
+//                   AnimatorSet scaleAnimation = AnimationUtil.startScaleToSmallAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+//
+//                       @Override
+//                       public void onAnimationStart(Animator arg0) {
+//
+//                       }
+//
+//                       @Override
+//                       public void onAnimationRepeat(Animator arg0) {
+//                       }
+//
+//                       @Override
+//                       public void onAnimationEnd(Animator arg0) {
+//                           item_view.getRootView().invalidate();
+//                       }
+//
+//                       @Override
+//                       public void onAnimationCancel(Animator arg0) {
+//                       }
+//                   });
+//               }
 //            }
 //        });
+
+        item_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                {
+                    AnimatorSet scaleAnimation = AnimationUtil.startScaleToBigAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+
+                        @Override
+                        public void onAnimationStart(Animator arg0) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator arg0) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator arg0) {
+                            item_view.getRootView().invalidate();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator arg0) {
+                        }
+                    });
+                }
+                else
+                {
+                    AnimatorSet scaleAnimation = AnimationUtil.startScaleToSmallAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+
+                        @Override
+                        public void onAnimationStart(Animator arg0) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator arg0) {
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator arg0) {
+                            item_view.getRootView().invalidate();
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator arg0) {
+                        }
+                    });
+                }
+
+            }
+        });
 
 
         //return new MyViewHolder(item_view);
@@ -176,6 +282,29 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         initCarsuelView(imageCycleView,imageDescList, urlList);
     }
 
+    private void initBannerView(BannerM imageCycleView)
+    {
+        if(imageCycleView == null)
+            return;
+
+
+        List<BannerBean> bannerList = new ArrayList<>(4);
+        BannerBean banner1 = new BannerBean("测试图片1", "http://attach.bbs.miui.com/forum/month_1012/101203122706c89249c8f58fcc.jpg", "");
+        BannerBean banner2 = new BannerBean("测试图片2", "http://bbsdown10.cnmo.com/attachments/201308/06/091441rn5ww131m0gj55r0.jpg", "");
+        BannerBean banner3 = new BannerBean("测试图片3", "http://attach.bbs.miui.com/forum/201604/05/001754vp6j0vmcj49f0evc.jpg.thumb.jpg", "");
+        BannerBean banner4 = new BannerBean("测试图片4", "http://d.3987.com/taiqiumein_141001/007.jpg", "");
+        BannerBean banner5 = new BannerBean("测试图片5", "http://attach.bbs.miui.com/forum/201604/05/100838d2b99k6ihk32a36a.jpg.thumb.jpg", "");
+        bannerList.add(banner1);
+        bannerList.add(banner2);
+        bannerList.add(banner3);
+        bannerList.add(banner4);
+        bannerList.add(banner5);
+
+        imageCycleView.setBannerBeanList(bannerList).show();
+
+
+    }
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 //        holder.Text.setText("1111");
@@ -193,6 +322,28 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         //CYCLE_VIEW_NORMAL  CYCLE_VIEW_THREE_SCALE   CYCLE_VIEW_ZOOM_IN   可以随意选择
 
         //initImageCycleView((ImageCycleView)item_view);
+
+        try {
+            //((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
+            ((FocusView) holder.itemView).isBottomEdge = false;
+            ((FocusView) holder.itemView).isTopEdge = false;
+            ((FocusView) holder.itemView).isLeftEdge = false;
+            ((FocusView) holder.itemView).isRightEdge = false;
+
+            if(mItem.getmItemRectFList().get(position).bottom == mItem.bottombound)
+                ((FocusView) holder.itemView).isBottomEdge = true;
+
+            if(mItem.getmItemRectFList().get(position).top == mItem.topbound)
+                ((FocusView) holder.itemView).isTopEdge = true;
+
+            if(mItem.getmItemRectFList().get(position).left == mItem.leftbound)
+                ((FocusView) holder.itemView).isLeftEdge = true;
+
+            if(mItem.getmItemRectFList().get(position).right == mItem.rightbound)
+                ((FocusView) holder.itemView).isRightEdge = true;
+
+        } catch (Exception ex) {
+        }
 
         PgcInfo.DataBean.VideosBean vb;
 
@@ -280,7 +431,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public String imageurl = "";
 
         public RelativeLayout itemRL;
-        public ImageCycleView imageCycleView;
+        //public ImageCycleView imageCycleView;
+
+        public BannerM imageCycleView;
 
         public Context myContext;
 
@@ -310,9 +463,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             image = (ImageView) itemView.findViewById(R.id.img);
 
-            imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
+            imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
             if (imageCycleView!=null)
-              initImageCycleView(imageCycleView);
+                initBannerView(imageCycleView);
 
             mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
         }
@@ -328,9 +481,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             image = (ImageView) itemView.findViewById(R.id.img);
 
-            imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
+            imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
             if (imageCycleView!=null)
-                initImageCycleView(imageCycleView);
+                initBannerView(imageCycleView);
 
             mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
         }
@@ -351,33 +504,33 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             switch (ia.ItemType)
             {
                 case BLOCK:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_block_rl);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_block_rl);
                     image = (ImageView) itemView.findViewById(R.id.img_item_block);
                     break;
                 case BANNER:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_banner_rl);
-                    imageCycleView= (ImageCycleView) itemView.findViewById(R.id.imagecycleview);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_banner_rl);
+                    imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
                     if (imageCycleView!=null)
-                        initImageCycleView(imageCycleView);
+                        initBannerView(imageCycleView);
                     break;
                 case TVBLOCK:
                     //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_tvblock);
                     image = (ImageView) itemView.findViewById(R.id.img_item_tvblock);
                     break;
                 case TEXTBLOCK:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_textblock_rl);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_textblock_rl);
                     image = (ImageView) itemView.findViewById(R.id.img_item_textblock);
                     break;
                 case FIRSTBLOCK:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_firstblock_rl);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_firstblock_rl);
                     image = (ImageView) itemView.findViewById(R.id.img_item_firstblock);
                     refreshimage = (ImageView) itemView.findViewById(R.id.refreshimg_item_firstblock);
                     break;
                 case ROUNDBLOCK:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_roundblock_rl);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_roundblock_rl);
                     break;
                 case NOTEXTBLOCK:
-                    itemRL = (RelativeLayout) itemView.findViewById(R.id.item_notextblock_rl);
+                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_notextblock_rl);
                     image = (ImageView) itemView.findViewById(R.id.img_item_notextblock);
                     break;
             }

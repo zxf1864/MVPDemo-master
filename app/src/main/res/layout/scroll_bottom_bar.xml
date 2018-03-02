@@ -7,8 +7,7 @@
     android:layout_height="60dp"
     android:layout_alignParentBottom="true"
     android:background= "#000000"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusable="false">
 
     <LinearLayout
         android:id="@+id/layout_scroll_title"

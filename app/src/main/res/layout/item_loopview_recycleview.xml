@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView
+<com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView
     xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
@@ -8,7 +8,10 @@
     android:layout_marginLeft="20dp"
     android:layout_marginTop="20dp"
 
-    android:background="#ffff00"
+    android:clickable="true"
+    android:background="@drawable/item_selector"
+    android:padding="@dimen/dp_5"
+
     android:clipChildren="false"
     android:clipToPadding="false"
     android:focusable="true"
@@ -16,28 +19,17 @@
 
     android:descendantFocusability="blocksDescendants">
 
-    <RelativeLayout
-        android:id="@+id/item_banner_rl"
+    <com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM
+        android:id="@+id/banner_itembanner"
+        android:clickable="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent">
 
-        android:layout_marginLeft="2dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginBottom="2dp">
-
-
-        <com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView
-            android:id="@+id/imagecycleview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView>
-
-
-    </RelativeLayout>
+    </com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM>
 
 
 
 
-</com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView>
+
+
+</com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView>

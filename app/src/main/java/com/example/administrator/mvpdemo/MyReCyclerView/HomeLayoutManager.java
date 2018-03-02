@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
 import java.util.ArrayList;
@@ -29,6 +30,8 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
     //用来判断是否到边界了
     private int mTotalW;
 
+    private ChannelInfo mChannelInfo;
+
     //主要用来标志item是否已在当前界面上
     private final HiveBucket mBooleanMap = new HiveBucket();
 
@@ -39,6 +42,7 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
     }
 
     public HomeLayoutManager(ChannelInfo channelInfo) {
+        mChannelInfo = channelInfo;
         mItemRectFList = channelInfo.getmItemRectFList();
         init();
         //this.setAutoMeasureEnabled(true);
@@ -208,6 +212,78 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
     }
 
 
+//    private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
+//        if (state.isPreLayout()) {
+//            return;
+//        }
+//        //更新recycleview的控件位置
+//        updateLayoutState();
+//        mTotalW = 0;
+//        int itemCount = state.getItemCount();
+//        for (int i = 0; i < itemCount; i++) {
+//            // 得到当前position下的视图显示区域
+//            RectF bounds = new RectF(mItemRectFList.get(i));
+//            //需要根据你的实际情况来设置边界值
+//            if (bounds.right > mTotalW) {
+//                mTotalW = (int) bounds.right;
+//            }
+//
+//            //注：这边事先获取item的位置来判断是否要显示在屏幕上后再来获取itemView的对象
+//            if (!mBooleanMap.get(i) && RectF.intersects(bounds, mLayoutState.containerRect)) {
+//                // 通过recycler得到该位置上的View，Recycler负责是否使用旧的还是生成新的View。
+//                View view = recycler.getViewForPosition(i);
+//
+//                bounds.offset(mLayoutState.offsetX, mLayoutState.offsetY);
+//                // 然后我们将得到的View添加到Recycler中
+//                addView(view);
+//                //标志当前item已在界面上
+//                mBooleanMap.set(i);
+//                // 然后测量View带Margin的的尺寸
+//                measureChildWithMargins(view, 0, 0);
+//
+//
+//                ViewGroup.LayoutParams params = view.getLayoutParams();
+//                //获取当前控件的布局对象
+//                params.height = (int) bounds.height();//设置当前控件布局的高度
+//                params.width = (int) bounds.width();
+//
+//                view.setLayoutParams(params);//将设置好的布局参数应用到控件中
+//
+//
+//                try {
+//                    ((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
+//
+//                    if(bounds.bottom == 800)
+//                        ((AdapterMetroView) view).isBottomEdge = true;
+//
+//                    if(bounds.top == 0)
+//                        ((AdapterMetroView) view).isTopEdge = true;
+//
+////                    if(bounds.left == 0)
+////                        ((AdapterMetroView) view).isLeftEdge = true;
+////
+////                    if(bounds.right == getWidth())
+////                        ((AdapterMetroView) view).isRightEdge = true;
+//
+//                } catch (Exception ex) {
+//                }
+//
+//
+//                final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
+//                lp.height -= 39;
+//                lp.width -= 39;
+//                view.setLayoutParams(lp);//将设置好的布局参数应用到控件中
+//
+//
+//
+//                // 然后layout带Margin的View，将View放置到对应的位置
+//                layoutDecoratedWithMargins(view, (int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
+//            }
+//        }
+//        //预留50的边界
+//        mTotalW += 50;
+//    }
+
     private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (state.isPreLayout()) {
             return;
@@ -237,38 +313,41 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                 // 然后测量View带Margin的的尺寸
                 measureChildWithMargins(view, 0, 0);
 
-
                 ViewGroup.LayoutParams params = view.getLayoutParams();
                 //获取当前控件的布局对象
-                params.height = (int) bounds.height();//设置当前控件布局的高度
-                params.width = (int) bounds.width();
+                params.height = (int) bounds.height() -39;//设置当前控件布局的高度
+                params.width = (int) bounds.width() -39;
 
                 view.setLayoutParams(params);//将设置好的布局参数应用到控件中
 
-
                 try {
-                    ((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
+                    //((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
 
-                    if(bounds.bottom == 800)
-                        ((AdapterMetroView) view).isBottomEdge = true;
+                    if(view instanceof FocusView)
+                    {
+                        ((FocusView) view).bounds = bounds;
+                        ((FocusView) view).itemIndex = i;
+                        ((FocusView) view).isBottomEdge = false;
+                        ((FocusView) view).isTopEdge = false;
+                        ((FocusView) view).isLeftEdge = false;
+                        ((FocusView) view).isRightEdge = false;
+                    }
 
-                    if(bounds.top == 0)
-                        ((AdapterMetroView) view).isTopEdge = true;
+                    if(mItemRectFList.get(i).bottom == mChannelInfo.bottombound)
+                        ((FocusView) view).isBottomEdge = true;
 
-//                    if(bounds.left == 0)
-//                        ((AdapterMetroView) view).isLeftEdge = true;
-//
-//                    if(bounds.right == getWidth())
-//                        ((AdapterMetroView) view).isRightEdge = true;
+                    if(mItemRectFList.get(i).top == mChannelInfo.topbound)
+                        ((FocusView) view).isTopEdge = true;
+
+                    if(mItemRectFList.get(i).left == mChannelInfo.leftbound)
+                        ((FocusView) view).isLeftEdge = true;
+
+                    if(mItemRectFList.get(i).right == mChannelInfo.rightbound)
+                        ((FocusView) view).isRightEdge = true;
+
 
                 } catch (Exception ex) {
                 }
-
-
-                final RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) view.getLayoutParams();
-                lp.height -= 39;
-                lp.width -= 39;
-                view.setLayoutParams(lp);//将设置好的布局参数应用到控件中
 
 
 

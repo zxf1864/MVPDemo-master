@@ -28,12 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.administrator.mvpdemo.Adapter.HomeAdapter;
 import com.example.administrator.mvpdemo.Adapter.MyItemClickListener;
 
 import com.example.administrator.mvpdemo.Adapter.TVReCycleViewPagerAdapter;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.Model.ChannelInfoList;
 import com.example.administrator.mvpdemo.Model.PgcList;
+import com.example.administrator.mvpdemo.MyReCyclerView.HomeLayoutManager;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.StatusBarUtils;
 import com.example.administrator.mvpdemo.base.BaseActivity;
@@ -51,6 +53,7 @@ import com.example.administrator.mvpdemo.service.view.ITestView;
 
 import com.example.administrator.mvpdemo.ui.CustomWidgets.BadgeView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 
 
@@ -64,12 +67,6 @@ import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity implements ITestView,MyItemClickListener {
-
-
-    @BindView(R.id.resulttext)
-    TextView etResulttext;
-    @BindView(R.id.button)
-    Button etRequest;
 
 //    @BindView(R.id.myRecyclerView)
 //    RecyclerView mRecyclerView;
@@ -150,7 +147,9 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
 
-                        rc.getAdapter().notifyDataSetChanged();
+                        //rc.getAdapter().notifyDataSetChanged();
+
+                        rc.getAdapter().notifyItemRangeChanged(0,20);
 
 
                     }
@@ -170,8 +169,8 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                             mPgcPresenter.getPgcInfo(Integer.parseInt(ci.getMkey()), "370f37af1847ee3308e77f86629f3955", 1, 20, Integer.parseInt(ci.getCat()), 1);
                         }
 
-                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter) mViewPager.getAdapter()).getPrimaryItem();
-                        rc.getAdapter().notifyDataSetChanged();
+//                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter) mViewPager.getAdapter()).getPrimaryItem();
+//                        rc.getAdapter().notifyDataSetChanged();
 
 
                     }
@@ -196,15 +195,82 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                         }
 
 
-                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
-
-                        rc.getAdapter().notifyDataSetChanged();
+//                        RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
+//
+//                        rc.getAdapter().notifyDataSetChanged();
 
 
                     }
                 });
 
+
+        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_LEFT, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+                        if (rxBusBaseMessage.getCode()==0)
+                          return;
+
+                        mViewPager.setCurrentItem(rxBusBaseMessage.getCode()-1);
+
+                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+
+                        RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
+
+                        HomeLayoutManager l = (HomeLayoutManager)rc.getLayoutManager();
+
+                        for (int i =0;i<l.getChildCount();i++)
+                        {
+                            l.getChildAt(i).clearFocus();
+                        }
+
+                        for (int i =0;i<l.getChildCount();i++)
+                        {
+                            if(((FocusView)l.getChildAt(i)).isRightEdge)
+                            {
+                                l.getChildAt(i).requestFocus();
+                                break;
+                            }
+                        }
+                    }
+                });
+
+        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_RIGHT, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+                        if (rxBusBaseMessage.getCode()== ChannelInfoList.getInstance().getmChannelInfos().size() - 1)
+                            return;
+
+                        mViewPager.setCurrentItem(rxBusBaseMessage.getCode() + 1);
+
+                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+
+                        RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
+
+                        for (int i =0;i<rc.getLayoutManager().getChildCount();i++)
+                        {
+                            rc.getLayoutManager().getChildAt(i).clearFocus();
+                        }
+
+                        for (int i =0;i<rc.getChildCount();i++)
+                        {
+                            if(((FocusView)rc.getLayoutManager().getChildAt(i)).isLeftEdge)
+                            {
+                                rc.getLayoutManager().getChildAt(i).requestFocus();
+                                break;
+                            }
+                        }
+                    }
+                });
+
+
     }
+
 
     private TextView ChangeChannel(int position)
     {
@@ -332,14 +398,15 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
             });
 
+            mViewPager.setCurrentItem(1);
+            mViewPager.setCurrentItem(0);
+
 
         }
         catch (Exception ex)
         {
             Log.d("ViewPager",ex.toString());
         }
-
-
 
     }
 
@@ -591,7 +658,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     @Override
     public void onSuccess(Pgc mPgc)
     {
-        etResulttext.setText(mPgc.toString());
+
     }
     @Override
     public void onError(String result) {
@@ -599,14 +666,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     }
 
 
-    @OnClick({R.id.button})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button:
-                mPgcPresenter.getPgc(31, "370f37af1847ee3308e77f86629f3955");
-                break;
-        }
-    }
+
 
 
     /**

@@ -2,6 +2,7 @@ package com.example.administrator.mvpdemo.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -25,6 +26,7 @@ import com.example.administrator.mvpdemo.event.RxBus;
 import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
 import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -66,13 +68,9 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
             Color.parseColor("#804040")
     };
 
-//    private ArrayList<RectF> mItemRectFList;
-//
-//    private List<ArrayList<RectF>> mItemRectFLists;
 
     private List<View> indicators = new ArrayList<>();//水平分页的指示器
 
-    //private ArrayList<HashMap<String, Object>> datas = new ArrayList<>();//RecyclerView数据集合
 
     private List<ChannelInfo> datas = new ArrayList<>();//RecyclerView数据集合
 
@@ -124,6 +122,8 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
     }
 
+
+
     private RecyclerView getView(int position)
     {
 
@@ -159,46 +159,141 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                             if (event.getAction() == KeyEvent.ACTION_UP) {
                                 return true;
                             } else {
-                                View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
+                                if (focusView instanceof FocusView)
+                                {
+                                    if(((FocusView) focusView).isRightEdge)
+                                    {
+                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
+                                        if (rightView != null) {
+                                            rightView.requestFocusFromTouch();
 
-                                if (rightView != null) {
-                                    rightView.requestFocusFromTouch();
-                                    return true;
-                                } else {
-                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+                                            if(rightView instanceof FocusView)
+                                            {
+                                                if(((FocusView) rightView).isCover())
+                                                    this.smoothScrollBy(dx + 400, 0);
+                                            }
 
-                                    if(layoutManager.isSlidingToLast())
-                                        return false;
+                                            return true;
+                                        }
+                                        else
+                                        {
+                                            //HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
 
-                                    this.smoothScrollBy(dx, 0);
-                                    return true;
+//                                            if(layoutManager.isSlidingToLast())
+//                                            {
+//                                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
+//                                                //return true;
+//                                            }
+
+                                            this.smoothScrollBy(dx + 400, 0);
+                                            return true;
+                                        }
+
+                                    }
                                 }
+
+
+
+//                                View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
+//
+//                                if (rightView != null) {
+//                                    rightView.requestFocusFromTouch();
+//
+//                                    if(rightView instanceof FocusView)
+//                                    {
+//                                        if(((FocusView) rightView).isCover())
+//                                            this.smoothScrollBy(dx + 400, 0);
+//                                    }
+//
+//                                    return true;
+//                                } else {
+//                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+//
+//                                    if(layoutManager.isSlidingToLast())
+//                                    {
+//                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
+//                                        //return true;
+//                                    }
+//
+//                                    //this.smoothScrollBy(dx + 400, 0);
+//                                    return true;
+//                                }
+
+
                             }
                         case KeyEvent.KEYCODE_DPAD_LEFT:
-                            View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
-
                             if (event.getAction() == KeyEvent.ACTION_UP) {
                                 return true;
                             } else {
-                                if (leftView != null) {
-                                    leftView.requestFocusFromTouch();
-                                    return true;
-                                } else {
-                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
-                                    if(layoutManager.isSlidingToFirst())
-                                        return false;
+                                if (focusView instanceof FocusView)
+                                {
+                                    if(((FocusView) focusView).isLeftEdge)
+                                    {
+                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
+                                        if (leftView != null) {
+                                            leftView.requestFocusFromTouch();
 
+                                            if(leftView instanceof FocusView)
+                                            {
+                                                if(((FocusView) leftView).isCover())
+                                                    this.smoothScrollBy(-dx - 400, 0);
+                                            }
 
-                                    this.smoothScrollBy(-dx, 0);
-                                    return true;
+                                            return true;
+                                        } else {
+//                                            HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+//                                            if(layoutManager.isSlidingToFirst())
+//                                            {
+//                                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
+//                                                //return true;
+//                                            }
+
+                                            this.smoothScrollBy(-dx - 400, 0);
+                                            return true;
+                                        }
+                                    }
+
                                 }
+
+//                                if (leftView != null) {
+//                                    leftView.requestFocusFromTouch();
+//
+//                                    if(leftView instanceof FocusView)
+//                                    {
+//                                        if(((FocusView) leftView).isCover())
+//                                            this.smoothScrollBy(-dx - 400, 0);
+//                                    }
+//
+//                                    return true;
+//                                } else {
+//                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
+//                                    if(layoutManager.isSlidingToFirst())
+//                                    {
+//                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
+//                                        //return true;
+//                                    }
+//
+//
+//                                    //this.smoothScrollBy(-dx - 400, 0);
+//                                    return true;
+//                                }
                             }
                         case KeyEvent.KEYCODE_DPAD_DOWN:
 
                             if (event.getAction() == KeyEvent.ACTION_UP) {
                                 return true;
                             } else {
-                                if (((AdapterMetroView)focusView).isBottomEdge ) {
+                                if (((FocusView)focusView).isBottomEdge ) {
                                     RxBus.getInstance().send(RxCodeConstants.JUMP_2_BOTTOMBAR,new RxBusBaseMessage());
                                     return true;
                                 } else {
@@ -219,6 +314,7 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
         //http://blog.csdn.net/wx123ww/article/details/51567982
         recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+
         //父控件和子控件之间的焦点获取的关系,意思是焦点优先级是 父亲在后代后面  不加这行会出现焦点有时丢失的问题
 
         recyclerView.setNestedScrollingEnabled(false);
