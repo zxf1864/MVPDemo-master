@@ -42,9 +42,9 @@
 
             android:layout_weight= "1"
 
-            android:descendantFocusability="blocksDescendants"
-
             android:focusable="false"
+            android:focusableInTouchMode="false"
+
             android:background="#888">
 
         </com.example.administrator.mvpdemo.ui.CustomWidgets.CustomViewPager>

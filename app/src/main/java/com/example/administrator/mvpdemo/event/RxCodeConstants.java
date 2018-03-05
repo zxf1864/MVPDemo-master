@@ -19,4 +19,6 @@ public class RxCodeConstants {
     public static final int JUMP_2_LEFT =4;
 
     public static final int JUMP_2_RIGHT =5;
+
+    public static final int JUMP_2_TOOLBAR = 6;
 }

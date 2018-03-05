@@ -75,6 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     public HomeAdapter(ChannelInfo channelInfo) {
         mItem = channelInfo;
+        this.setHasStableIds(true);
     }
 
 
@@ -91,6 +92,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 //            return 0;
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+//    @Override
+//    public void onViewDetachedFromWindow(MyViewHolder holder) {
+//        super.onViewDetachedFromWindow(holder);
+//        holder.itemView.clearAnimation();
+//    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,6 +145,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             case TVBLOCK:
                 //item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
                 item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvblock, parent, false);
+                break;
+            case ROUNDBLOCK:
+                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_roundblock, parent, false);
                 break;
             default:
                 item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
@@ -195,51 +210,55 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         item_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
+
+                if (v instanceof FocusView)
                 {
-                    AnimatorSet scaleAnimation = AnimationUtil.startScaleToBigAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+                    if (hasFocus)
+                    {
+                        AnimatorSet scaleAnimation = AnimationUtil.startScaleToBigAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
 
-                        @Override
-                        public void onAnimationStart(Animator arg0) {
+                            @Override
+                            public void onAnimationStart(Animator arg0) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animator arg0) {
-                        }
+                            @Override
+                            public void onAnimationRepeat(Animator arg0) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animator arg0) {
-                            item_view.getRootView().invalidate();
-                        }
+                            @Override
+                            public void onAnimationEnd(Animator arg0) {
+                                item_view.getRootView().invalidate();
+                            }
 
-                        @Override
-                        public void onAnimationCancel(Animator arg0) {
-                        }
-                    });
-                }
-                else
-                {
-                    AnimatorSet scaleAnimation = AnimationUtil.startScaleToSmallAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationCancel(Animator arg0) {
+                            }
+                        });
+                    }
+                    else
+                    {
+                        AnimatorSet scaleAnimation = AnimationUtil.startScaleToSmallAnimation(item_view, Constants.SCALE_RATE, new Animator.AnimatorListener() {
 
-                        @Override
-                        public void onAnimationStart(Animator arg0) {
+                            @Override
+                            public void onAnimationStart(Animator arg0) {
 
-                        }
+                            }
 
-                        @Override
-                        public void onAnimationRepeat(Animator arg0) {
-                        }
+                            @Override
+                            public void onAnimationRepeat(Animator arg0) {
+                            }
 
-                        @Override
-                        public void onAnimationEnd(Animator arg0) {
-                            item_view.getRootView().invalidate();
-                        }
+                            @Override
+                            public void onAnimationEnd(Animator arg0) {
+                                item_view.getRootView().invalidate();
+                            }
 
-                        @Override
-                        public void onAnimationCancel(Animator arg0) {
-                        }
-                    });
+                            @Override
+                            public void onAnimationCancel(Animator arg0) {
+                            }
+                        });
+                    }
                 }
 
             }
@@ -528,6 +547,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                     break;
                 case ROUNDBLOCK:
                     //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_roundblock_rl);
+                    image = (ImageView) itemView.findViewById(R.id.img_item_roundblock);
                     break;
                 case NOTEXTBLOCK:
                     //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_notextblock_rl);

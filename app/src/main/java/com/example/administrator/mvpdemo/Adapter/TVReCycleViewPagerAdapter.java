@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 
 
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.SparseArray;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
@@ -47,25 +49,46 @@ import static android.view.ViewGroup.FOCUS_AFTER_DESCENDANTS;
 
 public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
+//    private int[] colors = new int[]{
+//            Color.BLACK,
+//            Color.BLUE,
+//            Color.parseColor("#ff8040"),
+//            Color.YELLOW,
+//            Color.parseColor("#949449"),
+//            Color.RED,
+//            Color.GREEN,
+//            Color.GRAY,
+//            Color.parseColor("#8600ff"),
+//            Color.parseColor("#ff8040"),
+//            Color.GREEN,
+//            Color.parseColor("#5151a2"),
+//            Color.BLUE,
+//            Color.RED,
+//            Color.parseColor("#977c00"),
+//            Color.GREEN,
+//            Color.parseColor("#949449"),
+//            Color.parseColor("#804040")
+//    };
+
     private int[] colors = new int[]{
             Color.BLACK,
-            Color.BLUE,
-            Color.parseColor("#ff8040"),
-            Color.YELLOW,
-            Color.parseColor("#949449"),
-            Color.RED,
-            Color.GREEN,
-            Color.GRAY,
-            Color.parseColor("#8600ff"),
-            Color.parseColor("#ff8040"),
-            Color.GREEN,
-            Color.parseColor("#5151a2"),
-            Color.BLUE,
-            Color.RED,
-            Color.parseColor("#977c00"),
-            Color.GREEN,
-            Color.parseColor("#949449"),
-            Color.parseColor("#804040")
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK,
+            Color.BLACK
     };
 
 
@@ -153,6 +176,8 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                 boolean result = super.dispatchKeyEvent(event);
                 int dx = this.getChildAt(0).getWidth();
                 View focusView = this.getFocusedChild();
+
+
                 if (focusView != null) {
                     switch (event.getKeyCode()) {
                         case KeyEvent.KEYCODE_DPAD_RIGHT:
@@ -163,20 +188,17 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                                 {
                                     if(((FocusView) focusView).isRightEdge)
                                     {
-                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
+                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,focusView));
                                         return true;
                                     }
                                     else
                                     {
                                         View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
-                                        if (rightView != null) {
+                                        if ((rightView != null)&&(rightView instanceof FocusView)) {
                                             rightView.requestFocusFromTouch();
 
-                                            if(rightView instanceof FocusView)
-                                            {
-                                                if(((FocusView) rightView).isCover())
-                                                    this.smoothScrollBy(dx + 400, 0);
-                                            }
+                                            if(((FocusView) rightView).isCover())
+                                                this.smoothScrollBy(dx + 400, 0);
 
                                             return true;
                                         }
@@ -234,20 +256,17 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                                 {
                                     if(((FocusView) focusView).isLeftEdge)
                                     {
-                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
+                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,focusView));
                                         return true;
                                     }
                                     else
                                     {
                                         View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
-                                        if (leftView != null) {
+                                        if ((leftView != null)&&(leftView instanceof FocusView)) {
                                             leftView.requestFocusFromTouch();
 
-                                            if(leftView instanceof FocusView)
-                                            {
-                                                if(((FocusView) leftView).isCover())
-                                                    this.smoothScrollBy(-dx - 400, 0);
-                                            }
+                                            if(((FocusView) leftView).isCover())
+                                                this.smoothScrollBy(-dx - 400, 0);
 
                                             return true;
                                         } else {
@@ -289,7 +308,6 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 //                                }
                             }
                         case KeyEvent.KEYCODE_DPAD_DOWN:
-
                             if (event.getAction() == KeyEvent.ACTION_UP) {
                                 return true;
                             } else {
@@ -297,23 +315,64 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                                     RxBus.getInstance().send(RxCodeConstants.JUMP_2_BOTTOMBAR,new RxBusBaseMessage());
                                     return true;
                                 } else {
+                                    View downView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_DOWN);
+                                    if ((downView != null)&&(downView instanceof FocusView)) {
+                                        downView.requestFocusFromTouch();
 
-                                    return false;
+                                        return true;
+                                    }
+
                                 }
                             }
 
+                        case KeyEvent.KEYCODE_DPAD_UP:
+                            if (event.getAction() == KeyEvent.ACTION_UP) {
+                                return true;
+                            } else {
+                                if (((FocusView)focusView).isTopEdge ) {
+                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_TOOLBAR,new RxBusBaseMessage());
+                                    return true;
+                                } else {
+                                    View upView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_UP);
+                                    if ((upView != null)&&(upView instanceof FocusView)) {
+                                        upView.requestFocusFromTouch();
+
+                                        return true;
+                                    }
+
+                                }
+                            }
+
+
+
                     }
                 }
+
                 return result;
+
             }
 
-
+            private long mLastKeyDownTime = 0;
+            @Override
+            public boolean onKeyDown(int keyCode, KeyEvent event) {
+                long current = System.currentTimeMillis();
+                boolean res;
+                if (current - mLastKeyDownTime < 150) {
+                    res = true;
+                } else {
+                    res = super.onKeyDown(keyCode, event);
+                    mLastKeyDownTime = current;
+                }
+                return res;
+            }
 
         };
 
 
         //http://blog.csdn.net/wx123ww/article/details/51567982
-        recyclerView.setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
+        recyclerView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+
+        ((DefaultItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
         //父控件和子控件之间的焦点获取的关系,意思是焦点优先级是 父亲在后代后面  不加这行会出现焦点有时丢失的问题
 
@@ -327,6 +386,7 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
         //CustomLayoutManager layoutManager = new CustomLayoutManager(context);
 
         HomeAdapter homeAdapter = new HomeAdapter(datas.get(position));
+
         recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position)));
         recyclerView.setAdapter(homeAdapter);
 

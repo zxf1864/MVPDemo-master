@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -221,19 +222,27 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         HomeLayoutManager l = (HomeLayoutManager)rc.getLayoutManager();
 
-                        for (int i =0;i<l.getChildCount();i++)
-                        {
-                            l.getChildAt(i).clearFocus();
-                        }
+                        rc.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+
+                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
 
                         for (int i =0;i<l.getChildCount();i++)
                         {
-                            if(((FocusView)l.getChildAt(i)).isRightEdge)
+                            FocusView v = (FocusView) rc.getChildAt(i);
+                            if((v!=null)&&(v.isRightEdge))
                             {
-                                l.getChildAt(i).requestFocus();
-                                break;
+
+                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
+                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
+                                {
+                                    v.requestFocus();
+                                    break;
+                                }
                             }
+
                         }
+
+                        rc.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
                     }
                 });
 
@@ -252,19 +261,39 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
 
-                        for (int i =0;i<rc.getLayoutManager().getChildCount();i++)
+                        HomeAdapter ha = (HomeAdapter)rc.getAdapter();
+
+                        rc.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+
+                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
+
+                        for (int i =0;i<ha.getItemCount();i++)
                         {
-                            rc.getLayoutManager().getChildAt(i).clearFocus();
+                            FocusView v = (FocusView) rc.getChildAt(i);
+                            if((v!=null)&&(v.isLeftEdge))
+                            {
+                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
+                                    ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
+                                {
+                                    v.requestFocus();
+                                    break;
+                                }
+                            }
+
                         }
 
-                        for (int i =0;i<rc.getChildCount();i++)
-                        {
-                            if(((FocusView)rc.getLayoutManager().getChildAt(i)).isLeftEdge)
-                            {
-                                rc.getLayoutManager().getChildAt(i).requestFocus();
-                                break;
-                            }
-                        }
+                        rc.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+                    }
+                });
+
+
+        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_TOOLBAR, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: ");
+
+
                     }
                 });
 
@@ -397,9 +426,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
 
             });
-
-            mViewPager.setCurrentItem(1);
-            mViewPager.setCurrentItem(0);
 
 
         }
