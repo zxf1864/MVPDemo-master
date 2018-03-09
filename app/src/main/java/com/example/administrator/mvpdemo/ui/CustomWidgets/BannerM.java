@@ -24,10 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.mvpdemo.Bean.BannerBean;
 import com.example.administrator.mvpdemo.R;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -266,22 +265,38 @@ public class BannerM extends RelativeLayout {
 //                    mOnItemClickListener.onItemClick(getPosition(imageView));
 //                }
 //            });
+//            if (defaultImageResId != 0) {
+//                Picasso.with(mContext)
+//                        .load(bannerBeanList.get(i).getUrl())
+//                        .placeholder(defaultImageResId)
+//                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                        .into(imageView);
+//            } else if (defaultImageDrawable != null) {
+//                Picasso.with(mContext)
+//                        .load(bannerBeanList.get(i).getUrl())
+//                        .placeholder(defaultImageDrawable)
+//                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                        .into(imageView);
+//            } else {
+//                Picasso.with(mContext)
+//                        .load(bannerBeanList.get(i).getUrl())
+//                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+//                        .into(imageView);
+//            }
+
             if (defaultImageResId != 0) {
-                Picasso.with(mContext)
+                Glide.with(mContext)
                         .load(bannerBeanList.get(i).getUrl())
                         .placeholder(defaultImageResId)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(imageView);
             } else if (defaultImageDrawable != null) {
-                Picasso.with(mContext)
+                Glide.with(mContext)
                         .load(bannerBeanList.get(i).getUrl())
                         .placeholder(defaultImageDrawable)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(imageView);
             } else {
-                Picasso.with(mContext)
+                Glide.with(mContext)
                         .load(bannerBeanList.get(i).getUrl())
-                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(imageView);
             }
         }

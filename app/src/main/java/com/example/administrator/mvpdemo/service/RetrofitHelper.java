@@ -69,7 +69,7 @@ public class RetrofitHelper {
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .addNetworkInterceptor(logInterceptor)
+                //.addNetworkInterceptor(logInterceptor)
                 .addInterceptor(new LoggingInterceptor())
                 .build();
 

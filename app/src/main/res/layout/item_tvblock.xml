@@ -6,10 +6,7 @@
 
     android:background="@drawable/item_selector"
 
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="20dp"
-
-    android:padding="@dimen/dp_5"
+    android:padding="@dimen/dp_4"
 
     android:clipChildren="false"
     android:clipToPadding="false"
@@ -23,9 +20,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:layout_above="@id/videoName_item_tvblock"
+        android:padding="@dimen/dp_2"
+
         android:scaleType="fitXY"
-        android:src="@drawable/testpic1" />
+
+        android:layout_above="@id/videoName_item_tvblock"
+        />
 
     <TextView
         android:id="@+id/tag_item_tvblock"
@@ -64,6 +64,7 @@
         android:layout_alignParentLeft="true"
         android:layout_above="@id/videoSummary_item_tvblock"
 
+        android:paddingLeft="@dimen/dp_2"
         android:text="视频名称"
         android:textColor="#ffffff" />
 
@@ -97,7 +98,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:textColor="#ffffff"
+        android:paddingLeft="@dimen/dp_2"
         android:text="内容简介" />
+
+
 
 
 </com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView>

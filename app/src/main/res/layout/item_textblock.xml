@@ -5,11 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="20dp"
-
     android:background="@drawable/item_selector"
-    android:padding="@dimen/dp_5"
+    android:padding="@dimen/dp_4"
 
     android:clipChildren="false"
     android:clipToPadding="false"
@@ -32,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:textColor="#FFFFFF"
+        android:textSize="3pt"
         android:text="视频名称"/>
 
     <TextView
@@ -41,6 +39,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
         android:textColor="#FFFFFF"
+        android:textSize="3pt"
         android:text="排名"/>
 
     <TextView
@@ -51,6 +50,7 @@
         android:layout_centerInParent="true"
         android:layout_alignRight="@+id/item_textblock_rank"
         android:textColor="#FFFFFF"
+        android:textSize="3pt"
         android:text="得分"/>
 
     <TextView
@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textColor="#FFFFFF"
+        android:textSize="3pt"
         android:text="来源"/>
 
 

@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.Model.ChannelInfoList;
+import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -32,6 +33,10 @@ public class App extends Application {
         super.onCreate();
         mApplicationContext = this;
 
+        new RudenessScreenHelper(this, 750).activate();
+
+        FileUtils.copyFilesFromRaw(this, R.raw.splash_3,"splash_3.mp4","mnt/sdcard/");
+
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)  //（可选）是否显示线程信息。 默认值为true
                 .methodCount(2)         // （可选）要显示的方法行数。 默认2
@@ -41,12 +46,10 @@ public class App extends Application {
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
 
-        initImageLoader();
-
-
-
+        //initImageLoader();
 
         InitData();
+
     }
 
     // 获取ApplicationContext
@@ -70,6 +73,7 @@ public class App extends Application {
 
     public void InitData()
     {
+
         for(int i=0;i< ChannelInfoList.keyList.length;i++)
         {
             ChannelInfo ci = new ChannelInfo(ChannelInfoList.keyList[i],ChannelInfoList.catList[i], LayoutData.GetLayoutData()[i],LayoutData.GetLayoutType()[i]);

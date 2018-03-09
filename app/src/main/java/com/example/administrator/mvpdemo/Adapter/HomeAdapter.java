@@ -6,11 +6,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.v4.view.AsyncLayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.mvpdemo.Bean.BannerBean;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.Model.ChannelInfoList;
@@ -34,9 +38,18 @@ import com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by xlg on 2017/5/17.
@@ -104,6 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 //        holder.itemView.clearAnimation();
 //    }
 
+    private int creat_count;
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //return new MyViewHolder(new AdapterMetroView(parent.getContext()));
@@ -123,12 +137,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 //            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
 //        }
 
+        Log.i("HomeAdapter", "onCreateViewHolder: "+(creat_count++));
+
         ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
 
         switch (Type)
         {
             case FIRSTBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
+                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
                 break;
             case BANNER:
                 item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
@@ -137,7 +153,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
                 break;
             case NOTEXTBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
+                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
                 break;
             case TEXTBLOCK:
                 item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
@@ -324,45 +340,35 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     }
 
+    private int bind_count;
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-//        holder.Text.setText("1111");
-//        holder.Text.setTextColor(Color.BLUE);
-//        ((ImageView)holder.itemView).setImageResource(R.mipmap.ic_launcher);
-//        ((ImageView)holder.itemView).setBackgroundColor(colors[position]);
 
-//        ((ImageView)holder.itemView).setImageResource(R.mipmap.ic_launcher);
-//        ((ImageView)holder.itemView).setBackgroundColor(colors[position]);
+//        try {
+//            //((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
+//            ((FocusView) holder.itemView).isBottomEdge = false;
+//            ((FocusView) holder.itemView).isTopEdge = false;
+//            ((FocusView) holder.itemView).isLeftEdge = false;
+//            ((FocusView) holder.itemView).isRightEdge = false;
+//
+//            if(mItem.getmItemRectFList().get(position).bottom == mItem.bottombound)
+//                ((FocusView) holder.itemView).isBottomEdge = true;
+//
+//            if(mItem.getmItemRectFList().get(position).top == mItem.topbound)
+//                ((FocusView) holder.itemView).isTopEdge = true;
+//
+//            if(mItem.getmItemRectFList().get(position).left == mItem.leftbound)
+//                ((FocusView) holder.itemView).isLeftEdge = true;
+//
+//            if(mItem.getmItemRectFList().get(position).right == mItem.rightbound)
+//                ((FocusView) holder.itemView).isRightEdge = true;
+//
+//        } catch (Exception ex) {
+//            Log.i("checkedge", "onBindViewHolder: ");
+//        }
 
-        //holder.Text.setText("item" + position);
-
-        // 选择切换类型
-        //ImageCycleView.CYCLE_T 有三种类型 ,效果如上图所示
-        //CYCLE_VIEW_NORMAL  CYCLE_VIEW_THREE_SCALE   CYCLE_VIEW_ZOOM_IN   可以随意选择
-
-        //initImageCycleView((ImageCycleView)item_view);
-
-        try {
-            //((AdapterMetroView) view).SetMyWH((int) bounds.width(), (int) bounds.height());
-            ((FocusView) holder.itemView).isBottomEdge = false;
-            ((FocusView) holder.itemView).isTopEdge = false;
-            ((FocusView) holder.itemView).isLeftEdge = false;
-            ((FocusView) holder.itemView).isRightEdge = false;
-
-            if(mItem.getmItemRectFList().get(position).bottom == mItem.bottombound)
-                ((FocusView) holder.itemView).isBottomEdge = true;
-
-            if(mItem.getmItemRectFList().get(position).top == mItem.topbound)
-                ((FocusView) holder.itemView).isTopEdge = true;
-
-            if(mItem.getmItemRectFList().get(position).left == mItem.leftbound)
-                ((FocusView) holder.itemView).isLeftEdge = true;
-
-            if(mItem.getmItemRectFList().get(position).right == mItem.rightbound)
-                ((FocusView) holder.itemView).isRightEdge = true;
-
-        } catch (Exception ex) {
-        }
+        Log.i("HomeAdapter", "onBindViewHolder: " + (bind_count++) );
 
         PgcInfo.DataBean.VideosBean vb;
 
@@ -377,29 +383,49 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         if (holder.image != null)
         {
-            if(vb.getVer_pic() != null)
-            {
-                if(holder.imageurl != vb.getVer_pic())
-                {
-                    holder.imageurl = vb.getVer_pic();
-                    Glide
-                            .with(holder.myContext)
-                            .load(vb.getVer_pic())
-                            .into(holder.image);
-                }
-                if (holder.refreshimage != null)
-                {
-                    holder.stopAnim();
-                }
-            }
-            else
-            {
-                if (holder.refreshimage != null)
-                {
-                    holder.startAnim();
-                }
-                holder.image.setImageResource(R.mipmap.default_pic);
-            }
+           if ((vb.getVer_pic()!=null)&&(vb.getVer_pic()!=holder.imageurl))
+           {
+//               if (position == 0)
+//               {
+//                   Glide
+//                           .with(holder.myContext)
+//                           .load("http://s1.dwstatic.com/group1/M00/66/4D/d52ff9b0727dfd0133a52de627e39d2a.gif")
+//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                           .placeholder(R.mipmap.default_pic)
+//                           .into(holder.image);
+//               }
+//               else if(position == 1)
+//               {
+//                   String storePath = "mnt/sdcard/splash_3.mp4";
+//                   File file = new File(storePath);
+//
+//                   Glide
+//                           .with(holder.myContext)
+//                           .load(Uri.fromFile(file))
+//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                           .placeholder(R.mipmap.default_pic)
+//                           .into(holder.image);
+//               }
+//               else
+//               {
+//                   Glide
+//                           .with(holder.myContext)
+//                           .load(vb.getVer_pic())
+//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                           .placeholder(R.mipmap.default_pic)
+//                           .into(holder.image);
+//               }
+
+               Glide
+                       .with(holder.myContext)
+                       .load(vb.getVer_pic())
+                       .diskCacheStrategy(DiskCacheStrategy.ALL)
+                       .placeholder(R.mipmap.default_pic)
+                       .into(holder.image);
+
+
+               holder.imageurl = vb.getVer_pic();
+           }
 
         }
 
@@ -518,7 +544,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             myContext = context;
 
-            mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
+   //         mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
 
             switch (ia.ItemType)
             {

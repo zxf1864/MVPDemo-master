@@ -25,9 +25,25 @@ public class RudenessScreenHelper {
      * @see #activate()
      *
      * @param context
-     * @param designWidth 设计稿的宽度
+     * @param designHeight 设计稿的宽度
      */
-    public static void resetDensity(Context context, float designWidth){
+//    public static void resetDensity(Context context, float designWidth){
+//        if(context == null)
+//            return;
+//
+//        Point size = new Point();
+//        ((WindowManager)context.getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
+//
+//        Resources resources = context.getResources();
+//
+//        resources.getDisplayMetrics().xdpi = size.x/designWidth*72f;
+//
+//        DisplayMetrics metrics = getMetricsOnMiui(context.getResources());
+//        if(metrics != null)
+//            metrics.xdpi = size.x/designWidth*72f;
+//    }
+
+        public static void resetDensity(Context context, float designHeight){
         if(context == null)
             return;
 
@@ -36,12 +52,14 @@ public class RudenessScreenHelper {
 
         Resources resources = context.getResources();
 
-        resources.getDisplayMetrics().xdpi = size.x/designWidth*72f;
+        resources.getDisplayMetrics().ydpi = size.y/designHeight*72f;
 
         DisplayMetrics metrics = getMetricsOnMiui(context.getResources());
         if(metrics != null)
-            metrics.xdpi = size.x/designWidth*72f;
+            metrics.ydpi = size.y/designHeight*72f;
     }
+
+
 
     /**
      * 恢复displayMetrics为系统原生状态，单位pt恢复为长度单位磅
@@ -105,34 +123,82 @@ public class RudenessScreenHelper {
     private Application mApplication;
     private float designWidth = 720;
 
+    private float designheight = 800;
     /**
      *
      * @param application application
      * @param width 设计稿宽度
      */
-    public RudenessScreenHelper(Application application, float width){
+//    public RudenessScreenHelper(Application application, float width){
+//        mApplication = application;
+//        designWidth = width;
+//
+//        activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
+//            @Override
+//            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+//                //通常情况下application与activity得到的resource虽然不是一个实例，但是displayMetrics是同一个实例，只需调用一次即可
+//                //为了面对一些不可预计的情况以及向上兼容，分别调用一次较为保险
+//                resetDensity(mApplication, designWidth);
+//                resetDensity(activity, designWidth);
+//            }
+//
+//            @Override
+//            public void onActivityStarted(Activity activity) {
+//                resetDensity(mApplication, designWidth);
+//                resetDensity(activity, designWidth);
+//            }
+//
+//            @Override
+//            public void onActivityResumed(Activity activity) {
+//                resetDensity(mApplication, designWidth);
+//                resetDensity(activity, designWidth);
+//            }
+//
+//            @Override
+//            public void onActivityPaused(Activity activity) {
+//
+//            }
+//
+//            @Override
+//            public void onActivityStopped(Activity activity) {
+//
+//            }
+//
+//            @Override
+//            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+//
+//            }
+//
+//            @Override
+//            public void onActivityDestroyed(Activity activity) {
+//
+//            }
+//        };
+//    }
+
+    public RudenessScreenHelper(Application application, float height){
         mApplication = application;
-        designWidth = width;
+        designheight = height;
 
         activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 //通常情况下application与activity得到的resource虽然不是一个实例，但是displayMetrics是同一个实例，只需调用一次即可
                 //为了面对一些不可预计的情况以及向上兼容，分别调用一次较为保险
-                resetDensity(mApplication, designWidth);
-                resetDensity(activity, designWidth);
+                resetDensity(mApplication, designheight);
+                resetDensity(activity, designheight);
             }
 
             @Override
             public void onActivityStarted(Activity activity) {
-                resetDensity(mApplication, designWidth);
-                resetDensity(activity, designWidth);
+                resetDensity(mApplication, designheight);
+                resetDensity(activity, designheight);
             }
 
             @Override
             public void onActivityResumed(Activity activity) {
-                resetDensity(mApplication, designWidth);
-                resetDensity(activity, designWidth);
+                resetDensity(mApplication, designheight);
+                resetDensity(activity, designheight);
             }
 
             @Override
@@ -157,11 +223,17 @@ public class RudenessScreenHelper {
         };
     }
 
+
     /**
      * 激活本方案
      */
+//    public void activate(){
+//        resetDensity(mApplication, designWidth);
+//        mApplication.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+//    }
+
     public void activate(){
-        resetDensity(mApplication, designWidth);
+        resetDensity(mApplication, designheight);
         mApplication.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
     }
 

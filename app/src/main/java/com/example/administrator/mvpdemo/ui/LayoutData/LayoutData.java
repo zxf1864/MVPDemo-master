@@ -10,6 +10,8 @@ import java.util.Map;
  */
 
 public class LayoutData {
+
+
     private static String mRectFMsg0 = "[{\"bottom\":600.0,\"left\":0.0,\"right\":900.0,\"top\":0.0}," +
             "{\"bottom\":800.0,\"left\":0.0,\"right\":450.0,\"top\":600.0}," +
             "{\"bottom\":800.0,\"left\":450.0,\"right\":900.0,\"top\":600.0}," +
@@ -17,6 +19,9 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":900.0,\"right\":1500.0,\"top\":400.0}," +
             "{\"bottom\":400.0,\"left\":1500.0,\"right\":2100.0,\"top\":0.0}," +
             "{\"bottom\":800.0,\"left\":1500.0,\"right\":2100.0,\"top\":400.0}]";
+
+
+
 
     private static ItemAttribute.VideoItemType[] mItemType0 = {
                                                                     ItemAttribute.VideoItemType.FIRSTBLOCK,

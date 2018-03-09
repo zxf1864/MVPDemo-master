@@ -2,7 +2,10 @@ package com.example.administrator.mvpdemo.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.MessageQueue;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import org.reactivestreams.Subscription;
 
@@ -39,6 +42,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         init();
 
+        Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
+            @Override
+            public boolean queueIdle() {
+                Log.i("IdleHandler","queueIdle");
+                onInit();
+                return false; //false 表示只监听一次IDLE事件,之后就不会再执行这个函数了.
+            }
+        });
+
+    }
+
+    //子类重写此函数即可,而不需要在onCreate()中去初始化.
+    protected void onInit() {
+        Log.e("BaseActivity", "onInit");
     }
 
     @Override

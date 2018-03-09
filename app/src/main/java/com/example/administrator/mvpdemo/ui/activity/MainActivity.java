@@ -112,29 +112,15 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     }
 
     @Override
-    protected void init()
-    {
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
-
-        //setAntiAlias();
-
-        StatusBarUtils.setWindowStatusBarColor(this, Color.BLACK);
-
-        attchCHclick();
-
-        SetViewpager();
-
-
-//        Intent startIntent = new Intent(this, ChannelDataService.class);
-//        startService(startIntent);
+    protected void onInit() {
+        super.onInit();
 
 
         RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_BOTTOMBAR, RxBusBaseMessage.class)
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: JUMP_2_BOTTOMBAR");
                         SetBottomBarItemsFocused();
                     }
                 });
@@ -144,7 +130,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: Get_PGC");
 
                         RecyclerView rc = (RecyclerView) ((TVReCycleViewPagerAdapter)mViewPager.getAdapter()).getPrimaryItem();
 
@@ -160,7 +146,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: ReCycleView_init");
 
                         ChannelInfo ci = ChannelInfoList.getInstance().getmChannelInfos().get(rxBusBaseMessage.getCode());
 
@@ -181,7 +167,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: Re_Get_PGC");
 
                         ChannelInfo ci = ChannelInfoList.getInstance().getmChannelInfos().get(rxBusBaseMessage.getCode());
 
@@ -209,10 +195,10 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: JUMP_2_LEFT");
 
                         if (rxBusBaseMessage.getCode()==0)
-                          return;
+                            return;
 
                         mViewPager.setCurrentItem(rxBusBaseMessage.getCode()-1);
 
@@ -250,7 +236,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: JUMP_2_RIGHT");
 
                         if (rxBusBaseMessage.getCode()== ChannelInfoList.getInstance().getmChannelInfos().size() - 1)
                             return;
@@ -263,7 +249,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         HomeAdapter ha = (HomeAdapter)rc.getAdapter();
 
-                        rc.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
                         FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
 
@@ -273,7 +258,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                             if((v!=null)&&(v.isLeftEdge))
                             {
                                 if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
-                                    ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
+                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
                                 {
                                     v.requestFocus();
                                     break;
@@ -282,7 +267,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         }
 
-                        rc.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
                     }
                 });
 
@@ -291,11 +275,34 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
-                        Log.d("RxBus", "accept: ");
+                        Log.d("RxBus", "accept: JUMP_2_TOOLBAR");
 
 
                     }
                 });
+
+
+        RxBus.getInstance().send(RxCodeConstants.ReCycleView_init,new RxBusBaseMessage(0,new Object()));
+
+    }
+
+    @Override
+    protected void init()
+    {
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolBar);
+
+        //setAntiAlias();
+
+        StatusBarUtils.setWindowStatusBarColor(this, Color.BLACK);
+
+        attchCHclick();
+
+        SetViewpager();
+
+
+//        Intent startIntent = new Intent(this, ChannelDataService.class);
+//        startService(startIntent);
 
 
     }
@@ -381,8 +388,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
             mViewPager.setAdapter(mAdapter);
             mViewPager.setBackgroundColor(Color.RED);
 
-            TextView name = (TextView)findViewById(R.id.common_broadcast_text);
-            name.setTextColor(Color.RED);
 
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
             {

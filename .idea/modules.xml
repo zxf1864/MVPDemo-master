@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://D:\AndroidAPP\MVPDemo-master\MVPDemo.iml" filepath="D:\AndroidAPP\MVPDemo-master\MVPDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/MVPDemo-master.iml" filepath="$PROJECT_DIR$/MVPDemo-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/nucleus/nucleus.iml" filepath="$PROJECT_DIR$/nucleus/nucleus.iml" />

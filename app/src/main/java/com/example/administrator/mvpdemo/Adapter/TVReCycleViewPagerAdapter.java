@@ -11,6 +11,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
@@ -146,216 +147,154 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
     }
 
 
-
     private RecyclerView getView(int position)
     {
 
         RecyclerView recyclerView = new RecyclerView(context) {
 
-//            @Override
-//            public boolean dispatchTouchEvent(MotionEvent ev) {
-//                requestDisallowInterceptTouchEvent(true);
-//                return super.dispatchTouchEvent(ev);
-//            }
-//
-//            @Override
-//            public boolean onInterceptTouchEvent(MotionEvent ev) {
-//                requestDisallowInterceptTouchEvent(true);
-//                return super.onInterceptTouchEvent(ev);
-//            }
-//
-//            @Override
-//            public boolean onTouchEvent(MotionEvent event) {
-//                requestDisallowInterceptTouchEvent(true);
-//                return super.onTouchEvent(event);
-//            }
+            private boolean dealKEYCODE_DPAD_RIGHT(View focusView,int dx)
+            {
+                View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
+                if ((rightView != null)&&(rightView instanceof FocusView)) {
+                    rightView.requestFocusFromTouch();
 
+                    if(((FocusView) rightView).isCover())
+                        this.smoothScrollBy(dx , 0);
+
+                    return true;
+                }
+                else
+                {
+                    this.smoothScrollBy(dx , 0);
+                    return true;
+                }
+            }
+
+            private boolean deal_KEYCODE_DPAD_LEFT(View focusView,int dx)
+            {
+                View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
+                if ((leftView != null)&&(leftView instanceof FocusView)) {
+                    leftView.requestFocusFromTouch();
+
+                    if(((FocusView) leftView).isCover())
+                        this.smoothScrollBy(-dx , 0);
+
+                    return true;
+                } else {
+                    this.smoothScrollBy(-dx , 0);
+                    return true;
+                }
+            }
+
+            private boolean mydispatchKeyEvent(KeyEvent event,  View focusView ,int dx)
+            {
+                boolean ret = false;
+
+                switch (event.getKeyCode()) {
+                    case KeyEvent.KEYCODE_DPAD_RIGHT:
+                        if (event.getAction() == KeyEvent.ACTION_UP) {
+                            return true;
+                        }
+                        else {
+                            if (focusView instanceof FocusView)
+                            {
+                                if(((FocusView) focusView).isRightEdge)
+                                {
+                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,focusView));
+                                    return true;
+                                }
+                                else
+                                {
+                                    ret = dealKEYCODE_DPAD_RIGHT( focusView, dx);
+                                }
+                            }
+
+                        }
+                        break;
+
+
+                    case KeyEvent.KEYCODE_DPAD_LEFT:
+                        if (event.getAction() == KeyEvent.ACTION_UP) {
+                            return true;
+                        } else {
+                            if (focusView instanceof FocusView)
+                            {
+                                if(((FocusView) focusView).isLeftEdge)
+                                {
+                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,focusView));
+                                    return true;
+                                }
+                                else
+                                {
+                                    ret = deal_KEYCODE_DPAD_LEFT(focusView, dx);
+                                }
+
+                            }
+                        }
+                        break;
+                    case KeyEvent.KEYCODE_DPAD_DOWN:
+                        if (event.getAction() == KeyEvent.ACTION_UP) {
+                            return true;
+                        } else {
+                            if (((FocusView)focusView).isBottomEdge ) {
+                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_BOTTOMBAR,new RxBusBaseMessage());
+                                return true;
+                            } else {
+                                View downView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_DOWN);
+                                if ((downView != null)&&(downView instanceof FocusView)) {
+                                    downView.requestFocusFromTouch();
+
+                                    return true;
+                                }
+
+                            }
+                        }
+                        break;
+
+                    case KeyEvent.KEYCODE_DPAD_UP:
+                        if (event.getAction() == KeyEvent.ACTION_UP) {
+                            return true;
+                        } else {
+                            if (((FocusView)focusView).isTopEdge ) {
+                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_TOOLBAR,new RxBusBaseMessage());
+                                return true;
+                            } else {
+                                View upView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_UP);
+                                if ((upView != null)&&(upView instanceof FocusView)) {
+                                    upView.requestFocusFromTouch();
+
+                                    return true;
+                                }
+
+                            }
+                        }
+                        break;
+
+
+                }
+
+                return ret;
+            }
 
             @Override
             public boolean dispatchKeyEvent(KeyEvent event) {
-                boolean result = super.dispatchKeyEvent(event);
+
+                boolean result = false;
                 int dx = this.getChildAt(0).getWidth();
                 View focusView = this.getFocusedChild();
 
-
                 if (focusView != null) {
-                    switch (event.getKeyCode()) {
-                        case KeyEvent.KEYCODE_DPAD_RIGHT:
-                            if (event.getAction() == KeyEvent.ACTION_UP) {
-                                return true;
-                            } else {
-                                if (focusView instanceof FocusView)
-                                {
-                                    if(((FocusView) focusView).isRightEdge)
-                                    {
-                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,focusView));
-                                        return true;
-                                    }
-                                    else
-                                    {
-                                        View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
-                                        if ((rightView != null)&&(rightView instanceof FocusView)) {
-                                            rightView.requestFocusFromTouch();
-
-                                            if(((FocusView) rightView).isCover())
-                                                this.smoothScrollBy(dx + 400, 0);
-
-                                            return true;
-                                        }
-                                        else
-                                        {
-                                            //HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
-
-//                                            if(layoutManager.isSlidingToLast())
-//                                            {
-//                                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
-//                                                //return true;
-//                                            }
-
-                                            this.smoothScrollBy(dx + 400, 0);
-                                            return true;
-                                        }
-
-                                    }
-                                }
-
-
-
-//                                View rightView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_RIGHT);
-//
-//                                if (rightView != null) {
-//                                    rightView.requestFocusFromTouch();
-//
-//                                    if(rightView instanceof FocusView)
-//                                    {
-//                                        if(((FocusView) rightView).isCover())
-//                                            this.smoothScrollBy(dx + 400, 0);
-//                                    }
-//
-//                                    return true;
-//                                } else {
-//                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
-//
-//                                    if(layoutManager.isSlidingToLast())
-//                                    {
-//                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_RIGHT,new RxBusBaseMessage(position,event));
-//                                        //return true;
-//                                    }
-//
-//                                    //this.smoothScrollBy(dx + 400, 0);
-//                                    return true;
-//                                }
-
-
-                            }
-                        case KeyEvent.KEYCODE_DPAD_LEFT:
-                            if (event.getAction() == KeyEvent.ACTION_UP) {
-                                return true;
-                            } else {
-                                if (focusView instanceof FocusView)
-                                {
-                                    if(((FocusView) focusView).isLeftEdge)
-                                    {
-                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,focusView));
-                                        return true;
-                                    }
-                                    else
-                                    {
-                                        View leftView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_LEFT);
-                                        if ((leftView != null)&&(leftView instanceof FocusView)) {
-                                            leftView.requestFocusFromTouch();
-
-                                            if(((FocusView) leftView).isCover())
-                                                this.smoothScrollBy(-dx - 400, 0);
-
-                                            return true;
-                                        } else {
-//                                            HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
-//                                            if(layoutManager.isSlidingToFirst())
-//                                            {
-//                                                RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
-//                                                //return true;
-//                                            }
-
-                                            this.smoothScrollBy(-dx - 400, 0);
-                                            return true;
-                                        }
-                                    }
-
-                                }
-
-//                                if (leftView != null) {
-//                                    leftView.requestFocusFromTouch();
-//
-//                                    if(leftView instanceof FocusView)
-//                                    {
-//                                        if(((FocusView) leftView).isCover())
-//                                            this.smoothScrollBy(-dx - 400, 0);
-//                                    }
-//
-//                                    return true;
-//                                } else {
-//                                    HomeLayoutManager layoutManager = (HomeLayoutManager)this.getLayoutManager();
-//                                    if(layoutManager.isSlidingToFirst())
-//                                    {
-//                                        RxBus.getInstance().send(RxCodeConstants.JUMP_2_LEFT,new RxBusBaseMessage(position,event));
-//                                        //return true;
-//                                    }
-//
-//
-//                                    //this.smoothScrollBy(-dx - 400, 0);
-//                                    return true;
-//                                }
-                            }
-                        case KeyEvent.KEYCODE_DPAD_DOWN:
-                            if (event.getAction() == KeyEvent.ACTION_UP) {
-                                return true;
-                            } else {
-                                if (((FocusView)focusView).isBottomEdge ) {
-                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_BOTTOMBAR,new RxBusBaseMessage());
-                                    return true;
-                                } else {
-                                    View downView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_DOWN);
-                                    if ((downView != null)&&(downView instanceof FocusView)) {
-                                        downView.requestFocusFromTouch();
-
-                                        return true;
-                                    }
-
-                                }
-                            }
-
-                        case KeyEvent.KEYCODE_DPAD_UP:
-                            if (event.getAction() == KeyEvent.ACTION_UP) {
-                                return true;
-                            } else {
-                                if (((FocusView)focusView).isTopEdge ) {
-                                    RxBus.getInstance().send(RxCodeConstants.JUMP_2_TOOLBAR,new RxBusBaseMessage());
-                                    return true;
-                                } else {
-                                    View upView = FocusFinder.getInstance().findNextFocus(this, focusView, View.FOCUS_UP);
-                                    if ((upView != null)&&(upView instanceof FocusView)) {
-                                        upView.requestFocusFromTouch();
-
-                                        return true;
-                                    }
-
-                                }
-                            }
-
-
-
-                    }
+                    result = mydispatchKeyEvent(event,focusView,dx);
                 }
 
-                return result;
-
+                //return true;
+                return result?true:super.dispatchKeyEvent(event);
             }
+
 
             private long mLastKeyDownTime = 0;
             @Override
-            public boolean onKeyDown(int keyCode, KeyEvent event) {
-                long current = System.currentTimeMillis();
+            public boolean onKeyDown(int keyCode, KeyEvent event) {long current = System.currentTimeMillis();
                 boolean res;
                 if (current - mLastKeyDownTime < 150) {
                     res = true;
@@ -387,7 +326,7 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
         HomeAdapter homeAdapter = new HomeAdapter(datas.get(position));
 
-        recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position)));
+        recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position),this.context));
         recyclerView.setAdapter(homeAdapter);
 
 
