@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.example.administrator.mvpdemo.ui.CustomWidgets.SimpleVideoView
+        android:id="@+id/tv_play"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/dp_20">
+
+    </com.example.administrator.mvpdemo.ui.CustomWidgets.SimpleVideoView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_alignBottom ="@id/tv_play"
+        android:padding="@dimen/dp_20">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textSize="30sp"
+            android:text="测测测"/>
+
+        <TextView
+            android:id="@+id/play_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="666亿次播放"
+            android:paddingLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/tv_name"
+            android:layout_alignBaseline="@id/tv_name"/>
+
+
+        <TextView
+            android:id="@+id/tv_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_alignLeft="@id/tv_name"
+            android:text="内地剧"/>
+
+        <TextView
+            android:id = "@+id/tv_tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_tag1"
+            android:layout_below="@id/tv_name"
+            android:text="谍战剧"/>
+        <TextView
+            android:id = "@+id/tv_tag3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_tag2"
+            android:layout_below="@id/tv_name"
+            android:text="战争剧"/>
+
+        <TextView
+            android:id="@+id/thumb_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_score"
+            android:layout_below="@+id/tv_name"
+            android:text="已赞"/>
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_tag3"
+            android:layout_alignParentRight="true"
+            android:text="4.3豆"/>
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tag1"
+            android:text="通过定制化的LayoutManager，接管整个RecyclerView的布局逻辑；LayoutManager管理了一系列LayoutHelper，LayoutHelper负责具体布局逻辑实现的地方；每一个LayoutHelper负责页面某一个范围内的组件布局；不同的LayoutHelper可以做不同的布局逻辑"/>
+
+        <TextView
+            android:id="@+id/tv_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_content"
+            android:text="视频来源:搜狐视频" />
+
+
+        <Button
+            android:id="@+id/all_screen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="全屏"
+            android:drawableTop="@mipmap/allscreen"
+            android:layout_below="@id/tv_source"/>
+
+        <Button
+            android:id="@+id/tv_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/all_screen"
+            android:layout_alignBaseline="@id/all_screen"
+            android:text="收藏"
+            android:drawableTop="@mipmap/collection" />
+
+        <Button
+            android:id="@+id/vip_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/all_screen"
+            android:layout_toRightOf="@id/tv_collection"
+            android:text="会员活动"
+            android:drawableTop="@mipmap/vip_action" />
+
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

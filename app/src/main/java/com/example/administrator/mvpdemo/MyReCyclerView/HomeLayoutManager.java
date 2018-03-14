@@ -13,6 +13,9 @@ import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
+import com.example.administrator.mvpdemo.event.RxBus;
+import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
+import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
@@ -202,6 +205,8 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
         // 遍历所有的item
         fill(recycler, state);
 
+       // RxBus.getInstance().send(RxCodeConstants.UPDATE_IMG,new RxBusBaseMessage());
+
     }
 
     /**
@@ -303,6 +308,8 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 //        mTotalW += 50;
 //    }
 
+
+
     private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
         if (state.isPreLayout()) {
             return;
@@ -350,6 +357,8 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                         ((FocusView) view).isTopEdge = false;
                         ((FocusView) view).isLeftEdge = false;
                         ((FocusView) view).isRightEdge = false;
+
+                        ((FocusView) view).isShow = true;
                     }
 
                     if(mItemRectFList.get(i).bottom == mChannelInfo.bottombound)
@@ -398,6 +407,7 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
                 //layoutDecoratedWithMargins(view, (int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
                 layoutDecoratedWithMargins(view, (int) transBounds.left, (int) transBounds.top, (int) transBounds.right, (int) transBounds.bottom);
             }
+
         }
         //预留50的边界
         mTotalW += 50;
@@ -405,7 +415,7 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 
 
 
-
+//
 //    private void fill(RecyclerView.Recycler recycler, RecyclerView.State state) {
 //        if (state.isPreLayout()) {
 //            return;
@@ -543,7 +553,7 @@ public class HomeLayoutManager extends RecyclerView.LayoutManager {
 //        //预留50的边界
 //        mTotalW += 50;
 //    }
-//
+
 
 
 

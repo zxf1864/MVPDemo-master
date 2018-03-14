@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/activity_tvdetail"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
+        android:descendantFocusability="afterDescendants">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="10dp"
+            android:clickable="true"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:id="@+id/img_detail"
+            android:visibility="gone"/>
+
+        <include layout="@layout/layout_tv_summry"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+
+        <com.example.administrator.mvpdemo.ui.CustomWidgets.tvplays_selector
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:descendantFocusability="afterDescendants"
+            android:padding="@dimen/dp_20">
+
+        </com.example.administrator.mvpdemo.ui.CustomWidgets.tvplays_selector>
+
+        <com.example.administrator.mvpdemo.ui.CustomWidgets.tvplays_relation
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+
+            android:descendantFocusability="afterDescendants"
+            android:padding="@dimen/dp_20">
+
+        </com.example.administrator.mvpdemo.ui.CustomWidgets.tvplays_relation>
+
+
+
+
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -29,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.mvpdemo.Adapter.HomeAdapter;
 import com.example.administrator.mvpdemo.Adapter.MyItemClickListener;
 
@@ -48,6 +50,7 @@ import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.service.ChannelDataService;
 import com.example.administrator.mvpdemo.service.entity.Pgc;
 
+import com.example.administrator.mvpdemo.service.entity.PgcInfo;
 import com.example.administrator.mvpdemo.service.presenter.PgcPresenter;
 
 import com.example.administrator.mvpdemo.service.view.ITestView;
@@ -59,13 +62,16 @@ import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 
 
 import java.lang.reflect.Method;
-
-
+import java.util.concurrent.TimeUnit;
 
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements ITestView,MyItemClickListener {
 
@@ -136,7 +142,13 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         //rc.getAdapter().notifyDataSetChanged();
 
-                        rc.getAdapter().notifyItemRangeChanged(0,20);
+                        if(rc!=null)
+                        {
+                            HomeAdapter ha = (HomeAdapter) rc.getAdapter();
+                            if (ha !=null)
+                                ha.notifyItemRangeChanged(0,20);
+                        }
+
 
 
                     }
@@ -284,6 +296,70 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
         RxBus.getInstance().send(RxCodeConstants.ReCycleView_init,new RxBusBaseMessage(0,new Object()));
 
+
+        RxBus.getInstance().tObservable(RxCodeConstants.START_TVDETAIL, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: START_TVDETAIL");
+
+                        Intent start_tvdetail = new Intent();
+
+                        start_tvdetail.setClass(MainActivity.this, TVDetailActivity.class);
+
+                        start_tvdetail.putExtra("VideosBean", (PgcInfo.DataBean.VideosBean)rxBusBaseMessage.getObject());
+
+                        startActivity(start_tvdetail);
+
+                    }
+                });
+
+
+
+        RxBus.getInstance().tObservable(RxCodeConstants.UPDATE_IMG, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: UPDATE_IMG");
+
+                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+
+                        RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
+
+                        HomeAdapter ha = (HomeAdapter)rc.getAdapter();
+
+                        for (int i =0;i<ha.getItemCount();i++)
+                        {
+                            FocusView v = (FocusView) rc.getChildAt(i);
+
+                            if(v!=null)
+                            {
+                                if(!v.hasGlideShow)
+                                {
+                                    if(v.isShow)
+                                    {
+//                                        Glide
+//                                           .with(v.viewholder.myContext)
+//                                           .load(v.viewholder.m_VideosBean.getVer_pic())
+//                                           .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                                           .placeholder(R.mipmap.default_pic)
+//                                           .into(v.viewholder.image);
+
+                                    }
+                                    else
+                                        v.isShow = false;
+                                }
+                                else v.hasGlideShow = true;
+                            }
+
+
+                        }
+                    }
+                });
+
+
+
+
     }
 
     @Override
@@ -298,7 +374,60 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
         attchCHclick();
 
-        SetViewpager();
+        RxBus.getInstance().tObservable(RxCodeConstants.INIT_RECYCLEVIEW, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: INIT_RECYCLEVIEW");
+
+                        int position = rxBusBaseMessage.getCode();
+                        long delaytime = (long)rxBusBaseMessage.getObject();
+                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+
+                        Flowable.just(position)
+                                //将1.x中的Func1,2改为Function和BiFunction，Func3-9改为Function3-9
+                                //多参数FuncN改为Function<Object[],R>
+
+                                //这个第一个泛型为接收参数的数据类型，第二个泛型为转换后要发射的数据类型
+                                .map(new Function<Integer , RecyclerView>() {
+                                    @Override
+                                    public RecyclerView apply(Integer  i) throws Exception {
+
+                                        return  tva.getView(i);
+                                    }
+                                })
+                                .delay(delaytime, TimeUnit.MILLISECONDS)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<RecyclerView>() {
+                                    @Override
+                                    public void accept(RecyclerView rc) throws Exception {
+                                        long starttime = System.currentTimeMillis();
+
+                                        tva.InitRecycleView(position,rc);
+
+                                        Log.i("InitRecycleView", String.format("position = %d ,cost time: [%dms]",position,System.currentTimeMillis() - starttime));
+
+                                    }
+
+
+                                });
+
+                    }
+                });
+
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                SetViewpager();
+
+            }
+        }).start();
+
+        //SetViewpager();
 
 
 //        Intent startIntent = new Intent(this, ChannelDataService.class);

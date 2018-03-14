@@ -34,6 +34,7 @@ public class LayoutData {
                                                                 };
 
 
+
     private static String mRectFMsg1 = "[{\"bottom\":450.0,\"left\":0.0,\"right\":700.0,\"top\":0.0}," +
             "{\"bottom\":600.0,\"left\":0.0,\"right\":375.0,\"top\":450.0}," +
             "{\"bottom\":800.0,\"left\":0.0,\"right\":375.0,\"top\":600.0}," +
@@ -84,6 +85,8 @@ public class LayoutData {
             ItemAttribute.VideoItemType.TVBLOCK
 
     };
+
+
 
     private static String mRectFMsg2 = "[{\"bottom\":450.0,\"left\":0.0,\"right\":700.0,\"top\":0.0}," +
             "{\"bottom\":650.0,\"left\":0.0,\"right\":375.0,\"top\":450.0}," +

@@ -21,4 +21,10 @@ public class RxCodeConstants {
     public static final int JUMP_2_RIGHT =5;
 
     public static final int JUMP_2_TOOLBAR = 6;
+
+    public static final int START_TVDETAIL = 7;
+
+    public static final int UPDATE_IMG = 8;
+
+    public static final int INIT_RECYCLEVIEW = 9;
 }

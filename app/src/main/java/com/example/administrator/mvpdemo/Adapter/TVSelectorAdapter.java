@@ -3,18 +3,13 @@ package com.example.administrator.mvpdemo.Adapter;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.support.v4.view.AsyncLayoutInflater;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -22,13 +17,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.mvpdemo.Bean.BannerBean;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
-import com.example.administrator.mvpdemo.Model.ChannelInfoList;
 import com.example.administrator.mvpdemo.Model.ItemAttribute;
-import com.example.administrator.mvpdemo.Model.PgcInfoList;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.AnimationUtil;
 import com.example.administrator.mvpdemo.Util.Constants;
@@ -37,32 +29,21 @@ import com.example.administrator.mvpdemo.event.RxBus;
 import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
 import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.service.entity.PgcInfo;
-import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
 
 /**
- * Created by xlg on 2017/5/17.
+ * Created by xiaofeizhang on 2018/3/13.
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+public class TVSelectorAdapter extends RecyclerView.Adapter<TVSelectorAdapter.MyViewHolder> {
 
     private ArrayList<RectF> mItemRectFList;
     private int[] colors = new int[]{
@@ -89,11 +70,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
     private ChannelInfo mItem;
 
-    public HomeAdapter(ArrayList<RectF> itemRectFList) {
+    public TVSelectorAdapter(ArrayList<RectF> itemRectFList) {
         mItemRectFList = itemRectFList;
     }
 
-    public HomeAdapter(ChannelInfo channelInfo,View v) {
+    public TVSelectorAdapter(ChannelInfo channelInfo,View v) {
         mItem = channelInfo;
         this.setHasStableIds(true);
 
@@ -139,35 +120,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
 
-        switch (Type)
-        {
-            case FIRSTBLOCK:
-                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
-                break;
-            case BANNER:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
-                break;
-            case BLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
-                break;
-            case NOTEXTBLOCK:
-                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-                break;
-            case TEXTBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
-                break;
-            case TVBLOCK:
-                //item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvblock, parent, false);
-                break;
-            case ROUNDBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_roundblock, parent, false);
-                break;
-            default:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-                break;
-
-        }
+        item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_h_tvblock, parent, false);
 
 
         item_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -330,8 +283,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         if (holder.image != null)
         {
-           if ((vb.getVer_pic()!=null)&&(vb.getVer_pic()!=holder.imageurl))
-           {
+            if ((vb.getVer_pic()!=null)&&(vb.getVer_pic()!=holder.imageurl))
+            {
 //               if (position == 0)
 //               {
 //                   Glide
@@ -363,24 +316,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 //                           .into(holder.image);
 //               }
 
-               Glide
-                       .with(holder.myContext)
-                       .load(vb.getVer_pic())
-                       .diskCacheStrategy(DiskCacheStrategy.ALL)
-                       .placeholder(R.mipmap.default_pic)
-                       .into(holder.image);
+                Glide
+                        .with(holder.myContext)
+                        .load(vb.getVer_pic())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.mipmap.default_pic)
+                        .into(holder.image);
 
-               holder.m_VideosBean = vb;
+                holder.m_VideosBean = vb;
 
-               holder.itemView.setOnClickListener(new View.OnClickListener() {
-                   public void onClick(View v) {
-                       RxBus.getInstance().send(RxCodeConstants.START_TVDETAIL,new RxBusBaseMessage(position,vb));
-                   }
-               });
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        RxBus.getInstance().send(RxCodeConstants.START_TVDETAIL,new RxBusBaseMessage(position,vb));
+                    }
+                });
 
 
-               holder.imageurl = vb.getVer_pic();
-           }
+                holder.imageurl = vb.getVer_pic();
+            }
 
         }
 
@@ -531,49 +484,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             myContext = context;
 
-   //         mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
+            //         mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
 
-            switch (ia.ItemType)
-            {
-                case BLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_block_rl);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_block);
-                    //image = img_item_block;
-                    break;
-                case BANNER:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_banner_rl);
-                    imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
-                    //imageCycleView= banner_itembanner;
-                    if (imageCycleView!=null)
-                        initBannerView(imageCycleView);
-                    break;
-                case TVBLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_tvblock);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_tvblock);
-                    //image = img_item_tvblock;
-                    break;
-                case TEXTBLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_textblock_rl);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_textblock);
-                    //image = img_item_textblock;
-                    break;
-                case FIRSTBLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_firstblock_rl);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_firstblock);
-                    //image = img_item_firstblock;
-                    //refreshimage = (ImageView) itemView.findViewById(R.id.refreshimg_item_firstblock);
-                    break;
-                case ROUNDBLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_roundblock_rl);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_roundblock);
-                    //image = img_item_roundblock;
-                    break;
-                case NOTEXTBLOCK:
-                    //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_notextblock_rl);
-                    image = (ImageView) itemView.findViewById(R.id.img_item_notextblock);
-                    //image = img_item_notextblock;
-                    break;
-            }
+            image = (ImageView) itemView.findViewById(R.id.img_item_h_tvblock);
 
 
         }

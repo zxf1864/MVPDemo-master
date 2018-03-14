@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.example.administrator.mvpdemo.Adapter.HomeAdapter;
 import com.example.administrator.mvpdemo.Util.AnimationUtil;
 import com.example.administrator.mvpdemo.Util.Constants;
 
@@ -35,6 +36,11 @@ public class FocusView extends RelativeLayout {
     public boolean isBottomEdge = false;
     public boolean isLeftEdge = false;
     public boolean isRightEdge = false;
+
+    public boolean isShow = false;
+    public boolean hasGlideShow = false;
+
+    public HomeAdapter.MyViewHolder viewholder;
 
 
     public int itemIndex;

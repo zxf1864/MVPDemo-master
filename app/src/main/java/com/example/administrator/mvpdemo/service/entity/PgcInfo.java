@@ -1,5 +1,6 @@
 package com.example.administrator.mvpdemo.service.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -67,7 +68,7 @@ public class PgcInfo {
             this.videos = videos;
         }
 
-        public static class VideosBean {
+        public static class VideosBean implements Serializable {
             /**
              * is_album : 1
              * is_trailer : 0
