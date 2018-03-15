@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#000000"
+
+    android:focusable="true"
+
+    android:focusableInTouchMode="true"
+
+    android:descendantFocusability="afterDescendants">
+
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/menu_tvlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/checklist"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#AF000000"
+
+        android:layout_below="@id/menu_tvlist"
+
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_20"
+
+        android:focusable="true"
+
+        android:focusableInTouchMode="true"
+
+        android:descendantFocusability="afterDescendants">
+
+        <com.example.administrator.mvpdemo.ui.CustomWidgets.TextView_extend
+            android:id="@+id/checkcheck"
+
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+
+            android:drawableLeft="@mipmap/check"
+
+            android:text="筛选"
+            android:textSize="16sp"
+
+            android:focusable="true"
+
+            android:focusableInTouchMode="true"
+            />
+
+        <ScrollView
+            android:id="@+id/checklist_ch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:fillViewport="true"
+
+            android:focusable="true"
+
+            android:focusableInTouchMode="true"
+
+            android:descendantFocusability="afterDescendants">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/checklist_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+
+                android:descendantFocusability="afterDescendants">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_tvlist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_alignParentRight="true"
+        android:text="按菜单键筛选"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/check_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_toRightOf="@id/checklist"
+        android:layout_below="@id/tips">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

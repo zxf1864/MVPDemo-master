@@ -2,6 +2,7 @@ package com.example.administrator.mvpdemo.ui.CustomWidgets;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -61,19 +62,21 @@ public class CustomViewPager extends ViewPager{
 //    }
 
 
-    @Override
-    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-
-        TVReCycleViewPagerAdapter viewPager_adapter = (TVReCycleViewPagerAdapter)this.getAdapter();
-        RecyclerView rcv = (RecyclerView)(viewPager_adapter).getPrimaryItem();
-        HomeLayoutManager layoutManager = (HomeLayoutManager)rcv.getLayoutManager();
-
-        if(layoutManager.isSlidingToLast()&&(dx<0))
-            return false;
-        else if(layoutManager.isSlidingToFirst()&&(dx>0))
-            return false;
-        else
-            return true;
-
-    }
+//    @Override
+//    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+//
+//        TVReCycleViewPagerAdapter viewPager_adapter = (TVReCycleViewPagerAdapter)this.getAdapter();
+//        RecyclerView rcv = (RecyclerView)(viewPager_adapter).getPrimaryItem();
+//
+//        HomeLayoutManager layoutManager = (HomeLayoutManager)rcv.getLayoutManager();
+//        //GridLayoutManager layoutManager = (GridLayoutManager)rcv.getLayoutManager();
+//
+//        if(layoutManager.isSlidingToLast()&&(dx<0))
+//            return false;
+//        else if(layoutManager.isSlidingToFirst()&&(dx>0))
+//            return false;
+//        else
+//            return true;
+//
+//    }
 }

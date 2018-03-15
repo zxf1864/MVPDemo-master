@@ -91,4 +91,6 @@ dependencies {
 
 dependencies {
     compile files('libs/SohuPlayerSDK_201512081716.jar')
+    //完整版引入
+    compile 'com.shuyu:GSYVideoPlayer:4.1.0'
 }

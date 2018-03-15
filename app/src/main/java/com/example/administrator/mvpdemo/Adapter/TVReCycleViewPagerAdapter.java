@@ -10,6 +10,8 @@ import android.support.v4.view.PagerAdapter;
 
 
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
@@ -162,7 +164,11 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
 
         if (recyclerView.getLayoutManager() == null)
-            recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position),this.context));
+        {
+            //recyclerView.setLayoutManager(new HomeLayoutManager(datas.get(position),this.context));
+
+            recyclerView.setLayoutManager(new GridLayoutManager(this.context,2, LinearLayoutManager.HORIZONTAL,false));
+        }
         if (recyclerView.getAdapter() == null)
         {
             HomeAdapter homeAdapter = new HomeAdapter(datas.get(position),recyclerView);
@@ -418,9 +424,11 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
         int currentItem = mCurrentItem;
 
-        long delaytime = Math.abs(currentItem - position)*50l;
+//        long delaytime = Math.abs(currentItem - position)*10l;
+//
+//        RxBus.getInstance().send(RxCodeConstants.INIT_RECYCLEVIEW,new RxBusBaseMessage(position,delaytime));
 
-        RxBus.getInstance().send(RxCodeConstants.INIT_RECYCLEVIEW,new RxBusBaseMessage(position,delaytime));
+        InitRecycleView(position,recyclerView);
 
         container.addView(recyclerView);
 

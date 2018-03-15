@@ -31,7 +31,7 @@ public class tvplays_relation extends LinearLayout {
 
     private RecyclerView mRvContent;
 
-    private CHScrollView mCH;
+    private HorizontalScrollView mCH;
 
     private TextView mTitle;
 
@@ -57,14 +57,14 @@ public class tvplays_relation extends LinearLayout {
         mRvContent.setAdapter(homeAdapter);
 
 
-        mCH = (CHScrollView)findViewById(R.id.tv_relation_ch);
+        mCH = (HorizontalScrollView)findViewById(R.id.tv_relation_ch);
 
         ll = (LinearLayout)findViewById(R.id.tv_relation_ll);
-        for(int i = 0; i<5;i++)
+        for(int i = 0; i<15;i++)
         {
             TextView tv = new TextView(context);
-            tv.setText("321");
-            tv.setTextColor(Color.YELLOW);
+            tv.setText(String.valueOf(i));
+            tv.setTextColor(Color.WHITE);
             tv.setPadding(20,20,20,20);
             tv.setFocusable(true);
 

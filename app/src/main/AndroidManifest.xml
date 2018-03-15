@@ -42,6 +42,13 @@
 
         </activity>
 
+        <activity android:name=".ui.activity.TVCheckActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape">
+
+        </activity>
+
 
 
 

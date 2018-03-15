@@ -40,9 +40,6 @@ public class FocusView extends RelativeLayout {
     public boolean isShow = false;
     public boolean hasGlideShow = false;
 
-    public HomeAdapter.MyViewHolder viewholder;
-
-
     public int itemIndex;
 
     public RectF bounds = new RectF();

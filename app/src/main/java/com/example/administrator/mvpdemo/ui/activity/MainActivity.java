@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     @BindView(R.id.Setting_text)
     TextView Setting_text;
 
-    private Toolbar mToolBar;
+
 
     //private BookPresenter mBookPresenter = new BookPresenter(this);
     private PgcPresenter mPgcPresenter = new PgcPresenter(this,this);
@@ -314,6 +314,23 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                     }
                 });
 
+        RxBus.getInstance().tObservable(RxCodeConstants.START_TVCHECK, RxBusBaseMessage.class)
+                .subscribe(new Consumer<RxBusBaseMessage>() {
+                    @Override
+                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+                        Log.d("RxBus", "accept: START_TVCHECK");
+
+                        Intent start_tvcheck = new Intent();
+
+                        start_tvcheck.setClass(MainActivity.this, TVCheckActivity.class);
+
+                        start_tvcheck.putExtra("VideosBean", (PgcInfo.DataBean.VideosBean)rxBusBaseMessage.getObject());
+
+                        startActivity(start_tvcheck);
+
+                    }
+                });
+
 
 
         RxBus.getInstance().tObservable(RxCodeConstants.UPDATE_IMG, RxBusBaseMessage.class)
@@ -365,9 +382,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     @Override
     protected void init()
     {
-        mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
-
         //setAntiAlias();
 
         StatusBarUtils.setWindowStatusBarColor(this, Color.BLACK);
@@ -838,77 +852,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         System.out.println("点击了第"+postion+"行");
         //Toast.makeText(this, (String) listItem.get(postion).get("ItemTitle"), Toast.LENGTH_SHORT).show();
     }
-
-
-
-
-    @Override
-    public boolean onMenuOpened(int featureId, Menu menu) {
-        if (menu != null) {
-            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
-                try {
-                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
-                    method.setAccessible(true);
-                    method.invoke(menu, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return super.onMenuOpened(featureId, menu);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        setUpCartMenuItem(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (item.getItemId())
-        {
-            case R.id.action_search:
-                Toast.makeText(MainActivity.this, "搜索", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_user:
-                Toast.makeText(MainActivity.this, "添加", Toast.LENGTH_SHORT).show();
-                //startAddDev();
-                break;
-//            case R.id.action_vip:
-//                Toast.makeText(MainActivity.this, "设置", Toast.LENGTH_SHORT).show();
-//                break;
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void setUpCartMenuItem(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_msg);
-        View actionView = MenuItemCompat.getActionView(item);
-        View mCartView = ((ViewGroup) actionView).getChildAt(0);
-        if (mCartView != null) {
-            BadgeView badgeView = new BadgeView(MainActivity.this, mCartView);
-            badgeView.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
-            badgeView.setText("111");
-            mCartView.measure(0, 0);
-            badgeView.setBadgeMargin(mCartView.getMeasuredWidth() / 55, mCartView.getMeasuredWidth() / 65);
-            badgeView.show(true);
-            actionView.measure(0, 0);
-        }
-    }
-
 
     @Override
     protected void onDestroy(){

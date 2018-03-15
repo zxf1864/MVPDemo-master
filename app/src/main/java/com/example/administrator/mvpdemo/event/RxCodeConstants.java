@@ -27,4 +27,6 @@ public class RxCodeConstants {
     public static final int UPDATE_IMG = 8;
 
     public static final int INIT_RECYCLEVIEW = 9;
+
+    public static final int START_TVCHECK = 10;
 }

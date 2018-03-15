@@ -13,6 +13,8 @@
 
     </com.example.administrator.mvpdemo.ui.CustomWidgets.SimpleVideoView>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,12 +29,14 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:textSize="30sp"
+            android:textColor="#ffffff"
             android:text="测测测"/>
 
         <TextView
             android:id="@+id/play_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#ffffff"
             android:text="666亿次播放"
             android:paddingLeft="@dimen/dp_10"
             android:layout_toRightOf="@+id/tv_name"
@@ -45,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_alignLeft="@id/tv_name"
+            android:textColor="#ffffff"
             android:text="内地剧"/>
 
         <TextView
@@ -53,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_tag1"
             android:layout_below="@id/tv_name"
+            android:textColor="#ffffff"
             android:text="谍战剧"/>
         <TextView
             android:id = "@+id/tv_tag3"
@@ -60,6 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_tag2"
             android:layout_below="@id/tv_name"
+            android:textColor="#ffffff"
             android:text="战争剧"/>
 
         <TextView
@@ -68,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/tv_score"
             android:layout_below="@+id/tv_name"
+            android:textColor="#ffffff"
             android:text="已赞"/>
         <TextView
             android:id="@+id/tv_score"
@@ -75,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/tv_tag3"
             android:layout_alignParentRight="true"
+            android:textColor="#ffffff"
             android:text="4.3豆"/>
 
         <TextView
@@ -82,6 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_tag1"
+            android:textColor="#ffffff"
             android:text="通过定制化的LayoutManager，接管整个RecyclerView的布局逻辑；LayoutManager管理了一系列LayoutHelper，LayoutHelper负责具体布局逻辑实现的地方；每一个LayoutHelper负责页面某一个范围内的组件布局；不同的LayoutHelper可以做不同的布局逻辑"/>
 
         <TextView
@@ -89,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_content"
+            android:textColor="#ffffff"
             android:text="视频来源:搜狐视频" />
 
 
@@ -96,7 +107,7 @@
             android:id="@+id/all_screen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textColor="#ffffff"
             android:text="全屏"
             android:drawableTop="@mipmap/allscreen"
             android:layout_below="@id/tv_source"/>
@@ -107,6 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/all_screen"
             android:layout_alignBaseline="@id/all_screen"
+            android:textColor="#ffffff"
             android:text="收藏"
             android:drawableTop="@mipmap/collection" />
 
@@ -116,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/all_screen"
             android:layout_toRightOf="@id/tv_collection"
+            android:textColor="#ffffff"
             android:text="会员活动"
             android:drawableTop="@mipmap/vip_action" />
 

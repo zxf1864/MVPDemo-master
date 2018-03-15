@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -280,6 +282,19 @@ public class TVSelectorAdapter extends RecyclerView.Adapter<TVSelectorAdapter.My
         {
             vb = new PgcInfo.DataBean.VideosBean();
         }
+
+
+        RectF rf = mItem.getmItemRectFList().get(position);
+        RecyclerView.LayoutParams layoutParams =  (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+        if (layoutParams.width != rf.width())
+        {
+            layoutParams.width = (int)rf.width() ;
+        }
+
+        holder.itemView.setLayoutParams(layoutParams);
+
+
+
 
         if (holder.image != null)
         {

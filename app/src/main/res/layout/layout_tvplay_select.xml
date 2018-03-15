@@ -12,7 +12,8 @@
     <TextView
         android:id="@+id/tvplays_selector_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tvplays_selector_rv"
@@ -21,7 +22,7 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView
+    <HorizontalScrollView
         android:id="@+id/tvplays_selector_ch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,5 +46,5 @@
 
         </LinearLayout>
 
-    </com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView>
+    </HorizontalScrollView>
 </LinearLayout>

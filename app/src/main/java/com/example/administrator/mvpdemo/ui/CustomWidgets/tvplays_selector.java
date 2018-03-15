@@ -25,7 +25,7 @@ public class tvplays_selector extends LinearLayout {
 
     private RecyclerView mRvContent;
 
-    private CHScrollView mCH;
+    private HorizontalScrollView mCH;
 
     private TextView mTitle;
 
@@ -51,7 +51,7 @@ public class tvplays_selector extends LinearLayout {
         mRvContent.setAdapter(homeAdapter);
 
 
-        mCH = (CHScrollView)findViewById(R.id.tvplays_selector_ch);
+        mCH = (HorizontalScrollView)findViewById(R.id.tvplays_selector_ch);
 
         ll = (LinearLayout)findViewById(R.id.tvplays_selector_ll);
         for(int i = 0; i<5;i++)

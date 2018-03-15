@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+
+    android:layout_margin="@dimen/dp_10"
 
     android:background="@drawable/item_selector"
 
@@ -75,7 +77,8 @@
         android:textColor="#ffffff"
 
         android:layout_above="@+id/videoSummary_item_tvblock"
-        android:layout_alignParentRight="true"
+
+        android:layout_alignRight="@id/img_item_tvblock"
         android:background="@drawable/green_bean_bck"
         android:text="豆"/>
 
