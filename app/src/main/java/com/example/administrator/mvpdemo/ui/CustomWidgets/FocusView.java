@@ -57,12 +57,15 @@ public class FocusView extends RelativeLayout {
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
 
+        int rw = rect.width();
+        int rh = rect.height();
+
         if (cover) {
-            if (rect.width() + 1 >= w&& rect.height() + 1 >= h) {
-                return !cover;
+            if (rw >= w) {
+               cover = false;
             }
         }
-        return true;
+        return cover;
     }
 
 }

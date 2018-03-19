@@ -338,41 +338,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         holder.itemView.setLayoutParams(layoutParams);
 
+        if (holder.itemView instanceof FocusView)
+        {
+            ((FocusView) holder.itemView).itemIndex = position;
+        }
+
         if (holder.image != null)
         {
            if ((vb.getVer_pic()!=null)&&(vb.getVer_pic()!=holder.imageurl))
            {
-//               if (position == 0)
-//               {
-//                   Glide
-//                           .with(holder.myContext)
-//                           .load("http://s1.dwstatic.com/group1/M00/66/4D/d52ff9b0727dfd0133a52de627e39d2a.gif")
-//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                           .placeholder(R.mipmap.default_pic)
-//                           .into(holder.image);
-//               }
-//               else if(position == 1)
-//               {
-//                   String storePath = "mnt/sdcard/splash_3.mp4";
-//                   File file = new File(storePath);
-//
-//                   Glide
-//                           .with(holder.myContext)
-//                           .load(Uri.fromFile(file))
-//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                           .placeholder(R.mipmap.default_pic)
-//                           .into(holder.image);
-//               }
-//               else
-//               {
-//                   Glide
-//                           .with(holder.myContext)
-//                           .load(vb.getVer_pic())
-//                           .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                           .placeholder(R.mipmap.default_pic)
-//                           .into(holder.image);
-//               }
-
                Glide
                        .with(holder.myContext)
                        .load(vb.getVer_pic())
@@ -595,9 +569,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                     image = (ImageView) itemView.findViewById(R.id.img_item_notextblock);
                     //image = img_item_notextblock;
                     break;
+                default:
+                    image = (ImageView) itemView.findViewById(R.id.img_item_notextblock);
             }
 
-
+            if (image!= null)
+            { Glide
+                    .with(myContext)
+                    .load(R.mipmap.default_pic)
+                    .into(image);}
 
         }
     }

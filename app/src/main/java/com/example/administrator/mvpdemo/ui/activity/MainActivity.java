@@ -39,6 +39,7 @@ import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.Model.ChannelInfoList;
 import com.example.administrator.mvpdemo.Model.PgcList;
 import com.example.administrator.mvpdemo.MyReCyclerView.HomeLayoutManager;
+import com.example.administrator.mvpdemo.MyReCyclerView.MyRecyclerView;
 import com.example.administrator.mvpdemo.R;
 import com.example.administrator.mvpdemo.Util.StatusBarUtils;
 import com.example.administrator.mvpdemo.base.BaseActivity;
@@ -122,6 +123,9 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         super.onInit();
 
 
+        mViewPager.requestFocusFromTouch();
+
+
         RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_BOTTOMBAR, RxBusBaseMessage.class)
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
@@ -203,6 +207,86 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 });
 
 
+//        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_LEFT, RxBusBaseMessage.class)
+//                .subscribe(new Consumer<RxBusBaseMessage>() {
+//                    @Override
+//                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+//                        Log.d("RxBus", "accept: JUMP_2_LEFT");
+//
+//                        if (rxBusBaseMessage.getCode()==0)
+//                            return;
+//
+//                        mViewPager.setCurrentItem(rxBusBaseMessage.getCode()-1);
+//
+//                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+//
+//                        RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
+//
+//                        HomeLayoutManager l = (HomeLayoutManager)rc.getLayoutManager();
+//
+//                        rc.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+//
+//                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
+//
+//                        for (int i =0;i<l.getChildCount();i++)
+//                        {
+//                            FocusView v = (FocusView) rc.getChildAt(i);
+//                            if((v!=null)&&(v.isRightEdge))
+//                            {
+//
+//                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
+//                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
+//                                {
+//                                    v.requestFocus();
+//                                    break;
+//                                }
+//                            }
+//
+//                        }
+//
+//                        rc.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
+//                    }
+//                });
+
+//        RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_RIGHT, RxBusBaseMessage.class)
+//                .subscribe(new Consumer<RxBusBaseMessage>() {
+//                    @Override
+//                    public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
+//                        Log.d("RxBus", "accept: JUMP_2_RIGHT");
+//
+//                        if (rxBusBaseMessage.getCode()== ChannelInfoList.getInstance().getmChannelInfos().size() - 1)
+//                            return;
+//
+//                        mViewPager.setCurrentItem(rxBusBaseMessage.getCode() + 1);
+//
+//                        TVReCycleViewPagerAdapter tva = (TVReCycleViewPagerAdapter)mViewPager.getAdapter();
+//
+//                        RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
+//
+//                        HomeAdapter ha = (HomeAdapter)rc.getAdapter();
+//
+//
+//                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
+//
+//                        for (int i =0;i<ha.getItemCount();i++)
+//                        {
+//                            FocusView v = (FocusView) rc.getChildAt(i);
+//                            if((v!=null)&&(v.isLeftEdge))
+//                            {
+//                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
+//                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
+//                                {
+//                                    v.requestFocus();
+//                                    break;
+//                                }
+//                            }
+//
+//                        }
+//
+//                    }
+//                });
+
+
         RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_LEFT, RxBusBaseMessage.class)
                 .subscribe(new Consumer<RxBusBaseMessage>() {
                     @Override
@@ -218,31 +302,20 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
 
-                        HomeLayoutManager l = (HomeLayoutManager)rc.getLayoutManager();
+                        ((MyRecyclerView)rc).JumpBack = true;
 
-                        rc.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+                        int lastpostion = rc.getAdapter().getItemCount() - 1;
 
-                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
+                        rc.scrollToPosition(lastpostion);
+                        rc.smoothScrollBy(100000 , 0);
 
-                        for (int i =0;i<l.getChildCount();i++)
-                        {
-                            FocusView v = (FocusView) rc.getChildAt(i);
-                            if((v!=null)&&(v.isRightEdge))
-                            {
+//                        View v= rc.getChildAt(lastpostion);
+//                        if(v!=null)
+//                           v.requestFocusFromTouch();
 
-                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
-                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
-                                {
-                                    v.requestFocus();
-                                    break;
-                                }
-                            }
-
-                        }
-
-                        rc.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
                     }
                 });
+
 
         RxBus.getInstance().tObservable(RxCodeConstants.JUMP_2_RIGHT, RxBusBaseMessage.class)
                 .subscribe(new Consumer<RxBusBaseMessage>() {
@@ -259,25 +332,12 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         RecyclerView rc = (RecyclerView)tva.getPrimaryItem();
 
-                        HomeAdapter ha = (HomeAdapter)rc.getAdapter();
+                        rc.scrollToPosition(0);
+                        rc.smoothScrollBy(-1000 , 0);
 
-
-                        FocusView preFocusView = (FocusView) rxBusBaseMessage.getObject();
-
-                        for (int i =0;i<ha.getItemCount();i++)
-                        {
-                            FocusView v = (FocusView) rc.getChildAt(i);
-                            if((v!=null)&&(v.isLeftEdge))
-                            {
-                                if(((v.bounds.bottom >= preFocusView.bounds.bottom)&&(v.bounds.top <preFocusView.bounds.bottom))
-                                        ||((v.bounds.bottom >= preFocusView.bounds.top)&&(v.bounds.top <preFocusView.bounds.top)))
-                                {
-                                    v.requestFocus();
-                                    break;
-                                }
-                            }
-
-                        }
+                        View v=  rc.getChildAt(0);
+                        if(v!=null)
+                          v.requestFocusFromTouch();
 
                     }
                 });
@@ -288,8 +348,19 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
                         Log.d("RxBus", "accept: JUMP_2_TOOLBAR");
+                        Toolbar toolbar = MainActivity.super.getmToolBar();
+
+                        toolbar.requestFocusFromTouch();
+
+                        MenuItem mi = toolbar.getMenu().getItem(0);
 
 
+                        View v = mi.getActionView();
+                        if(v!=null)
+                        {
+                            v.setFocusable(true);
+                            v.setFocusableInTouchMode(true);
+                            v.requestFocusFromTouch();}
                     }
                 });
 
@@ -502,7 +573,8 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         if(name!=null)
         {
             initCH();
-            name.requestFocus();
+
+            name.requestFocusFromTouch();
         }
 
     }
@@ -628,7 +700,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                 else
                 {
                     tv.setTextColor(Color.WHITE);
-                    tv.setBackgroundResource(0);
                 }
             }
          }

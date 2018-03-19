@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-
         <com.example.administrator.mvpdemo.ui.CustomWidgets.CustomViewPager
             android:id="@+id/id_viewpager"
             android:layout_width="fill_parent"

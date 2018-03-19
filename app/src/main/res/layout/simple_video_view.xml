@@ -2,7 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:padding="@dimen/dp_25"
+    android:background="@drawable/item_selector"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+
     >
     <!-- 视频控件 -->
     <VideoView
@@ -10,7 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@drawable/scale_player_bg"
         />
+
+    <ImageView
+        android:id="@+id/video_view_preimg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <!-- 播放控制面板 -->
     <LinearLayout
         android:id="@+id/control_panel"

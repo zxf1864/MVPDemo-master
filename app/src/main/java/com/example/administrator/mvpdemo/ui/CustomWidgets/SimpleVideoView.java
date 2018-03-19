@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -24,6 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.mvpdemo.R;
 
 /**
@@ -36,6 +38,7 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
     private Context context;
     private View mView;
     private VideoView mVideoView;//视频控件
+    private ImageView mPrePlayImg;
     private ImageView mBigPlayBtn;//大的播放按钮
     private ImageView mPlayBtn;//播放按钮
     private ImageView mFullScreenBtn;//全屏按钮
@@ -100,6 +103,12 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
         this.context = context;
         mView = LayoutInflater.from(context).inflate(R.layout.simple_video_view, this);
+        mPrePlayImg = (ImageView)mView.findViewById(R.id.video_view_preimg);
+
+        Glide.with(context)
+                .load(R.drawable.scale_player_bg)
+                .into(mPrePlayImg);
+
         mBigPlayBtn = (ImageView) mView.findViewById(R.id.big_play_button);
         mPlayBtn = (ImageView) mView.findViewById(R.id.play_button);
         mFullScreenBtn = (ImageView) mView.findViewById(R.id.full_screen_button);
@@ -120,10 +129,39 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
 //      mMediaController = new MediaController(context);
 //      mMediaController.setVisibility(View.GONE);
 //      mVideoView.setMediaController(mMediaController);
+
+        mView.setOnClickListener(this);
+
+
+        mBigPlayBtn.setVisibility(View.GONE);
+        mVideoView.setBackground(null);
+        if(!mVideoView.isPlaying()){
+            mVideoView.start();
+            mPlayBtn.setImageResource(R.mipmap.pause_icon);
+            //开始更新进度线程
+            mUpdateThread = new Thread(mUpdateTask);
+            stopThread = false;
+            mUpdateThread.start();
+        }
+
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 //视频加载完成后才能获取视频时长
+                mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                    @Override
+                    public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                        if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //隐藏预览图片,这里延时100ms消失是防止页面过渡时闪屏
+                                    mPrePlayImg.setVisibility(View.INVISIBLE);
+                                }
+                            }, 100);
+                        return true;
+                    }
+                });
                 initVideo();
             }
         });
@@ -140,18 +178,6 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
             }
         });
 
-        mView.setOnClickListener(this);
-
-        mBigPlayBtn.setVisibility(View.GONE);
-        mVideoView.setBackground(null);
-        if(!mVideoView.isPlaying()){
-            mVideoView.start();
-            mPlayBtn.setImageResource(R.mipmap.pause_icon);
-            //开始更新进度线程
-            mUpdateThread = new Thread(mUpdateTask);
-            stopThread = false;
-            mUpdateThread.start();
-        }
     }
 
     //初始化视频，设置视频时间和进度条最大值

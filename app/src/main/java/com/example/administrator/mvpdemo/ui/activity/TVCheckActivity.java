@@ -87,7 +87,7 @@ public class TVCheckActivity extends BaseActivity {
         mCheck.text.setText("筛选");
         mCheck.setFocusable(true);
         mCheck.setClickable(true);
-        mCheck.setBackgroundResource(R.drawable.item_selector);
+
 
         mTitle = (TextView) findViewById(R.id.tips);
         mTitle.setText("xxx行 按菜单键筛选");
@@ -122,14 +122,14 @@ public class TVCheckActivity extends BaseActivity {
             tv.setPadding(20,20,20,20);
             tv.setFocusable(true);
             tv.setClickable(true);
-            tv.setBackgroundResource(R.drawable.item_selector);
+            tv.setBackgroundResource(R.drawable.selector_noshadow);
             tv.setTextColor(Color.WHITE);
             tv.setGravity(View.TEXT_ALIGNMENT_CENTER);
 
             ll.addView(tv);
         }
 
-
+      mCheck.requestFocusFromTouch();
     }
 
 

@@ -136,7 +136,7 @@ public class PgcPresenter extends BasePresenter<ITestView,MainActivity> implemen
                     }
                     @Override
                     public void onComplete() {
-                        if ((mPgcInfo != null)&&(mPgcInfo.getData().getVideos().size() > 0)){
+                        if ((mPgcInfo != null)&&(mPgcInfo.getData()!=null)&&(mPgcInfo.getData().getVideos()!=null)&&(mPgcInfo.getData().getVideos().size() > 0)){
                             //mPgcView.onSuccess(mPgc);
                             //PgcPresenter.super.getView().onSuccess(mPgc);
                             try
@@ -171,7 +171,6 @@ public class PgcPresenter extends BasePresenter<ITestView,MainActivity> implemen
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        PgcPresenter.super.getView().onError("请求失败！！");
                     }
 
                     @Override

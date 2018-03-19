@@ -49,7 +49,7 @@ public class tvplays_relation extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.layout_tv_relation, this, true);
 
         mTitle = (TextView) findViewById(R.id.tv_relation_title);
-        mTitle.setText("花絮");
+        mTitle.setText("花絮周边");
 
         mRvContent = (RecyclerView)findViewById(R.id.tv_relation_rv);
         mRvContent.setLayoutManager(new GridLayoutManager(context,2,LinearLayoutManager.HORIZONTAL,false));

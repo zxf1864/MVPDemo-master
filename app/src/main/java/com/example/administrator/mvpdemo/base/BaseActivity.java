@@ -40,6 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Context mContext;
     protected Unbinder unBinder;
 
+    public Toolbar getmToolBar() {
+        return mToolBar;
+    }
+
     private Toolbar mToolBar;
 
     private Subscription mSubscription;
@@ -56,7 +60,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         unBinder = ButterKnife.bind(this);
 
         mToolBar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolBar);
+        if (mToolBar!=null)
+        { mToolBar.setTitle("");
+        setSupportActionBar(mToolBar);}
 
         init();
 
@@ -88,11 +94,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onMenuOpened(featureId, menu);
     }
 
+    public MenuItem search;
+    public MenuItem user;
+    public MenuItem vip;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        search = menu.findItem(R.id.action_search);
 
         setUpCartMenuItem(menu);
         return true;

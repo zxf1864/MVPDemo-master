@@ -43,7 +43,7 @@ public class tvplays_selector extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.layout_tvplay_select, this, true);
 
         mTitle = (TextView) findViewById(R.id.tvplays_selector_title);
-        mTitle.setText("md");
+        mTitle.setText("更新至xx期");
 
         mRvContent = (RecyclerView)findViewById(R.id.tvplays_selector_rv);
         mRvContent.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
@@ -57,7 +57,7 @@ public class tvplays_selector extends LinearLayout {
         for(int i = 0; i<5;i++)
         {
             TextView tv = new TextView(context);
-            tv.setText("123");
+            tv.setText(String.valueOf(i));
             tv.setTextColor(Color.YELLOW);
             tv.setPadding(20,20,20,20);
             tv.setFocusable(true);
