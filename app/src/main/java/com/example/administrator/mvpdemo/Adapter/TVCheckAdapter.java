@@ -82,8 +82,84 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
     }
 
 
+    private Context mContext;
+    public TVCheckAdapter(ChannelInfo channelInfo,View v,Context context) {
+        mItem = channelInfo;
+        this.setHasStableIds(true);
+        mContext = context;
+    }
+
+
+
+    private RelativeLayout mFooterLayout;//footer view
+    private View mLoadingView; //分页加载中view
+
+    /**
+     * 清空footer view
+     */
+    private void removeFooterView() {
+        mFooterLayout.removeAllViews();
+    }
+
+
+    /**
+     * 添加新的footer view
+     *
+     * @param footerView
+     */
+    private void addFooterView(View footerView) {
+        if (footerView == null) {
+            return;
+        }
+
+        if (mFooterLayout == null) {
+            mFooterLayout = new RelativeLayout(mContext);
+        }
+        removeFooterView();
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        mFooterLayout.addView(footerView, params);
+    }
+
+    /**
+     * 初始化加载中布局
+     *
+     * @param loadingView
+     */
+    public void setLoadingView(View loadingView) {
+        mLoadingView = loadingView;
+        addFooterView(mLoadingView);
+    }
+
+    public void setLoadingView(int loadingId) {
+        setLoadingView(LayoutInflater.from(mContext).inflate(loadingId, null));
+    }
+
+
+
+
+
+
+
+
+
+
+    public void SetData(ChannelInfo channelInfo)
+    {
+        mItem = channelInfo;
+        this.notifyDataSetChanged();
+    }
+
+
     @Override
     public int getItemViewType(int position) {
+        if (mItem == null)
+            return ItemAttribute.VideoItemType.EMPTY.ordinal();
+        if(mItem.getmItemRectFList() == null)
+            return ItemAttribute.VideoItemType.EMPTY.ordinal();
+        if (mItem.getmItemRectFList().size() == 0)
+            return ItemAttribute.VideoItemType.EMPTY.ordinal();
+
 
         ItemAttribute.VideoItemType type =  mItem.ItemAttributeS.get(position).ItemType;
 
@@ -117,7 +193,12 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
 
         ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
 
-        item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvcheck_block, parent, false);
+        if (Type.equals(ItemAttribute.VideoItemType.EMPTY) )
+        {
+            item_view =LayoutInflater.from(parent.getContext()).inflate(R.layout.recycleview_empty_item, parent, false);
+        }
+        else
+            item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvcheck_block, parent, false);
 
         item_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -244,6 +325,9 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
 
         PgcInfo.DataBean.VideosBean vb;
 
+        if (holder.IA.ItemType.equals(ItemAttribute.VideoItemType.EMPTY))
+            return;
+
         if(mItem.Videos.get(position)!=null)
         {
             vb = mItem.Videos.get(position);
@@ -270,7 +354,7 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
                         .with(holder.myContext)
                         .load(vb.getVer_pic())
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(R.mipmap.default_pic)
+                        .placeholder(R.drawable.detail_poster_default)
                         .into(holder.image);
 
                 holder.m_VideosBean = vb;
@@ -321,6 +405,13 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
     @Override
     public int getItemCount() {
         //return mItemRectFList.size();
+        if (mItem == null)
+            return 1;
+        if(mItem.getmItemRectFList() == null)
+            return 1;
+        if (mItem.getmItemRectFList().size() == 0)
+            return 1;
+
         return mItem.getmItemRectFList().size();
     }
 
@@ -437,6 +528,12 @@ public class TVCheckAdapter extends RecyclerView.Adapter<TVCheckAdapter.MyViewHo
             //         mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
 
             image = (ImageView) itemView.findViewById(R.id.img_item_tvcheck);
+
+            if (image!=null)
+                Glide
+                        .with(myContext)
+                        .load(R.drawable.detail_poster_default)
+                        .into(image);
 
 
         }

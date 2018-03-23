@@ -17,7 +17,8 @@ public class ItemAttribute {
         BLOCK,
         ROUNDBLOCK,
         NOTEXTBLOCK,
-        TEXTBLOCK
+        TEXTBLOCK,
+        EMPTY
     }
 }
 

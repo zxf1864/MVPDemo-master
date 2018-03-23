@@ -1,6 +1,7 @@
 package com.example.administrator.mvpdemo.MyReCyclerView;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.FocusFinder;
@@ -24,6 +25,9 @@ public class MyRecyclerView extends RecyclerView {
     public MyRecyclerView(Context context,int postion_in_viewpager)
     {
         super(context);
+
+        this.setBackgroundColor(Color.TRANSPARENT);
+
         Position = postion_in_viewpager;
     }
 
@@ -147,22 +151,22 @@ public class MyRecyclerView extends RecyclerView {
         return ret;
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-
-        boolean result = false;
-
-        View focusView = this.getFocusedChild();
-
-        if (focusView != null) {
-            int dx = (int)focusView.getX();
-            if (dx <=0)
-                dx = focusView.getWidth()*2;
-            result = mydispatchKeyEvent(event,focusView,dx);
-        }
-
-        return result?true:super.dispatchKeyEvent(event);
-    }
+//    @Override
+//    public boolean dispatchKeyEvent(KeyEvent event) {
+//
+//        boolean result = false;
+//
+//        View focusView = this.getFocusedChild();
+//
+//        if (focusView != null) {
+//            int dx = (int)focusView.getX();
+//            if (dx <=0)
+//                dx = focusView.getWidth()*2;
+//            result = mydispatchKeyEvent(event,focusView,dx);
+//        }
+//
+//        return result?true:super.dispatchKeyEvent(event);
+//    }
 
     private long mLastKeyDownTime = 0;
     @Override

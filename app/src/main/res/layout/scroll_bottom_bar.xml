@@ -9,19 +9,21 @@
     android:minHeight="60dp"
     android:orientation="horizontal"
 
-    android:background="#000000">
+    android:background="@android:color/transparent">
 
     <com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView
         android:id="@+id/item_scroll_title"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
+        android:background="@android:color/transparent"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@android:color/transparent">
 
             <TextView
                 android:id="@+id/common_broadcast_text"
@@ -177,7 +179,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="6dp"
 
-            app:srcCompat="@mipmap/ic_control" />
+            app:srcCompat="@drawable/desk_home_icon" />
 
         <TextView
             android:layout_width="fill_parent"

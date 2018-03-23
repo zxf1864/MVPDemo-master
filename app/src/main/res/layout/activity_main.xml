@@ -8,16 +8,33 @@
 
     android:orientation="vertical"
 
+    android:background="#000000"
+
     tools:context="com.example.administrator.mvpdemo.ui.activity.MainActivity">
 
+    <!--
     <include layout="@layout/layout_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    -->
+    <com.example.administrator.mvpdemo.ui.CustomWidgets.topbar
+        android:id="@+id/main_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
+        android:background="@android:color/transparent"
+
+        android:descendantFocusability="afterDescendants" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@android:color/transparent">
 
         <com.example.administrator.mvpdemo.ui.CustomWidgets.CustomViewPager
             android:id="@+id/id_viewpager"
@@ -26,10 +43,7 @@
 
             android:layout_weight= "1"
 
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-
-            android:background="#888">
+            android:background="@android:color/transparent">
 
         </com.example.administrator.mvpdemo.ui.CustomWidgets.CustomViewPager>
 
@@ -37,8 +51,8 @@
         <include layout="@layout/scroll_bottom_bar"
             android:layout_height="60dp"
             android:layout_width="fill_parent"
-
-            android:layout_below="@id/id_viewpager" />
+            android:background="@android:color/transparent"
+            />
 
     </LinearLayout>
 

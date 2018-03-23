@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:background="@android:color/transparent"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="afterDescendants">
+
+    <cn.bingoogolapple.badgeview.BGABadgeImageView
+        android:id="@+id/toolbar_msg_img"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+
+        android:src="@drawable/home_message_unfocused"
+
+        android:scaleType="centerInside"
+
+        android:background="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/toolbar_msg_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/menushadow">
 
+        android:layout_toRightOf="@id/toolbar_msg_img"
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_centerInParent="true"
-            android:src="@mipmap/ic_msg"/>
+        android:layout_centerVertical="true"
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
 
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
 
-            android:singleLine="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="300dp"
 
-            android:ellipsize="marquee"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-
-            android:text="" />
-
-    </LinearLayout>
-
-
+        android:singleLine="true"
+        android:text="海啊全是水啊，马啊四条腿啊，跑啊跑啊！海啊全是水啊，马啊四条腿啊，跑啊跑啊！海啊全是水啊，马啊四条腿啊，跑啊跑啊！"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

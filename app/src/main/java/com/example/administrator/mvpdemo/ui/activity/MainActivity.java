@@ -7,7 +7,10 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 
 import android.graphics.Rect;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 
@@ -59,10 +62,18 @@ import com.example.administrator.mvpdemo.service.view.ITestView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.BadgeView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.CHScrollView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.topbar;
 import com.example.administrator.mvpdemo.ui.LayoutData.LayoutData;
 
 
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 
@@ -106,7 +117,11 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     @BindView(R.id.Setting_text)
     TextView Setting_text;
 
+    @BindView(R.id.main_topbar)
+    topbar maintopbar;
 
+    @BindView(R.id.home_time)
+    TextView hometime;
 
     //private BookPresenter mBookPresenter = new BookPresenter(this);
     private PgcPresenter mPgcPresenter = new PgcPresenter(this,this);
@@ -122,6 +137,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
     protected void onInit() {
         super.onInit();
 
+        new TimeThread().start();
 
         mViewPager.requestFocusFromTouch();
 
@@ -348,19 +364,22 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
                     @Override
                     public void accept(RxBusBaseMessage rxBusBaseMessage) throws Exception {
                         Log.d("RxBus", "accept: JUMP_2_TOOLBAR");
-                        Toolbar toolbar = MainActivity.super.getmToolBar();
 
-                        toolbar.requestFocusFromTouch();
+                        maintopbar.requestFocusFromTouch();
 
-                        MenuItem mi = toolbar.getMenu().getItem(0);
-
-
-                        View v = mi.getActionView();
-                        if(v!=null)
-                        {
-                            v.setFocusable(true);
-                            v.setFocusableInTouchMode(true);
-                            v.requestFocusFromTouch();}
+//                        Toolbar toolbar = MainActivity.super.getmToolBar();
+//
+//                        toolbar.requestFocusFromTouch();
+//
+//                        MenuItem mi = toolbar.getMenu().getItem(0);
+//
+//
+//                        View v = mi.getActionView();
+//                        if(v!=null)
+//                        {
+//                            v.setFocusable(true);
+//                            v.setFocusableInTouchMode(true);
+//                            v.requestFocusFromTouch();}
                     }
                 });
 
@@ -395,7 +414,7 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
 
                         start_tvcheck.setClass(MainActivity.this, TVCheckActivity.class);
 
-                        start_tvcheck.putExtra("VideosBean", (PgcInfo.DataBean.VideosBean)rxBusBaseMessage.getObject());
+                        start_tvcheck.putExtra("channelname", ChangeChannel(mViewPager.getCurrentItem()).getText());
 
                         startActivity(start_tvcheck);
 
@@ -601,8 +620,6 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
             mAdapter.setDatas(ChannelInfoList.getInstance().getmChannelInfos());
 
             mViewPager.setAdapter(mAdapter);
-            mViewPager.setBackgroundColor(Color.RED);
-
 
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
             {
@@ -967,6 +984,129 @@ public class MainActivity extends BaseActivity implements ITestView,MyItemClickL
         }
     }
 
+
+
+
+
+    public class TimeThread extends  Thread{
+
+        private long appTimeStamp = 0;
+
+        @Override
+        public void run() {
+            super.run();
+            do{
+                try {
+                    Thread.sleep(60000);
+                    if(appTimeStamp == 0)
+                        appTimeStamp = getNetTimeStamp();
+                    else
+                    {
+                        appTimeStamp +=60000;
+
+                        Message msg = new Message();
+                        msg.what = 1;
+                        Bundle bd = new Bundle();
+                        bd.putString("time", Nettime2UTC(appTimeStamp));
+                        msg.setData(bd);
+                        mHandler.sendMessage(msg);
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }while (true);
+        }
+    }
+
+    /**
+     * 当地时间 ---> UTC时间
+     * @return
+     */
+    public static String Local2UTC(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("gmt"));
+        String gmtTime = sdf.format(new Date());
+        return gmtTime;
+    }
+
+    public static String Nettime2UTC(long ld){
+        Date date = new Date(ld);
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+        TimeZone timeZone = TimeZone.getTimeZone("GMT+8");
+
+        formatter.setTimeZone(timeZone);
+
+        final String format = formatter.format(date);
+        return format;
+    }
+
+    private long getNetTimeStamp() {
+        URL url = null;//取得资源对象
+        try {
+            url = new URL("http://www.baidu.com");
+            //url = new URL("http://www.ntsc.ac.cn");//中国科学院国家授时中心
+            //url = new URL("http://www.bjtime.cn");
+            URLConnection uc = url.openConnection();//生成连接对象
+            uc.connect(); //发出连接
+            long ld = uc.getDate(); //取得网站日期时间
+
+            return  ld;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  0;
+        }
+    }
+
+    private String getNetTime() {
+        URL url = null;//取得资源对象
+        try {
+            url = new URL("http://www.baidu.com");
+            //url = new URL("http://www.ntsc.ac.cn");//中国科学院国家授时中心
+            //url = new URL("http://www.bjtime.cn");
+            URLConnection uc = url.openConnection();//生成连接对象
+            uc.connect(); //发出连接
+            long ld = uc.getDate(); //取得网站日期时间
+//            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeZone(TimeZone.getTimeZone("gmt+8"));
+//            calendar.setTimeInMillis(ld);
+
+            Date date = new Date(ld);
+            SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
+
+            TimeZone timeZone = TimeZone.getTimeZone("GMT+8");
+
+            formatter.setTimeZone(timeZone);
+
+            final String format = formatter.format(date);
+
+            return  format;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+//                    long time = System.currentTimeMillis();
+//                    Date date = new Date(time);
+//                    SimpleDateFormat format = new SimpleDateFormat("HH时mm分ss秒");
+//                    hometime.setText(format.format(date));
+                    Bundle bd = msg.getData();
+                    hometime.setText(bd.getString("time"));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 
 }

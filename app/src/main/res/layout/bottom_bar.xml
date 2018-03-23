@@ -4,11 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="60dp"
     android:layout_alignParentBottom="true"
-    android:background= "#000000">
+    android:background="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="60dp" >
+        android:layout_height="60dp"
+        android:background="@android:color/transparent">
 
         <LinearLayout
             android:id="@+id/id_tab_bottom_commonbraodcast"
@@ -17,13 +18,13 @@
             android:layout_weight="1"
             android:descendantFocusability="beforeDescendants"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:background="@android:color/transparent">
 
             <ImageButton
                 android:id="@+id/btn_tab_bottom_commonbraodcast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#0000"
                 android:clickable="false" />
 
             <TextView

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
 
 
     <com.example.administrator.mvpdemo.ui.CustomWidgets.SimpleVideoView
@@ -14,7 +15,8 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:descendantFocusability="afterDescendants">
+        android:descendantFocusability="afterDescendants"
+        android:background="@android:color/transparent">
     </com.example.administrator.mvpdemo.ui.CustomWidgets.SimpleVideoView>
 
 
@@ -23,6 +25,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_alignBottom ="@id/tv_play"
+        android:background="@android:color/transparent"
         android:padding="@dimen/dp_20">
 
         <TextView
@@ -33,7 +36,8 @@
             android:layout_alignParentTop="true"
             android:textSize="30sp"
             android:textColor="#ffffff"
-            android:text="测测测" />
+            android:text="测测测"
+            android:background="@android:color/transparent"/>
 
         <TextView
             android:id="@+id/play_num"
@@ -43,7 +47,8 @@
             android:text="666亿次播放"
             android:paddingLeft="@dimen/dp_10"
             android:layout_toRightOf="@+id/tv_name"
-            android:layout_alignBaseline="@id/tv_name"/>
+            android:layout_alignBaseline="@id/tv_name"
+            android:background="@android:color/transparent"/>
 
 
         <TextView
@@ -100,6 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_tag1"
             android:textColor="#ffffff"
+            android:background="@android:color/transparent"
             android:text="通过定制化的LayoutManager，接管整个RecyclerView的布局逻辑；LayoutManager管理了一系列LayoutHelper，LayoutHelper负责具体布局逻辑实现的地方；每一个LayoutHelper负责页面某一个范围内的组件布局；不同的LayoutHelper可以做不同的布局逻辑"/>
 
         <TextView
@@ -108,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_content"
             android:textColor="#ffffff"
+            android:background="@android:color/transparent"
             android:text="视频来源:搜狐视频" />
 
 

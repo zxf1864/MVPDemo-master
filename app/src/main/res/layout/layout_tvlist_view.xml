@@ -13,22 +13,35 @@
 
     android:descendantFocusability="afterDescendants">
 
-    <include layout="@layout/layout_toolbar"
-        android:id="@+id/menu_tvlist"
+    <com.example.administrator.mvpdemo.ui.CustomWidgets.topbar
+        android:id="@+id/check_topbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="60dp"
+
+        android:clipChildren="false"
+        android:clipToPadding="false"
+
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
+        android:descendantFocusability="afterDescendants"
+        />
 
     <LinearLayout
         android:id="@+id/checklist"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
-        android:background="#AF000000"
+        android:background="@drawable/all_label_mon"
 
-        android:layout_below="@id/menu_tvlist"
+
+        android:layout_below="@id/check_topbar"
 
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginBottom="@dimen/dp_20"
+
+        android:gravity="center"
 
         android:clickable="true"
 
@@ -42,11 +55,10 @@
             android:id="@+id/checkcheck"
 
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
 
-            android:drawableLeft="@mipmap/check"
+            android:layout_gravity="center_horizontal"
 
-            android:text="筛选"
             android:textSize="16sp"
 
             android:focusable="true"
@@ -63,6 +75,8 @@
 
             android:fillViewport="true"
 
+            android:gravity="center"
+
             android:clipChildren="false"
             android:clipToPadding="false"
 
@@ -72,6 +86,8 @@
 
             android:focusableInTouchMode="true"
 
+            android:background="@android:color/transparent"
+
             android:descendantFocusability="afterDescendants">
 
             <LinearLayout
@@ -79,6 +95,9 @@
                 android:id="@+id/checklist_ll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+
+                android:gravity="center"
 
                 android:clipChildren="false"
                 android:clipToPadding="false"
@@ -95,22 +114,33 @@
 
         </ScrollView>
 
-
-
     </LinearLayout>
 
     <TextView
         android:id="@+id/tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/menu_tvlist"
+        android:layout_below="@id/check_topbar"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_alignParentRight="true"
+        android:textColor="#ffffff"
+        android:background="@android:color/transparent"
         android:text="按菜单键筛选"/>
 
+    <TextView
+        android:id="@+id/tvcheck_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tips"
+        android:layout_alignParentRight="true"
+        android:text = "xx"
+        android:textColor="#ffffff"
+        android:background="@android:color/transparent"
+        android:textSize="50sp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/check_rv"
+        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/dp_20"
@@ -118,5 +148,19 @@
         android:layout_below="@id/tips">
 
     </android.support.v7.widget.RecyclerView>
+
+
+    <include
+        layout="@layout/recycleview_empty_item"
+        android:id="@+id/check_rv_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:layout_toRightOf="@id/checklist"
+        android:layout_below="@id/tips"
+        android:background="@android:color/transparent"
+        android:visibility="invisible">
+
+    </include>
 
 </RelativeLayout>

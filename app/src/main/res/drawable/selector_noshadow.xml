@@ -3,6 +3,8 @@
     <item android:state_selected="true" android:drawable="@drawable/home_focus_with_no_shadow" />
     <item android:state_focused="true" android:drawable="@drawable/home_focus_with_no_shadow" />
     <item android:state_pressed="true" android:drawable="@drawable/home_focus_with_no_shadow"  />
+
+    <item android:drawable="@android:color/transparent"></item>
     <!--
     <item android:drawable="@drawable/shadow"/>
     -->

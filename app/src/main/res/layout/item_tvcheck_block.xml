@@ -6,10 +6,8 @@
 
     android:background="@drawable/item_selector"
 
-    android:padding="@dimen/dp_22"
+    android:padding="@dimen/dp_32"
 
-    android:clipChildren="false"
-    android:clipToPadding="false"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -25,7 +23,7 @@
         android:scaleType="fitXY"
 
         android:layout_above="@id/videoName_item_tvcheck"
-        />
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/tag_item_tvcheck"
@@ -40,7 +38,8 @@
         android:layout_marginTop="3dp"
 
         android:textColor="#ffffff"
-        android:text="内容标签" />
+        android:text="内容标签"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_tvcheck_Score"
@@ -55,7 +54,8 @@
         android:layout_marginBottom="3dp"
 
         android:textColor="#ffffff"
-        android:text="评分" />
+        android:text="评分"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/videoName_item_tvcheck"
@@ -67,7 +67,8 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:text="视频                                        名称"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:background="@android:color/transparent"/>
 
 
 

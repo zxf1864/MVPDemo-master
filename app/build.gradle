@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.administrator.mvpdemo"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -93,4 +93,9 @@ dependencies {
     compile files('libs/SohuPlayerSDK_201512081716.jar')
     //完整版引入
     compile 'com.shuyu:GSYVideoPlayer:4.1.0'
+
+
+    implementation 'cn.bingoogolapple:bga-badgeview-api:1.1.7'
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.7"
+
 }

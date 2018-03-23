@@ -6,10 +6,7 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/item_selector"
-    android:padding="@dimen/dp_22"
-
-    android:clipChildren="false"
-    android:clipToPadding="false"
+    android:padding="@dimen/dp_32"
 
     android:clickable="true"
     android:focusable="true"
@@ -21,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_textblock_name"
@@ -30,7 +28,8 @@
         android:layout_alignParentTop="true"
         android:textColor="#FFFFFF"
         android:textSize="3pt"
-        android:text="视频名称"/>
+        android:text="视频名称"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_textblock_rank"
@@ -40,7 +39,8 @@
         android:layout_centerInParent="true"
         android:textColor="#FFFFFF"
         android:textSize="3pt"
-        android:text="排名"/>
+        android:text="排名"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_textblock_score"
@@ -51,7 +51,8 @@
         android:layout_alignRight="@+id/item_textblock_rank"
         android:textColor="#FFFFFF"
         android:textSize="3pt"
-        android:text="得分"/>
+        android:text="得分"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_textblock_describe"
@@ -60,7 +61,8 @@
         android:layout_alignParentBottom="true"
         android:textColor="#FFFFFF"
         android:textSize="3pt"
-        android:text="来源"/>
+        android:text="来源"
+        android:background="@android:color/transparent"/>
 
 
 </com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView>

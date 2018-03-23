@@ -58,7 +58,7 @@ public class LayoutData {
             "{\"bottom\":800.0,\"left\":3700.0,\"right\":4200.0,\"top\":450.0}]";
 
     private static ItemAttribute.VideoItemType[] mItemType1 = {
-            ItemAttribute.VideoItemType.BANNER,
+            ItemAttribute.VideoItemType.TVBLOCK,
             ItemAttribute.VideoItemType.TEXTBLOCK,
             ItemAttribute.VideoItemType.ROUNDBLOCK,
             ItemAttribute.VideoItemType.ROUNDBLOCK,
@@ -462,7 +462,7 @@ public class LayoutData {
             ItemAttribute.VideoItemType.BLOCK,
             ItemAttribute.VideoItemType.BLOCK,
 
-            ItemAttribute.VideoItemType.BANNER,
+            ItemAttribute.VideoItemType.TVBLOCK,
             ItemAttribute.VideoItemType.ROUNDBLOCK,
             ItemAttribute.VideoItemType.ROUNDBLOCK,
             ItemAttribute.VideoItemType.ROUNDBLOCK,

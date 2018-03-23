@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="#000000">
 
     <LinearLayout
@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/activity_tvdetail"
+        android:background="@android:color/transparent"
 
         android:clickable="true"
         android:focusable="true"
@@ -17,19 +18,9 @@
 
         android:descendantFocusability="afterDescendants">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="10dp"
-            android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            android:id="@+id/img_detail"
-            android:visibility="gone"/>
-
         <include layout="@layout/layout_tv_summry"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            />
+            android:layout_width="match_parent" />
 
         <com.example.administrator.mvpdemo.ui.CustomWidgets.tvplays_selector
             android:layout_width="match_parent"

@@ -98,16 +98,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     public MenuItem user;
     public MenuItem vip;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        search = menu.findItem(R.id.action_search);
-
-        setUpCartMenuItem(menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        search = menu.findItem(R.id.action_search);
+//
+//        setUpCartMenuItem(menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

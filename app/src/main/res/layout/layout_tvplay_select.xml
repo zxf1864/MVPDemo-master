@@ -7,18 +7,22 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
 
+    android:background="@android:color/transparent"
+
     android:descendantFocusability="afterDescendants">
 
     <TextView
         android:id="@+id/tvplays_selector_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff"
+        android:background="@android:color/transparent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tvplays_selector_rv"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="100dp"
+        android:background="@android:color/transparent">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -30,6 +34,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
 
+        android:background="@android:color/transparent"
+
         android:descendantFocusability="afterDescendants">
 
         <LinearLayout
@@ -37,6 +43,8 @@
             android:id="@+id/tvplays_selector_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:background="@android:color/transparent"
 
             android:clickable="true"
             android:focusable="true"

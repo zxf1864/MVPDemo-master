@@ -351,7 +351,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                        .with(holder.myContext)
                        .load(vb.getVer_pic())
                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                       .placeholder(R.mipmap.default_pic)
+                       .placeholder(R.drawable.vertical_default_big_poster)
                        .into(holder.image);
 
                holder.m_VideosBean = vb;
@@ -576,7 +576,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
             if (image!= null)
             { Glide
                     .with(myContext)
-                    .load(R.mipmap.default_pic)
+                    .load(R.drawable.vertical_default_big_poster)
                     .into(image);}
 
         }

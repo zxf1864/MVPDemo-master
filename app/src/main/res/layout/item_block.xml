@@ -7,10 +7,7 @@
     android:layout_height="match_parent"
 
     android:background="@drawable/item_selector"
-    android:padding="@dimen/dp_22"
-
-    android:clipChildren="false"
-    android:clipToPadding="false"
+    android:padding="@dimen/dp_32"
 
     android:clickable="true"
     android:focusable="true"
@@ -23,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:background="@android:color/transparent"/>
 
     <TextView
         android:id="@+id/item_block_text"
@@ -31,7 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="#FFFFFF"
-        android:text="栏目名称"/>
+        android:text="栏目名称"
+        android:background="@android:color/transparent"/>
 
 
 </com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView>

@@ -427,7 +427,7 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
 
             recyclerView.setNestedScrollingEnabled(false);
 
-            recyclerView.setBackgroundColor(colors[position]);
+            recyclerView.setBackgroundColor(Color.TRANSPARENT);
 
             mViewSparseArray.put(position, recyclerView);
 

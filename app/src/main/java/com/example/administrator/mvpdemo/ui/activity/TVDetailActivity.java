@@ -21,9 +21,6 @@ import butterknife.BindView;
 public class TVDetailActivity extends BaseActivity {
 
 
-    @BindView(R.id.img_detail)
-    ImageView img_detail;
-
     private PgcInfo.DataBean.VideosBean mVideosBean;
     @Override
     protected int getContentViewId() {
@@ -57,15 +54,15 @@ public class TVDetailActivity extends BaseActivity {
     protected void init(){
         mVideosBean = (PgcInfo.DataBean.VideosBean) getIntent().getSerializableExtra("VideosBean");
 
-        img_detail.setClickable(true);
-
-        img_detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PlayVideoHelper.playSohuOnlineVideo(TVDetailActivity.this, mVideosBean.getAid(), mVideosBean.getVid(),
-                        mVideosBean.getSite(), 0);
-            }
-        });
+//        img_detail.setClickable(true);
+//
+//        img_detail.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                PlayVideoHelper.playSohuOnlineVideo(TVDetailActivity.this, mVideosBean.getAid(), mVideosBean.getVid(),
+//                        mVideosBean.getSite(), 0);
+//            }
+//        });
     }
 
     @Override
