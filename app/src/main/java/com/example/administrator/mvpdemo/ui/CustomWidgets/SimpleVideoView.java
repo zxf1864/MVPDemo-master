@@ -109,22 +109,22 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
                 .load(R.drawable.scale_player_bg)
                 .into(mPrePlayImg);
 
-        mBigPlayBtn = (ImageView) mView.findViewById(R.id.big_play_button);
-        mPlayBtn = (ImageView) mView.findViewById(R.id.play_button);
-        mFullScreenBtn = (ImageView) mView.findViewById(R.id.full_screen_button);
-        mPlayProgressBar = (SeekBar) mView.findViewById(R.id.progress_bar);
-        mPlayTime = (TextView) mView.findViewById(R.id.time);
-        mControlPanel = (LinearLayout) mView.findViewById(R.id.control_panel);
+        //mBigPlayBtn = (ImageView) mView.findViewById(R.id.big_play_button);
+        //mPlayBtn = (ImageView) mView.findViewById(R.id.play_button);
+        //mFullScreenBtn = (ImageView) mView.findViewById(R.id.full_screen_button);
+        //mPlayProgressBar = (SeekBar) mView.findViewById(R.id.progress_bar);
+        //mPlayTime = (TextView) mView.findViewById(R.id.time);
+        //mControlPanel = (LinearLayout) mView.findViewById(R.id.control_panel);
         mVideoView = (VideoView) mView.findViewById(R.id.video_view);
         //获取屏幕大小
         ((Activity) context).getWindowManager().getDefaultDisplay().getSize(screenSize);
         //加载动画
-        outAnima = AnimationUtils.loadAnimation(context, R.anim.exit_from_bottom);
-        inAnima = AnimationUtils.loadAnimation(context, R.anim.enter_from_bottom);
+        //outAnima = AnimationUtils.loadAnimation(context, R.anim.exit_from_bottom);
+        //inAnima = AnimationUtils.loadAnimation(context, R.anim.enter_from_bottom);
         //设置控制面板初始不可见
-        mControlPanel.setVisibility(View.GONE);
+        //mControlPanel.setVisibility(View.GONE);
         //设置大的播放按钮可见
-        mBigPlayBtn.setVisibility(View.VISIBLE);
+        //mBigPlayBtn.setVisibility(View.VISIBLE);
         //设置媒体控制器
 //      mMediaController = new MediaController(context);
 //      mMediaController.setVisibility(View.GONE);
@@ -132,12 +132,11 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
 
         mView.setOnClickListener(this);
 
-
-        mBigPlayBtn.setVisibility(View.GONE);
+        //mBigPlayBtn.setVisibility(View.GONE);
         mVideoView.setBackground(null);
         if(!mVideoView.isPlaying()){
             mVideoView.start();
-            mPlayBtn.setImageResource(R.mipmap.pause_icon);
+            //mPlayBtn.setImageResource(R.mipmap.pause_icon);
             //开始更新进度线程
             mUpdateThread = new Thread(mUpdateTask);
             stopThread = false;
@@ -162,16 +161,16 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
                         return true;
                     }
                 });
-                initVideo();
+                //initVideo();
             }
         });
         //视频播放完成监听器
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mPlayBtn.setImageResource(R.mipmap.play_icon);
+                //mPlayBtn.setImageResource(R.mipmap.play_icon);
                 mVideoView.seekTo(0);
-                mPlayProgressBar.setProgress(0);
+                //mPlayProgressBar.setProgress(0);
                 setPlayTime(0);
                 stopThread = true;
                 sendHideControlPanelMessage();
@@ -185,11 +184,11 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
         //初始化时间和进度条
         mVideoDuration = mVideoView.getDuration();//毫秒数
         int seconds = mVideoDuration/1000;
-        mPlayTime.setText("00:00/"+
-                ((seconds/60>9)?(seconds/60):("0"+seconds/60))+":"+
-                ((seconds%60>9)?(seconds%60):("0"+seconds%60)));
-        mPlayProgressBar.setMax(mVideoDuration);
-        mPlayProgressBar.setProgress(0);
+//        mPlayTime.setText("00:00/"+
+//                ((seconds/60>9)?(seconds/60):("0"+seconds/60))+":"+
+//                ((seconds%60>9)?(seconds%60):("0"+seconds%60)));
+//        mPlayProgressBar.setMax(mVideoDuration);
+//        mPlayProgressBar.setProgress(0);
         //更新进度条和时间任务
         mUpdateTask = new Runnable(){
             @Override
@@ -233,58 +232,58 @@ public class SimpleVideoView extends RelativeLayout implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v == mView){
-            if(mBigPlayBtn.getVisibility() == View.VISIBLE){
-                return;
-            }
-            if(mControlPanel.getVisibility() == View.VISIBLE){
-                //执行退出动画
-                mControlPanel.startAnimation(outAnima);
-                mControlPanel.setVisibility(View.GONE);
-            }else {
-                //执行进入动画
-                mControlPanel.startAnimation(inAnima);
-                mControlPanel.setVisibility(View.VISIBLE);
-                sendHideControlPanelMessage();
-            }
-        }
-        else if(v.getId() == R.id.big_play_button){//大的播放按钮
-            mBigPlayBtn.setVisibility(View.GONE);
-            mVideoView.setBackground(null);
-            if(!mVideoView.isPlaying()){
-                mVideoView.start();
-                mPlayBtn.setImageResource(R.mipmap.pause_icon);
-                //开始更新进度线程
-                mUpdateThread = new Thread(mUpdateTask);
-                stopThread = false;
-                mUpdateThread.start();
-            }
-        }
-        else if(v.getId() == R.id.play_button){//播放/暂停按钮
-            if(mVideoView.isPlaying()){
-                mVideoView.pause();
-                mPlayBtn.setImageResource(R.mipmap.play_icon);
-            }else{
-                if(mUpdateThread == null || !mUpdateThread.isAlive()){
-                    //开始更新进度线程
-                    mUpdateThread = new Thread(mUpdateTask);
-                    stopThread = false;
-                    mUpdateThread.start();
-                }
-                mVideoView.start();
-                mPlayBtn.setImageResource(R.mipmap.pause_icon);
-            }
-            sendHideControlPanelMessage();
-        }
-        else if(v.getId() == R.id.full_screen_button){//全屏
-            if(context.getResources().getConfiguration().orientation
-                    == Configuration.ORIENTATION_PORTRAIT){
-                setFullScreen();
-            }else{
-                setNoFullScreen();
-            }
-            sendHideControlPanelMessage();
-        }
+//        if(v == mView){
+//            if(mBigPlayBtn.getVisibility() == View.VISIBLE){
+//                return;
+//            }
+//            if(mControlPanel.getVisibility() == View.VISIBLE){
+//                //执行退出动画
+//                mControlPanel.startAnimation(outAnima);
+//                mControlPanel.setVisibility(View.GONE);
+//            }else {
+//                //执行进入动画
+//                mControlPanel.startAnimation(inAnima);
+//                mControlPanel.setVisibility(View.VISIBLE);
+//                sendHideControlPanelMessage();
+//            }
+//        }
+//        else if(v.getId() == R.id.big_play_button){//大的播放按钮
+//            mBigPlayBtn.setVisibility(View.GONE);
+//            mVideoView.setBackground(null);
+//            if(!mVideoView.isPlaying()){
+//                mVideoView.start();
+//                mPlayBtn.setImageResource(R.mipmap.pause_icon);
+//                //开始更新进度线程
+//                mUpdateThread = new Thread(mUpdateTask);
+//                stopThread = false;
+//                mUpdateThread.start();
+//            }
+//        }
+//        else if(v.getId() == R.id.play_button){//播放/暂停按钮
+//            if(mVideoView.isPlaying()){
+//                mVideoView.pause();
+//                mPlayBtn.setImageResource(R.mipmap.play_icon);
+//            }else{
+//                if(mUpdateThread == null || !mUpdateThread.isAlive()){
+//                    //开始更新进度线程
+//                    mUpdateThread = new Thread(mUpdateTask);
+//                    stopThread = false;
+//                    mUpdateThread.start();
+//                }
+//                mVideoView.start();
+//                mPlayBtn.setImageResource(R.mipmap.pause_icon);
+//            }
+//            sendHideControlPanelMessage();
+//        }
+//        else if(v.getId() == R.id.full_screen_button){//全屏
+//            if(context.getResources().getConfiguration().orientation
+//                    == Configuration.ORIENTATION_PORTRAIT){
+//                setFullScreen();
+//            }else{
+//                setNoFullScreen();
+//            }
+//            sendHideControlPanelMessage();
+//        }
     }
 
     //设置当前时间

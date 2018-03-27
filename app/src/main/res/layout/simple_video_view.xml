@@ -80,6 +80,7 @@
             />
     </LinearLayout>
     <!-- 大播放按钮 -->
+    <!--
     <ImageView
         android:id="@+id/big_play_button"
         android:layout_width="wrap_content"
@@ -89,4 +90,5 @@
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
         />
+     -->
 </RelativeLayout>

@@ -21,7 +21,7 @@ public class LayoutData {
 
 
     private static ItemAttribute.VideoItemType[] mItemType0 = {
-                                                                    ItemAttribute.VideoItemType.FIRSTBLOCK,
+                                                                    ItemAttribute.VideoItemType.BANNER,
                                                                     ItemAttribute.VideoItemType.NOTEXTBLOCK,
                                                                     ItemAttribute.VideoItemType.NOTEXTBLOCK,
                                                                     ItemAttribute.VideoItemType.TVBLOCK,

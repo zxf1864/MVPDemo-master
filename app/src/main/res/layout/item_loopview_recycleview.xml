@@ -2,18 +2,19 @@
 <com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView
     xmlns:android="http://schemas.android.com/apk/res/android"
 
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
 
     android:clickable="true"
     android:background="@drawable/item_selector"
-    android:padding="@dimen/dp_32"
+
+    android:padding="@dimen/dp_1"
 
     android:focusable="true"
     android:focusableInTouchMode="true"
 
     android:descendantFocusability="blocksDescendants">
-
+    <!--
     <com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM
         android:id="@+id/banner_itembanner"
         android:layout_width="match_parent"
@@ -21,9 +22,15 @@
         android:background="@android:color/transparent">
 
     </com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM>
+    -->
 
+    <com.example.administrator.mvpdemo.ui.CustomWidgets.FBanner
+        android:id="@+id/banner_itembanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
-
+    </com.example.administrator.mvpdemo.ui.CustomWidgets.FBanner>
 
 
 

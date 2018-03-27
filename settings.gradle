@@ -1,2 +1,1 @@
-include ':app', ':nucleus'
-project(':nucleus').projectDir = new File('nucleus')
+include ':app'

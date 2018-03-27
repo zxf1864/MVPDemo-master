@@ -40,6 +40,7 @@ import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.service.entity.PgcInfo;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.BannerM;
+import com.example.administrator.mvpdemo.ui.CustomWidgets.FBanner;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.ImageCycleView;
 
@@ -126,6 +127,43 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 //        holder.itemView.clearAnimation();
 //    }
 
+    private int GetLayoutID(ItemAttribute.VideoItemType viewType)
+    {
+       int id;
+
+        switch (viewType)
+        {
+            case FIRSTBLOCK:
+                id =  R.layout.item_firstblock;
+                break;
+            case BANNER:
+                id =  R.layout.item_loopview_recycleview;
+                break;
+            case BLOCK:
+                id =  R.layout.item_block;
+                break;
+            case NOTEXTBLOCK:
+                id =  R.layout.item_notextblock;
+                break;
+            case TEXTBLOCK:
+                id =  R.layout.item_textblock;
+                break;
+            case TVBLOCK:
+                //item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
+                id =  R.layout.item_tvblock;
+                break;
+            case ROUNDBLOCK:
+                id =  R.layout.item_roundblock;
+                break;
+            default:
+                id =  R.layout.item_notextblock;
+                break;
+
+        }
+        return id;
+    }
+
+
     private int creat_count;
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -133,43 +171,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         //return new MyViewHolder(new ImageView(parent.getContext()));
         //return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false));
 
-
         View item_view;
 
         Log.i("HomeAdapter", "onCreateViewHolder: "+(creat_count++));
 
         ItemAttribute.VideoItemType Type = ItemAttribute.VideoItemType.values()[viewType];
 
-        switch (Type)
-        {
-            case FIRSTBLOCK:
-                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_firstblock, parent, false);
-                break;
-            case BANNER:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loopview_recycleview, parent, false);
-                break;
-            case BLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_block, parent, false);
-                break;
-            case NOTEXTBLOCK:
-                item_view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-                break;
-            case TEXTBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_textblock, parent, false);
-                break;
-            case TVBLOCK:
-                //item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_normal_recycleview, parent, false);
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tvblock, parent, false);
-                break;
-            case ROUNDBLOCK:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_roundblock, parent, false);
-                break;
-            default:
-                item_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notextblock, parent, false);
-                break;
-
-        }
-
+        item_view =  LayoutInflater.from(parent.getContext()).inflate(GetLayoutID(Type), parent, false);
 
         item_view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -453,7 +461,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public RelativeLayout itemRL;
         //public ImageCycleView imageCycleView;
 
-        public BannerM imageCycleView;
+        //public BannerM imageCycleView;
+
+        public FBanner imageCycleView;
 
         public Context myContext;
 
@@ -485,9 +495,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             image = (ImageView) itemView.findViewById(R.id.img);
 
-            imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
-            if (imageCycleView!=null)
-                initBannerView(imageCycleView);
+            imageCycleView= (FBanner) itemView.findViewById(R.id.banner_itembanner);
+//            if (imageCycleView!=null)
+//                initBannerView(imageCycleView);
 
             mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
         }
@@ -503,9 +513,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             image = (ImageView) itemView.findViewById(R.id.img);
 
-            imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
-            if (imageCycleView!=null)
-                initBannerView(imageCycleView);
+            imageCycleView= (FBanner) itemView.findViewById(R.id.banner_itembanner);
+//            if (imageCycleView!=null)
+//                initBannerView(imageCycleView);
 
             mRefreshAnim = AnimationUtils.loadAnimation(myContext, R.anim.anim_rotate_refresh);
         }
@@ -538,10 +548,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                     break;
                 case BANNER:
                     //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_banner_rl);
-                    imageCycleView= (BannerM) itemView.findViewById(R.id.banner_itembanner);
+                    imageCycleView= (FBanner) itemView.findViewById(R.id.banner_itembanner);
                     //imageCycleView= banner_itembanner;
-                    if (imageCycleView!=null)
-                        initBannerView(imageCycleView);
+
+
+
+//                    if (imageCycleView!=null)
+//                        initBannerView(imageCycleView);
                     break;
                 case TVBLOCK:
                     //itemRL = (RelativeLayout) itemView.findViewById(R.id.item_tvblock);

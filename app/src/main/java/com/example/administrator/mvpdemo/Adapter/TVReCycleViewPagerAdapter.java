@@ -25,6 +25,7 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.mvpdemo.Model.ChannelInfo;
 import com.example.administrator.mvpdemo.MyReCyclerView.HomeLayoutManager;
 import com.example.administrator.mvpdemo.MyReCyclerView.MyRecyclerView;
@@ -34,6 +35,7 @@ import com.example.administrator.mvpdemo.event.RxBusBaseMessage;
 import com.example.administrator.mvpdemo.event.RxCodeConstants;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.AdapterMetroView;
 import com.example.administrator.mvpdemo.ui.CustomWidgets.FocusView;
+import com.example.administrator.mvpdemo.ui.activity.MainActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -185,6 +187,12 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                 {
                     if (recyclerView instanceof MyRecyclerView)
                     {
+                        if ((((MyRecyclerView)recyclerView).IsScrolling) == true) {
+                            Glide.with(context).resumeRequests();
+
+                        }
+                        ((MyRecyclerView)recyclerView).IsScrolling = false;
+
                         if(((MyRecyclerView) recyclerView).JumpBack)
                         {
                             View v = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -196,8 +204,15 @@ public class TVReCycleViewPagerAdapter extends PagerAdapter {
                         }
                     }
                 }
+                else if(newState == RecyclerView.SCROLL_STATE_DRAGGING || newState == RecyclerView.SCROLL_STATE_SETTLING)
+                {   ((MyRecyclerView)recyclerView).IsScrolling  = true;
+                    Glide.with(context).pauseRequests();}
+
             }
         });
+
+
+
 
         //添加滚动监听器
 //        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
